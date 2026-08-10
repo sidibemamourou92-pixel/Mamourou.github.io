@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mamourou Sidibé</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Police Inter & Icônes FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body>
+
+    <!-- Section Profil / Hero -->
+    <section class="profile-section">
+        <div class="profile-container">
+            <div class="profile-image">
+                <img src="image\WIN_20260511_10_10_38_Pro.jpg" alt="Mamourou Sidibé">
+                <div class="profile-badge">Ingénieur</div>
+            </div>
+            <div class="profile-info">
+                <div class="nom">
+                    <h1>Mamourou <sup><span>Sidibé</span></sup></h1>
+                </div>
+                <p class="profile-title">Ingénieur en Informatique & Passionné de Systèmes Embarqués</p>
+                <p class="profile-description">
+                    Je conçois des solutions connectées, du circuit électronique au code applicatif. Spécialisé en robotique, IoT et intelligence artificielle embarquée, je transforme des idées complexes en prototypes fonctionnels et innovants.
+                </p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">9+</span>
+                        <span class="stat-label">Projets Réalisés</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5+</span>
+                        <span class="stat-label">Années d'Expérience</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">7+</span>
+                        <span class="stat-label">Technologies Maîtrisées</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Compétences -->
+    <section class="skills-section">
+        <div class="skills-container">
+            <h2 class="section-title">Compétences Techniques</h2>
+            <p class="section-subtitle">Expertise acquise à travers des projets académiques et personnels</p>
+
+    <!-- En-tête / Navigation -->
+    <header>
+        <nav class="filters">
+            <button class="filter-btn active">Tout</button>
+            <button class="filter-btn">Électronique & Robotique</button>
+            <button class="filter-btn">Développement & Données</button>
+            <button class="filter-btn">Réseaux & RF</button>
+        </nav>
+    </header>
+
+    <!-- Grille du Portfolio -->
+    <main class="portfolio-container">
+        
+        <!-- Projet 1 : Ventilateur Automatique -->
+        <div class="project-card category-electronique" data-project="1">
+            <div class="project-image">
+                <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?q=80&w=600" alt="Système Arduino et capteurs">
+                <div class="project-overlay"><span class="project-category">Électronique</span></div>
+                <div class="image-count">+5</div>
+            </div>
+            <div class="project-info">
+                <h3>Ventilateur Automatique Intelligent</h3>
+                <p>Système de ventilation régulé par microcontrôleur Arduino, utilisant un capteur de température DHT11, un relais et un écran LCD pour l'affichage en temps réel.</p>
+                <div class="project-details">
+                    <h4>Technologies utilisées :</h4>
+                    <ul>
+                        <li>Arduino Uno</li>
+                        <li>Capteur DHT11</li>
+                        <li>Écran LCD 16x2</li>
+                        <li>Relais 5V</li>
+                    </ul>
+                    <h4>Fonctionnalités :</h4>
+                    <ul>
+                        <li>Mesure de température en temps réel</li>
+                        <li>Contrôle automatique du ventilateur</li>
+                        <li>Affichage des données sur LCD</li>
+                        <li>Seuil de température ajustable</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projet 2 : Robot Quadrupède -->
+        <div class="project-card category-robotique" data-project="2">
+            <div class="project-image">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=600" alt="Robotique et servomoteurs">
+                <div class="project-overlay"><span class="project-category">Robotique</span></div>
+                <div class="image-count">+8</div>
+            </div>
+            <div class="project-info">
+                <h3>Robot Quadrupède (ESP32)</h3>
+                <p>Prototype de robot marcheur à base d'ESP32. Calibration et gestion de servomoteurs (MG996R / MG90S) pour générer des démarches fluides et coordonnées.</p>
+                <div class="project-details">
+                    <h4>Technologies utilisées :</h4>
+                    <ul>
+                        <li>ESP32 DevKit</li>
+                        <li>Servomoteurs MG996R (x4)</li>
+                        <li>Servomoteurs MG90S (x4)</li>
+                        <li>Batterie LiPo 7.4V</li>
+                    </ul>
+                    <h4>Fonctionnalités :</h4>
+                    <ul>
+                        <li>Démarche avant/arrière</li>
+                        <li>Rotation gauche/droite</li>
+                        <li>Mouvements de danse</li>
+                        <li>Contrôle via Bluetooth</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projet 3 : Raspberry Pi 5 Headless -->
+        <div class="project-card category-reseaux" data-project="3">
+            <div class="project-image">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600" alt="Raspberry Pi et réseau">
+                <div class="project-overlay"><span class="project-category">Réseaux</span></div>
+                <div class="image-count">+4</div>
+            </div>
+            <div class="project-info">
+                <h3>Configuration Headless Raspberry Pi 5</h3>
+                <p>Déploiement complet sans écran d'un Raspberry Pi 5. Configuration réseau automatisée via un point d'accès mobile et gestion sécurisée à distance en SSH.</p>
+                <div class="project-details">
+                    <h4>Technologies utilisées :</h4>
+                    <ul>
+                        <li>Raspberry Pi 5</li>
+                        <li>Raspberry Pi OS Lite</li>
+                        <li>SSH & VNC</li>
+                        <li>Scripts Bash d'automatisation</li>
+                    </ul>
+                    <h4>Fonctionnalités :</h4>
+                    <ul>
+                        <li>Configuration WiFi headless</li>
+                        <li>Accès SSH sécurisé par clés</li>
+                        <li>Point d'accès mobile pour configuration</li>
+                        <li>Monitoring à distance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projet 4 : Polygraphe DIY -->
+        <div class="project-card category-electronique" data-project="4">
+            <div class="project-image">
+                <img src="https://images.unsplash.com/photo-1601524909162-be87252be298?q=80&w=600" alt="Circuit imprimé et capteurs de conductivité">
+                <div class="project-overlay"><span class="project-category">Électronique</span></div>
+                <div class="image-count">+6</div>
+            </div>
+            <div class="project-info">
+                <h3>Polygraphe Bio-Électronique (ESP32)</h3>
+                <p>Système de détection de mensonge mesurant la conductance cutanée. Intégration de filtres mathématiques pour stabiliser les signaux des capteurs en cuivre.</p>
+                <div class="project-details">
+                    <h4>Technologies utilisées :</h4>
+                    <ul>
+                        <li>ESP32</li>
+                        <li>Capteurs de conductance cutanée</li>
+                        <li>Filtres numériques (moyenne mobile)</li>
+                        <li>Écran OLED</li>
+                    </ul>
+                    <h4>Fonctionnalités :</h4>
+                    <ul>
+                        <li>Mesure en temps réel</li>
+                        <li>Filtrage des signaux bruyants</li>
+                        <li>Affichage graphique des courbes</li>
+                        <li>Enregistrement des données</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projet 5 : Robot Araignée 12 Servomoteurs -->
+        <div class="project-card category-robotique" data-project="5">
+            <div class="project-image">
+                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=600" alt="Robot araignée">
+                <div class="project-overlay"><span class="project-category">Robotique</span></div>
+                <div class="image-count">+10</div>
+            </div>
+            <div class="project-info">
+                <h3>Robot Araignée (12 Servomoteurs)</h3>
+                <p>Robot marcheur biomimétique à 12 degrés de liberté. Contrôle précis des servomoteurs pour reproduire la démarche d'une araignée avec synchronisation des mouvements.</p>
+                <div class="project-details">
+                    <h4>Technologies utilisées :</h4>
+                    <ul>
+                        <li>Arduino Mega 2560</li>
+                        <li>Servomoteurs MG996R (x12)</li>
+                        <li>PCA9685 (contrôleur PWM)</li>
+                        <li>Structure 3D imprimée</li>
+                    </ul>
+                    <h4>Fonctionnalités :</h4>
+                    <ul>
+                        <li>12 degrés de liberté</li>
+                        <li>Cinématique inverse</li>
+                        <li>Plusieurs modes de marche</li>
+                        <li>Contrôle via application mobile</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projet 6 : Voiture Télécommandée avec Évitement d'Obstacles -->
+        <div class="project-card category-robotique" data-project="6">
+            <div class="project-image">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?q=80&w=600" alt="Voiture autonome">
+                <div class="project-overlay"><span class="project-category">Robotique</span></div>
+                <div class="image-count">+9</div>
+            </div>
+            <div class="project-info">
+                <h3>Voiture Télécommandée & Autonome</h3>
+                <p>Voiture robotisée avec double mode : télécommande manuelle et navigation autonome avec capteurs à ultrasons pour l'évitement d'obstacles en temps réel.</p>
+                <div class="project-details">
+                    <h4>Technologies utilisées :</h4>
+                    <ul>
+                        <li>Arduino Uno</li>
+                        <li>Module Bluetooth HC-05</li>
+                        <li>Capteur à ultrasons HC-SR04</li>
+                        <li>Moteurs DC avec L298N</li>
+                    </ul>
+                    <h4>Fonctionnalités :</h4>
+                    <ul>
+                        <li>Mode télécommandé via smartphone</li>
+                        <li>Mode autonome avec évitement</li>
+                        <li>Détection d'obstacles à 30cm</li>
+                        <li>Vitesse variable</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projet 7 : ESP32-CAM Reconnaissance -->
+        <div class="project-card category-developpement" data-project="7">
+            <div class="project-image">
+                <img src="image\WIN_20260508_12_25_31_Pro.jpg" alt="ESP32-CAM et IA">
+                <div class="project-overlay"><span class="project-category">Développement</span></div>
+                <div class="image-count">+12</div>
+            </div>
+            <div class="project-info">
+                <h3>Système de Reconnaissance ESP32-CAM</h3>
+                <p>Système de vision par ordinateur embarqué utilisant ESP32-CAM pour la détection et reconnaissance d'objets en temps réel avec transmission WiFi.</p>
+                <div class="project-details">
+                    <h4>Technologies utilisées :</h4>
+                    <ul>
+                        <li>ESP32-CAM</li>
+                        <li>TensorFlow Lite Micro</li>
+                        <li>OpenCV</li>
+                        <li>Serveur Web streaming</li>
+                    </ul>
+                    <h4>Fonctionnalités :</h4>
+                    <ul>
+                        <li>Détection de visages</li>
+                        <li>Reconnaissance d'objets</li>
+                        <li>Streaming vidéo WiFi</li>
+                        <li>Enregistrement sur carte SD</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Section Éducation -->
+    <section class="education-section">
+        <div class="education-container">
+            <h2 class="section-title">Formation & Éducation</h2>
+            <p class="section-subtitle">Mon parcours académique et universitaire</p>
+            
+            <div class="education-grid">
+                <div class="education-card">
+                    <div class="education-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="education-content">
+                        <h3>Ingénieur en Électronique & Robotique</h3>
+                        <p class="institution">Université des Sciences et Technologies</p>
+                        <p class="period">2021 - 2024</p>
+                        <p class="education-description">
+                            Spécialisation en systèmes embarqués, robotique mobile et intelligence artificielle appliquée.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="education-card">
+                    <div class="education-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="education-content">
+                        
+                        <h3>Licence en Génie Informatique</h3>
+                        <p class="institution">Universite Sup'Management Mali</p>
+                        <p class="period">2024 - 2028</p>
+                        <p class="education-description">
+                            Formation fondamentale en électronique, automatique, traitement du signal et systèmes informatiques.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="education-card">
+                    <div class="education-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="education-content">
+                        <h3>Baccalauréat Scientifique</h3>
+                        <p class="institution">Lycée Privée la Réference</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galerie Photos -->
+    <section class="gallery-section">
+        <div class="gallery-container">
+            <h2 class="section-title">Galerie Photos</h2>
+            <p class="section-subtitle">Moments capturés lors de mes projets et expériences</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="image\Capture d'écran 2026-07-08 162743.png" alt="Projet électronique">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WhatsApp Image 2026-07-10 at 14.40.53.jpeg" alt="Espace de travail">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WIN_20260616_10_17_56_Pro.jpg" alt="Collaboration">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WIN_20260511_10_10_38_Pro.jpg" alt="Réunion d'équipe">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WIN_20260516_10_17_30_Pro.jpg" alt="Travail en équipe">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WhatsApp Image 2026-07-10 at 14.40.53 (1).jpeg" alt="Présentation projet">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WhatsApp Image 2026-07-10 at 14.40.53 (1).jpeg" alt="Présentation projet">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WhatsApp Image 2026-07-10 at 14.40.53 (1).jpeg" alt="Présentation projet">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WhatsApp Image 2026-07-10 at 14.40.53 (1).jpeg" alt="Présentation projet">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WhatsApp Image 2026-07-10 at 14.40.53 (1).jpeg" alt="Présentation projet">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WhatsApp Image 2026-07-10 at 14.40.53 (1).jpeg" alt="Présentation projet">
+                </div>
+                <div class="gallery-item">
+                    <img src="image\WhatsApp Image 2026-07-10 at 14.40.53 (1).jpeg" alt="Présentation projet">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+    <section class="contact-section">
+        <div class="contact-container">
+            <h2>Contacte</h2>
+            <p>Une idée de projet, une collaboration ou une question ? Laissez-moi un message !</p>
+            
+            <form action="#" method="POST" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Nom complet</label>
+                    <input type="text" id="name" name="name" placeholder="Votre nom" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" name="email" placeholder="nom@exemple.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Votre message ici..." required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Envoyer le message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">M<span>.Sidibé</span></div>
+                <p class="footer-text">© 2026 Mamourou Sidibé. Tous droits réservés.</p>
+                <div class="footer-social">
+                    <a href="https://linkedin.com/in/votre-profil" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i>Linkedin</a>
+                    <a href="https://github.com/votre-github" target="_blank" title="GitHub"><i class="fab fa-github"></i>GitHub</a>
+                    <a href="https://wa.me/22375506750" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i>WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal pour détails du projet -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <img src="" alt="Projet" id="modalImage">
+            </div>
+            <div class="modal-body">
+                <h2 id="modalTitle"></h2>
+                <p class="modal-description" id="modalDescription"></p>
+                
+                <div class="modal-story" id="modalStory">
+                    <h3><i class="fas fa-book-open"></i> L'histoire du projet</h3>
+                    <p id="modalStoryText"></p>
+                </div>
+                
+                <h3><i class="fas fa-tools"></i> Technologies utilisées :</h3>
+                <ul id="modalTechnologies"></ul>
+                
+                <h3><i class="fas fa-star"></i> Fonctionnalités :</h3>
+                <ul id="modalFeatures"></ul>
+                
+                <div class="modal-gallery" id="modalGallery"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
