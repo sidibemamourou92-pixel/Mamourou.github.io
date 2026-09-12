@@ -28,6 +28,16 @@ Portfolio **entièrement réinventé** avec **Astro 7**, en **zéro dépendance 
 - ♿ **Accessibilité** : liens d'évitement, focus visibles, `prefers-reduced-motion`, ARIA
 - 🔍 **SEO** renforcé (Open Graph, Twitter Card, JSON-LD)
 - 🚫 **Page 404** personnalisée
+- ⏱️ **Portfolio évolutif** : horloge « en ligne », année automatique, compteurs d’expérience
+- 🐙 **Stats GitHub en direct** : repos, étoiles et dernière activité (repli élégant hors-ligne)
+- 📜 **Chronique d’activité** : journal daté, trié automatiquement, modifiable dans `src/data/site.js`
+
+## ♻️ Il évolue dans le temps
+
+- **`src/data/site.js`** centralise tout : ajoutez un projet, une compétence ou une entrée de **chronique** sans toucher au code.
+- Les **compteurs automatiques** (année, années d’ingénierie, horloge, date de mise à jour) restent à jour tout seuls.
+- Les **statistiques GitHub** (repos, étoiles, dernière activité) sont lues en direct depuis l’API publique, avec repli hors-ligne.
+- Après modification : `npm run build` et le site est à jour.
 
 ## 🧰 Stack
 

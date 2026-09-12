@@ -426,6 +426,66 @@ function consoleEasterEgg() {
   } catch (e) {}
 }
 
+// ---------- Horloge « en ligne » (hero) ----------
+function initLiveClock() {
+  const t = $('[data-live-time]');
+  const d = $('[data-live-date]');
+  if (!t && !d) return;
+  const months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+  const paint = () => {
+    const now = new Date();
+    if (t) t.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    if (d) d.textContent = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+  };
+  paint();
+  setInterval(paint, 30000);
+}
+
+// ---------- Compteurs dynamiques (année, expérience) ----------
+function initDynamicCounters() {
+  const yr = $('[data-year]');
+  if (yr) yr.textContent = String(new Date().getFullYear());
+  const exp = $('[data-years][data-from]');
+  if (exp) {
+    const start = new Date(exp.dataset.from);
+    const now = new Date();
+    let y = now.getFullYear() - start.getFullYear();
+    const anniv = new Date(now.getFullYear(), start.getMonth(), start.getDate()).getTime();
+    if (now.getTime() < anniv) y--;
+    exp.textContent = String(Math.max(y, 1));
+  }
+}
+
+// ---------- Statistiques GitHub en direct ----------
+function initGithub() {
+  const wrap = $('[data-gh-stats]');
+  const user = wrap?.dataset?.ghUser;
+  const repos = $('[data-gh-repos]');
+  const stars = $('[data-gh-stars]');
+  const last = $('[data-gh-last]');
+  if (!wrap || !user) return;
+  const fmtAgo = iso => {
+    const days = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 86400000));
+    if (days === 0) return "aujourd'hui";
+    if (days === 1) return 'hier';
+    if (days < 60) return `il y a ${days} j`;
+    return new Date(iso).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
+  };
+  fetch(`https://api.github.com/users/${encodeURIComponent(user)}/repos?per_page=100&sort=updated`, { cache: 'no-store' })
+    .then(r => {
+      if (!r.ok) throw new Error('gh ' + r.status);
+      return r.json();
+    })
+    .then(list => {
+      if (!Array.isArray(list)) return;
+      if (repos) repos.textContent = String(list.length);
+      if (stars) stars.textContent = String(list.reduce((a, b) => a + (b.stargazers_count || 0), 0));
+      const dated = list.map(x => x.updated_at || '').filter(Boolean).sort().pop();
+      if (last && dated) last.textContent = fmtAgo(dated);
+    })
+    .catch(() => { /* hors-ligne ou limite API : on conserve les tirets */ });
+}
+
 // ---------- Initialisation ----------
 // Chaque init est isolée : une erreur ne bloque jamais les autres.
 function safeInit(fn) {
@@ -452,6 +512,9 @@ document.addEventListener('DOMContentLoaded', () => {
   safeInit(initProjectModal);
   safeInit(initLightbox);
   safeInit(initContact);
+  safeInit(initLiveClock);
+  safeInit(initDynamicCounters);
+  safeInit(initGithub);
   safeInit(consoleEasterEgg);
 });
 

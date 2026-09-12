@@ -1,7 +1,7 @@
 {
   "name": "mamourou-sidibe-portfolio",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "Portfolio réinventé de Mamourou Sidibé — Ingénieur Informatique, Robotique & IoT",
   "scripts": {

@@ -1,6 +1,7 @@
 ---
-import { site, socials } from '../data/site.js';
+import { site, socials, horizon } from '../data/site.js';
 import Icon from './Icon.astro';
+const buildDate = new Date(horizon.build).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <footer class="site-footer">
@@ -24,7 +25,8 @@ import Icon from './Icon.astro';
     </ul>
 
     <div class="footer-meta">
-      <p>© {site.annee} {site.auteur} — Tous droits réservés.</p>
+      <p>© <span data-year>{site.annee}</span> {site.auteur} — Tous droits réservés.</p>
+      <p class="footer-build">Dernière mise à jour : {buildDate}</p>
       <p class="footer-stack">
         <span>Fait avec</span> <span class="dot" aria-hidden="true"></span>{' '}
         <strong>Astro</strong>, CSS moderne & zéro bibliothèque JS

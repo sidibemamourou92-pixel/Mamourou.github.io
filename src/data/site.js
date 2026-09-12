@@ -15,6 +15,14 @@ export const site = {
   url: 'https://sidibemamourou92-pixel.github.io',
 };
 
+// ---- Évolutif : dates & compte GitHub pour les compteurs automatiques -----
+export const horizon = {
+  github: 'sidibemamourou92-pixel', // Compte GitHub pour les stats en direct
+  disponibleDepuis: '2026-01-06',
+  experienceDepuis: '2021-01-01',
+  build: new Date().toISOString(), // Horodatage automatique de la build
+};
+
 // Rôles animés (effet machine à écrire du hero)
 // Pas d'emojis : affichage universel sur toutes les plateformes.
 export const roles = [
@@ -317,6 +325,48 @@ export const timeline = [
   },
 ];
 
+// ---- Chronique / journal d'activité (triée automatiquement par date) ------
+// Ajoutez une entrée pour faire évoluer le portfolio dans le temps.
+// date (AAAA-MM-JJ) · type (site|projet|veille|formation|outil) · titre · texte
+export const chronique = [
+  {
+    date: '2026-09-12',
+    type: 'site',
+    titre: 'Portfolio v2.1 « évolutif » en ligne',
+    texte: 'CSS et JS incorporés au build, journal d’activité daté, stats GitHub en direct et compteurs automatiques (années, horloge, dernière mise à jour).',
+  },
+  {
+    date: '2026-08-28',
+    type: 'projet',
+    titre: 'ESP32-CAM : reconnaissance & diffusion',
+    texte: 'Déploiement d’un flux vidéo MJPEG en direct depuis un ESP32-CAM, avec détection embarquée et interface de supervision.',
+  },
+  {
+    date: '2026-07-22',
+    type: 'veille',
+    titre: 'IA embarquée : TensorFlow Lite',
+    texte: 'Exploration de modèles quantifiés pour la détection d’objets sur microcontrôleurs à faibles ressources.',
+  },
+  {
+    date: '2026-06-30',
+    type: 'projet',
+    titre: 'Raspberry Pi 5 headless',
+    texte: 'Serveur maison configuré en SSH/VNC : supervision, partage de fichiers et automatisation de tâches.',
+  },
+  {
+    date: '2026-05-14',
+    type: 'formation',
+    titre: 'Robots mobiles : châssis & locomotion',
+    texte: 'Prototypes tétrapode et quadrupède : conception mécanique, pilotage des servomoteurs et stabilisation.',
+  },
+  {
+    date: '2026-03-02',
+    type: 'outil',
+    titre: 'Banc de mesure de conductance',
+    texte: 'Instrumentation d’un circuit de mesure : acquisition, affichage LCD et calibration du capteur.',
+  },
+];
+
 // ---- Galerie photos de laboratoire --------------------------------------
 export const gallery = [
   { src: 'image/WIN_20260508_12_25_31_Pro.jpg', alt: 'Robot et servomoteurs en test' },
@@ -335,6 +385,7 @@ export const navLinks = [
   { href: '#competences', label: 'Compétences', icone: 'chip' },
   { href: '#projets', label: 'Projets', icone: 'wrench' },
   { href: '#sites', label: 'Sites web', icone: 'globe' },
+  { href: '#chronique', label: 'Chronique', icone: 'doc' },
   { href: '#parcours', label: 'Parcours', icone: 'road' },
   { href: '#galerie', label: 'Galerie', icone: 'camera' },
   { href: '#contact', label: 'Contact', icone: 'mail' },

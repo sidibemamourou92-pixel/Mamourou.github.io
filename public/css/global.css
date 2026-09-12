@@ -2082,3 +2082,182 @@ button {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================================
+   PORTFOLIO v2.1 — Évolutif (2026)
+   ============================================================ */
+
+/* Bornes de scroll fluides : un lien d'ancre ne « passe » plus sous le header */
+html {
+  scroll-behavior: smooth;
+  scroll-margin-top: calc(var(--header-h) + 8px);
+}
+
+/* ---------- Hero : horloge « en ligne » ---------- */
+.hero-live {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .hero-live { display: none; }
+}
+
+/* ---------- Statistiques en direct (GitHub + expérience) ---------- */
+.gh-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  gap: 1.2rem;
+  align-items: center;
+  width: 100%;
+  margin-top: 2.6rem;
+  padding: 1.1rem 1.4rem;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  border-radius: var(--radius);
+}
+.gh-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  justify-content: center;
+  text-align: left;
+}
+.gh-stat strong {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.35rem;
+  color: var(--text);
+}
+.gh-stat span {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.gh-link {
+  justify-self: end;
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--brand);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.gh-link:hover {
+  color: var(--brand-2);
+  text-decoration: underline;
+}
+.gh-stat strong[data-gh-last] { font-size: 1.05rem; }
+
+/* ---------- Chronique / journal d'activité ---------- */
+.journal-list {
+  display: grid;
+  gap: 1.1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.journal-item {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0 1.2rem;
+  align-items: start;
+  padding: 1rem 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color 0.25s ease, transform 0.25s var(--ease);
+}
+.journal-item:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+}
+.journal-date {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+.journal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.journal-tag {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  padding: 0.12rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  color: var(--text-soft);
+}
+.journal-item[data-type='site'] .journal-tag { color: var(--brand); }
+.journal-item[data-type='projet'] .journal-tag { color: var(--brand-2); }
+.journal-item[data-type='veille'] .journal-tag { color: var(--accent); }
+.journal-item[data-type='formation'] .journal-tag { color: var(--ok); }
+.journal-item[data-type='outil'] .journal-tag { color: var(--brand-3); }
+.journal-title {
+  font-weight: 600;
+  color: var(--text);
+}
+.journal-item p {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  margin: 0;
+}
+.section-subtitle code {
+  font-family: var(--font-mono);
+  background: var(--code-bg);
+  color: var(--text-soft);
+  padding: 0.08rem 0.35rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85em;
+}
+@media (max-width: 720px) {
+  .gh-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .gh-link {
+    grid-column: 1 / -1;
+    justify-self: end;
+  }
+}
+@media (max-width: 640px) {
+  .journal-item {
+    grid-template-columns: 1fr;
+  }
+  .journal-date { font-size: 0.75rem; }
+}
+.footer-build {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+/* ---------- Impression / CV ---------- */
+@media print {
+  .site-header,
+  .hero-bg,
+  .hero-visual,
+  .back-to-top,
+  .theme-toggle,
+  .nav-burger,
+  .project-filters,
+  .contact-form,
+  .gallery-grid,
+  .gh-stats,
+  .scroll-progress,
+  .footer-socials {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  a { color: #0b4ea2; text-decoration: underline; }
+  section { break-inside: avoid; }
+  .hero-live,
+  .type-cursor { display: none !important; }
+}
