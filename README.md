@@ -17,6 +17,7 @@ Propulsé par **Astro 7** — zéro dépendance JS, CSS et JS incorporés au bui
 ├── public/
 │   ├── css/global.css     → design system (incorporé au HTML au build)
 │   ├── js/main.js         → interactions (incorporées au HTML au build)
+│   ├── logo-tangade.png   → logo de l'entreprise (TengaDé Tech)
 │   └── favicon.svg
 ├── src/
 │   ├── data/site.js       → TOUT le contenu se modifie ici
@@ -34,6 +35,7 @@ Propulsé par **Astro 7** — zéro dépendance JS, CSS et JS incorporés au bui
 - Thème **sombre / clair** mémorisé (+ `prefers-color-scheme`)
 - Effet machine à écrire, filtres de projets, révélation au scroll (sans jamais laisser une page vide)
 - Année et « Mis à jour le » automatiques · formulaire mailto + réseaux · page 404
+- Lien de l'entreprise **TengaDé Tech** (logo + slogan) dans le footer et la carte « À propos »
 - Accessible : liens d'évitement, focus visibles, `prefers-reduced-motion`, ARIA
 - Impression : styles d'impression optimisés (CV)
 

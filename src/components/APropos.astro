@@ -1,5 +1,5 @@
 ---
-import { profil } from '../data/site.js';
+import { profil, entreprise } from '../data/site.js';
 import Icon from './Icon.astro';
 const monogram = `${profil.prenom[0]}${profil.nom[0]}`;
 ---
@@ -24,6 +24,15 @@ const monogram = `${profil.prenom[0]}${profil.nom[0]}`;
 
     <aside class="about-card reveal">
       <div class="monogram" aria-hidden="true">{monogram}</div>
+
+      <a class="about-work" href={entreprise.url} target="_blank" rel="noopener noreferrer">
+        <img src={entreprise.logo} alt={`Logo de ${entreprise.nom}`} width="34" height="34" loading="lazy" />
+        <span>
+          <small>Développeur chez</small>
+          <strong>{entreprise.nom}</strong>
+        </span>
+      </a>
+
       <div class="specialites">
         {profil.specialites.map(s => (
           <span class="chip">{s}</span>

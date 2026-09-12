@@ -1,5 +1,5 @@
 ---
-import { profil, horizon } from '../data/site.js';
+import { profil, horizon, entreprise } from '../data/site.js';
 const { monogram } = Astro.props;
 const build = new Date(horizon.build).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
@@ -10,6 +10,17 @@ const build = new Date(horizon.build).toLocaleDateString('fr-FR', { day: 'numeri
       <span class="brand-mark">{monogram}</span>
       <span>{profil.prenom} {profil.nom}</span>
     </a>
+
+    <div class="footer-company">
+      <span class="footer-label">Développeur chez</span>
+      <a href={entreprise.url} target="_blank" rel="noopener noreferrer" class="footer-company-link" aria-label={entreprise.nom}>
+        <img src={entreprise.logo} alt={`Logo de ${entreprise.nom}`} width="38" height="38" loading="lazy" />
+        <span>
+          <strong>{entreprise.nom}</strong>
+          <small>{entreprise.slogan}</small>
+        </span>
+      </a>
+    </div>
 
     <div class="footer-meta">
       <p>© <span data-year>{new Date().getFullYear()}</span> {profil.prenom} {profil.nom} — Tous droits réservés.</p>

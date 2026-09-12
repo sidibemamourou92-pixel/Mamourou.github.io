@@ -24,6 +24,13 @@ export const profil = {
   dispo: true,
 };
 
+export const entreprise = {
+  nom: 'TengaDé Tech',
+  slogan: "L'esprit du guide, la force du code",
+  url: 'https://tangade-tech.vercel.app/',
+  logo: './logo-tangade.png',
+};
+
 export const horizon = {
   experienceDepuis: '2021-01-01',
   build: new Date().toISOString(),

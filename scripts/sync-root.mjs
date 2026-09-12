@@ -12,7 +12,7 @@ if (!existsSync(join(dist, 'index.html'))) {
 }
 
 // Éléments à synchroniser depuis dist/ vers la racine
-const items = ['index.html', 'favicon.svg', '404.html', 'css', 'js'];
+const items = ['index.html', 'favicon.svg', '404.html', 'css', 'js', 'logo-tangade.png'];
 
 async function copyTree(src, dst) {
   await mkdir(dst, { recursive: true });
@@ -42,5 +42,5 @@ for (const name of items) {
   }
 }
 
-console.log('✅ Site synchronisé vers la racine : index.html, favicon.svg, css/, js/.');
+console.log('✅ Site synchronisé vers la racine : index.html, favicon.svg, css/, js/, logo.');
 console.log('   Ouvrez « index.html » pour voir le portfolio directement.');
