@@ -34,21 +34,28 @@ function initHeader() {
   onScroll();
 }
 
-// ---------- Menu mobile ----------
+// ---------- Menu mobile (menu déroulant) ----------
 function initNav() {
   const toggle = $('[data-nav-toggle]');
   const nav = $('[data-nav]');
+  const backdrop = $('[data-nav-backdrop]');
   if (!toggle || !nav) return;
   const setOpen = open => {
     nav.classList.toggle('is-open', open);
     toggle.classList.toggle('is-open', open);
+    if (backdrop) backdrop.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', String(open));
     document.body.style.overflow = open ? 'hidden' : '';
   };
   toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
+  backdrop?.addEventListener('click', () => setOpen(false));
+  nav.addEventListener('click', e => { if (!e.target.closest('a')) setOpen(false); });
   $$('a', nav).forEach(a => a.addEventListener('click', () => setOpen(false)));
   window.addEventListener('keydown', e => {
     if (e.key === 'Escape') setOpen(false);
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 840) setOpen(false);
   });
 }
 

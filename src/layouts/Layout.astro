@@ -1,5 +1,5 @@
 ---
-import { profil } from '../data/site.js';
+import { profil, deploiement } from '../data/site.js';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import Header from '../components/Header.astro';
@@ -23,6 +23,7 @@ const page = {
   description: pageDescription?.fr ?? profil.accroche.fr,
   descriptionEn: pageDescription?.en ?? profil.accroche.en,
 };
+const canonical = deploiement.url.replace(/\/$/, '') + '/';
 ---
 
 <!doctype html>
@@ -36,10 +37,36 @@ const page = {
     <meta name="generator" content="Astro — Portfolio 4.0" />
     <meta name="theme-color" content="#0b1220" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={page.title} />
     <meta property="og:description" content={page.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={deploiement.ogImage} />
     <meta property="og:locale" content="fr_FR" />
+    <meta name="geo.region" content="ML" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={page.title} />
+    <meta name="twitter:description" content={page.description} />
+    <meta name="twitter:image" content={deploiement.ogImage} />
+
+    <!-- JSON-LD : données structurées pour le référencement -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: nomPrenom,
+      jobTitle: profil.role.fr,
+      url: canonical,
+      email: 'mailto:' + profil.email,
+      image: deploiement.ogImage,
+      sameAs: [
+        'https://github.com/sidibemamourou92-pixel',
+        'https://www.linkedin.com/in/sidib%C3%A9-mamourou-36848233a',
+      ],
+      address: { '@type': 'PostalAddress', addressLocality: 'Bamako', addressCountry: 'ML' },
+      knowsLanguage: ['fr', 'en'],
+    })}></script>
 
     <!-- CSS global incorporé au build -->
     <style is:inline set:html={globalCss}></style>

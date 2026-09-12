@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sidibemamourou92-pixel.github.io/sitemap.xml

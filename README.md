@@ -1,4 +1,4 @@
-# Portfolio — Mamourou Sidibé 🚀 v4.0
+# Portfolio — Mamourou Sidibé 🚀 v4.1
 
 Portfolio **« développeur »** : thème sombre, fenêtre de code animée, **bilingue FR/EN**,
 avec une section **CV** complète (photo + parcours + infos personnelles).
@@ -20,7 +20,10 @@ Propulsé par **Astro 7** — zéro dépendance JS, CSS et JS incorporés au bui
 │   ├── js/main.js         → interactions incl. bascule FR/EN (incorporées)
 │   ├── logo-tangade.png   → logo de l'entreprise (TengaDé Tech)
 │   ├── cv-photo.jpg       → votre photo (remplacez-la par la vôtre)
-│   └── favicon.svg
+│   ├── favicon.svg
+│   ├── robots.txt         → référencement Google
+│   ├── sitemap.xml        → plan du site pour Google
+│   └── .nojekyll          → GitHub Pages (pas de Jekyll)
 ├── src/
 │   ├── data/site.js       → TOUT le contenu se modifie ici
 │   ├── components/        → Header, Hero, APropos, Competences, Projets…
@@ -33,7 +36,7 @@ Propulsé par **Astro 7** — zéro dépendance JS, CSS et JS incorporés au bui
 
 ## ✨ Fonctionnalités
 
-- Design **propre et minimal** : fond clair, un seul accent, cartes fines
+- Design **« développeur »** : sombre par défaut, palette d'éditeur, grille animée, fenêtre de code, accent vert
 - Thème **« développeur »** sombre par défaut : palette d'éditeur, grille animée, fenêtre de code, accent vert
 - **Bilingue FR / EN** : bascule instantanée (bouton FR/EN), mémorisée
 - Section **CV** : photo, infos personnelles, langues, nationalité, chiffres clés
@@ -49,11 +52,33 @@ Tout le contenu est centralisé dans **`src/data/site.js`** :
 profil, spécialités, compétences, projets, parcours, réseaux et navigation.
 Modifiez, puis `npm run build`.
 
+## 📱 Mobile
+
+Adapté à **toutes les tailles d'écran** (320 px → 4K, iOS & Android) :
+menu **déroulant** sous l'en-tête avec voile de fermeture, champs de saisie sans zoom
+iOS, zones tactiles confortables, encoches (notch) gérées, boutons pleine largeur.
+
 ## 🚢 Déploiement
 
-Site **statique** (`dist/`), chemins **relatifs** : fonctionne partout.
+Site **statique** (`dist/`), 100 % autonome (1 fichier HTML + images), chemins relatifs.
 
-- **GitHub Pages** : workflow fourni dans `.github/workflows/deploy.yml` (pousser sur `main`)
-- **Netlify / Vercel** : build `npm run build`, répertoire `dist`
+- **Nom du déploiement** : `mamourou-sidibe-portfolio` (`vercel.json` + bloc `deploiement` dans `src/data/site.js`)
+- **GitHub Pages** : workflow fourni (`.github/workflows/deploy.yml`) — poussez sur `main`.
+  URL finale selon le nom du dépôt : `https://sidibemamourou92-pixel.github.io/` (dépôt `<utilisateur>.github.io`)
+  ou `/Portolio/` (dépôt classique).
+- **Vercel** : `vercel.json` fourni (framework Astro, sortie `dist`, cache des images).
+- **Après mise en ligne** : mettez à jour l'URL dans `src/data/site.js` → `deploiement.url`.
+
+## 🔍 Indexation Google
+
+Déjà en place :
+- `robots.txt` + `sitemap.xml` (URL, fréquence, priorité)
+- `canonical`, `robots index,follow`, `theme-color`, `geo.region`
+- **Open Graph**, **Twitter Card**, **JSON-LD** (Person : nom, rôle, e-mail, réseaux, adresse, langues)
+
+Une fois le site en ligne :
+1. [Google Search Console](https://search.google.com/search-console) → ajoutez votre site
+2. Soumettez `https://votre-site/sitemap.xml`
+3. Contrôlez l'indexation : recherchez `site:votre-site`
 
 © Mamourou Sidibé — fait avec ❤️ et Astro.

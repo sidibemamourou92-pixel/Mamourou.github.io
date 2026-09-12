@@ -45,6 +45,13 @@ export const entreprise = {
   logo: './logo-tangade.png',
 };
 
+export const deploiement = {
+  // Nom du déploiement (Vercel / projet) et URL finale du site (SEO, canonical, sitemap).
+  nom: 'mamourou-sidibe-portfolio',
+  url: 'https://sidibemamourou92-pixel.github.io', // ← à adapter une fois en ligne
+  ogImage: 'https://sidibemamourou92-pixel.github.io/cv-photo.jpg',
+};
+
 export const horizon = {
   experienceDepuis: '2021-01-01',
   build: new Date().toISOString(),
