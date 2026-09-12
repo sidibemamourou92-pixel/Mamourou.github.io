@@ -12,7 +12,7 @@ if (!existsSync(join(dist, 'index.html'))) {
 }
 
 // Éléments à synchroniser depuis dist/ vers la racine
-const items = ['index.html', 'favicon.svg', '404.html', 'css', 'js', 'logo-tangade.png'];
+const items = ['index.html', 'favicon.svg', '404.html', 'css', 'js', 'logo-tangade.png', 'cv-photo.jpg'];
 
 async function copyTree(src, dst) {
   await mkdir(dst, { recursive: true });

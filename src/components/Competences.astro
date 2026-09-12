@@ -5,9 +5,9 @@ import Icon from './Icon.astro';
 
 <section class="section container" id="competences">
   <div class="section-head reveal">
-    <p class="section-eyebrow">Compétences</p>
-    <h2 class="section-title">Domaines maîtrisés</h2>
-    <p class="section-subtitle">Outils et technologies utilisés au quotidien.</p>
+    <p class="section-eyebrow" data-i18n data-fr="Compétences" data-en="Skills">Compétences</p>
+    <h2 class="section-title" data-i18n data-fr="Domaines maîtrisés" data-en="Core skills">Domaines maîtrisés</h2>
+    <p class="section-subtitle" data-i18n data-fr="Outils et technologies utilisés au quotidien." data-en="Tools and technologies I use every day.">Outils et technologies utilisés au quotidien.</p>
   </div>
 
   <div class="skills-grid">
@@ -15,8 +15,8 @@ import Icon from './Icon.astro';
       <article class="skill-card reveal">
         <div class="skill-head">
           <Icon name={g.icone} size={20} />
-          <h3>{g.domaine}</h3>
-          <span class="skill-level">{g.niveau}</span>
+          <h3 data-i18n data-fr={g.domaine.fr} data-en={g.domaine.en}>{g.domaine.fr}</h3>
+          <span class="skill-level" data-i18n data-fr={g.niveau.fr} data-en={g.niveau.en}>{g.niveau.fr}</span>
         </div>
         <ul class="skill-tags">
           {g.tags.map(t => (

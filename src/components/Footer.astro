@@ -1,30 +1,30 @@
 ---
 import { profil, horizon, entreprise } from '../data/site.js';
-const { monogram } = Astro.props;
+const { monogram, nomPrenom } = Astro.props;
 const build = new Date(horizon.build).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <a href="#accueil" class="brand" aria-label={`Retour à l’accueil — ${profil.prenom} ${profil.nom}`}>
+    <a href="#accueil" class="brand" aria-label={`Accueil — ${nomPrenom}`}>
       <span class="brand-mark">{monogram}</span>
-      <span>{profil.prenom} {profil.nom}</span>
+      <span>{nomPrenom}</span>
     </a>
 
     <div class="footer-company">
-      <span class="footer-label">Développeur chez</span>
+      <span class="footer-label" data-i18n data-fr="Développeur chez" data-en="Engineer at">Développeur chez</span>
       <a href={entreprise.url} target="_blank" rel="noopener noreferrer" class="footer-company-link" aria-label={entreprise.nom}>
         <img src={entreprise.logo} alt={`Logo de ${entreprise.nom}`} width="38" height="38" loading="lazy" />
         <span>
           <strong>{entreprise.nom}</strong>
-          <small>{entreprise.slogan}</small>
+          <small data-i18n data-fr={entreprise.slogan.fr} data-en={entreprise.slogan.en}>{entreprise.slogan.fr}</small>
         </span>
       </a>
     </div>
 
     <div class="footer-meta">
-      <p>© <span data-year>{new Date().getFullYear()}</span> {profil.prenom} {profil.nom} — Tous droits réservés.</p>
-      <p>Mis à jour le {build}</p>
+      <p>© <span data-year>{new Date().getFullYear()}</span> {nomPrenom} — <span data-i18n data-fr="Tous droits réservés." data-en="All rights reserved.">Tous droits réservés.</span></p>
+      <p><span data-i18n data-fr="Mis à jour le" data-en="Last updated">Mis à jour le</span> {build}</p>
     </div>
   </div>
 </footer>

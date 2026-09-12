@@ -5,28 +5,28 @@ import Icon from './Icon.astro';
 
 <section class="section container" id="contact">
   <div class="section-head reveal">
-    <p class="section-eyebrow">Contact</p>
-    <h2 class="section-title">Travaillons ensemble</h2>
-    <p class="section-subtitle">Un projet, une question, une collaboration ? Écrivez-moi.</p>
+    <p class="section-eyebrow" data-i18n data-fr="Contact" data-en="Contact">Contact</p>
+    <h2 class="section-title" data-i18n data-fr="Travaillons ensemble" data-en="Let’s work together">Travaillons ensemble</h2>
+    <p class="section-subtitle" data-i18n data-fr="Un projet, une question, une collaboration ? Écrivez-moi." data-en="A project, a question, a collaboration? Write to me.">Un projet, une question, une collaboration ? Écrivez-moi.</p>
   </div>
 
   <div class="contact-grid">
     <div class="contact-infos reveal">
-      <p>Je réponds généralement sous 24 h. Choisissez le canal qui vous convient.</p>
+      <p data-i18n data-fr="Je réponds généralement sous 24 h. Choisissez le canal qui vous convient." data-en="I usually reply within 24 hours. Choose the channel you prefer.">Je réponds généralement sous 24 h. Choisissez le canal qui vous convient.</p>
 
       <ul class="contact-list">
         <li class="contact-row">
           <span class="c-ico"><Icon name="mail" size={18} /></span>
           <div>
-            <strong>Email</strong>
+            <strong data-i18n data-fr="Email" data-en="Email">Email</strong>
             <a href={`mailto:${profil.email}`}>{profil.email}</a>
           </div>
         </li>
         <li class="contact-row">
           <span class="c-ico"><Icon name="pin" size={18} /></span>
           <div>
-            <strong>Localisation</strong>
-            <span>{profil.localisation} — disponible à distance</span>
+            <strong data-i18n data-fr="Localisation" data-en="Location">Localisation</strong>
+            <span data-i18n data-fr={`${profil.localisation.fr} — disponible à distance`} data-en={`${profil.localisation.en} — remote friendly`}>{profil.localisation.fr} — disponible à distance</span>
           </div>
         </li>
       </ul>
@@ -42,23 +42,24 @@ import Icon from './Icon.astro';
 
     <form class="contact-form reveal" data-contact-form data-email={profil.email} novalidate>
       <div class="field">
-        <label for="cf-nom">Nom</label>
-        <input id="cf-nom" name="nom" type="text" placeholder="Votre nom" required minlength="2" />
+        <label for="cf-nom" data-i18n data-fr="Nom" data-en="Name">Nom</label>
+        <input id="cf-nom" name="nom" type="text" placeholder="Votre nom" required minlength="2" data-ph-fr="Votre nom" data-ph-en="Your name" />
       </div>
       <div class="field">
-        <label for="cf-email">Email</label>
-        <input id="cf-email" name="email" type="email" placeholder="vous@exemple.com" required />
+        <label for="cf-email" data-i18n data-fr="Email" data-en="Email">Email</label>
+        <input id="cf-email" name="email" type="email" placeholder="vous@exemple.com" required data-ph-fr="vous@exemple.com" data-ph-en="you@example.com" />
       </div>
       <div class="field">
-        <label for="cf-sujet">Sujet</label>
-        <input id="cf-sujet" name="sujet" type="text" placeholder="Un projet, une question…" />
+        <label for="cf-sujet" data-i18n data-fr="Sujet" data-en="Subject">Sujet</label>
+        <input id="cf-sujet" name="sujet" type="text" placeholder="Un projet, une question…" data-ph-fr="Un projet, une question…" data-ph-en="A project, a question…" />
       </div>
       <div class="field">
-        <label for="cf-msg">Message</label>
-        <textarea id="cf-msg" name="message" rows="5" placeholder="Décrivez votre besoin…" required minlength="10"></textarea>
+        <label for="cf-msg" data-i18n data-fr="Message" data-en="Message">Message</label>
+        <textarea id="cf-msg" name="message" rows="5" placeholder="Décrivez votre besoin…" required minlength="10" data-ph-fr="Décrivez votre besoin…" data-ph-en="Describe your need…"></textarea>
       </div>
       <button type="submit" class="btn btn-primary btn-lg" data-submit-btn>
-        <Icon name="mail" size={18} /> Envoyer le message
+        <Icon name="mail" size={18} />
+        <span data-i18n data-fr="Envoyer le message" data-en="Send message">Envoyer le message</span>
       </button>
       <p class="form-note" data-form-note role="status" aria-live="polite"></p>
     </form>

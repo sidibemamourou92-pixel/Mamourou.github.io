@@ -1,7 +1,8 @@
-# Portfolio — Mamourou Sidibé
+# Portfolio — Mamourou Sidibé 🚀 v4.0
 
-Portfolio **3.0**, minimal et moderne, pour un ingénieur informatique.
-Propulsé par **Astro 7** — zéro dépendance JS, CSS et JS incorporés au build. Le site s'ouvre partout, sans configuration.
+Portfolio **« développeur »** : thème sombre, fenêtre de code animée, **bilingue FR/EN**,
+avec une section **CV** complète (photo + parcours + infos personnelles).
+Propulsé par **Astro 7** — zéro dépendance JS, CSS et JS incorporés au build (1 seul fichier HTML).
 
 ## 👀 Voir le site
 
@@ -16,8 +17,9 @@ Propulsé par **Astro 7** — zéro dépendance JS, CSS et JS incorporés au bui
 ```
 ├── public/
 │   ├── css/global.css     → design system (incorporé au HTML au build)
-│   ├── js/main.js         → interactions (incorporées au HTML au build)
+│   ├── js/main.js         → interactions incl. bascule FR/EN (incorporées)
 │   ├── logo-tangade.png   → logo de l'entreprise (TengaDé Tech)
+│   ├── cv-photo.jpg       → votre photo (remplacez-la par la vôtre)
 │   └── favicon.svg
 ├── src/
 │   ├── data/site.js       → TOUT le contenu se modifie ici
@@ -32,8 +34,10 @@ Propulsé par **Astro 7** — zéro dépendance JS, CSS et JS incorporés au bui
 ## ✨ Fonctionnalités
 
 - Design **propre et minimal** : fond clair, un seul accent, cartes fines
-- Thème **sombre / clair** mémorisé (+ `prefers-color-scheme`)
-- Effet machine à écrire, filtres de projets, révélation au scroll (sans jamais laisser une page vide)
+- Thème **« développeur »** sombre par défaut : palette d'éditeur, grille animée, fenêtre de code, accent vert
+- **Bilingue FR / EN** : bascule instantanée (bouton FR/EN), mémorisée
+- Section **CV** : photo, infos personnelles, langues, nationalité, chiffres clés
+- Thème **sombre / clair** mémorisé · effet machine à écrire · filtres de projets · révélation au scroll
 - Année et « Mis à jour le » automatiques · formulaire mailto + réseaux · page 404
 - Lien de l'entreprise **TengaDé Tech** (logo + slogan) dans le footer et la carte « À propos »
 - Accessible : liens d'évitement, focus visibles, `prefers-reduced-motion`, ARIA

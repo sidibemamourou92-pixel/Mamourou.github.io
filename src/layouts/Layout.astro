@@ -15,41 +15,46 @@ const globalCss = readFileSync(cssPath, 'utf8');
 const mainJs = readFileSync(jsPath, 'utf8').replace(/^\uFEFF/, '');
 
 const { title: pageTitle, description: pageDescription } = Astro.props;
-const page = {
-  title: pageTitle ?? `${profil.prenom} ${profil.nom} — ${profil.role}`,
-  description: pageDescription ?? profil.accroche,
-};
+const nomPrenom = `${profil.prenom} ${profil.nom}`;
 const monogram = `${profil.prenom[0]}${profil.nom[0]}`;
+const page = {
+  title: pageTitle?.fr ?? `${nomPrenom} — ${profil.role.fr}`,
+  titleEn: pageTitle?.en ?? `${nomPrenom} — ${profil.role.en}`,
+  description: pageDescription?.fr ?? profil.accroche.fr,
+  descriptionEn: pageDescription?.en ?? profil.accroche.en,
+};
 ---
 
 <!doctype html>
-<html lang="fr" data-theme="light">
+<html lang="fr" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{page.title}</title>
-    <meta name="description" content={page.description} />
-    <meta name="author" content={`${profil.prenom} ${profil.nom}`} />
-    <meta name="generator" content="Astro — Portfolio 3.0" />
-    <meta name="theme-color" content="#f8f9fb" />
+    <title data-i18n data-fr={page.title} data-en={page.titleEn}>{page.title}</title>
+    <meta name="description" content={page.description} data-fr-description={page.description} data-en-description={page.descriptionEn} />
+    <meta name="author" content={nomPrenom} />
+    <meta name="generator" content="Astro — Portfolio 4.0" />
+    <meta name="theme-color" content="#0b1220" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={page.title} />
     <meta property="og:description" content={page.description} />
     <meta property="og:locale" content="fr_FR" />
 
+    <!-- CSS global incorporé au build -->
     <style is:inline set:html={globalCss}></style>
 
-    <!-- Détection JS + thème + filet de sécurité anti-page-vide -->
+    <!-- Détection JS + thème + langue + filet de sécurité anti-page-vide -->
     <script is:inline>
       (function () {
         document.documentElement.classList.add('js');
         try {
           var t = localStorage.getItem('theme');
-          if (!t) t = 'light';
-          document.documentElement.setAttribute('data-theme', t);
+          document.documentElement.setAttribute('data-theme', t ? t : 'dark');
+          var lang = localStorage.getItem('lang');
+          if (lang) document.documentElement.setAttribute('lang', lang);
         } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'light');
+          document.documentElement.setAttribute('data-theme', 'dark');
         }
         setTimeout(function () {
           try {
@@ -64,11 +69,11 @@ const monogram = `${profil.prenom[0]}${profil.nom[0]}`;
   </head>
   <body>
     <a class="skip-link" href="#accueil">Aller au contenu</a>
-    <Header monogram={monogram} />
+    <Header monogram={monogram} nomPrenom={nomPrenom} />
     <main id="contenu">
       <slot />
     </main>
-    <Footer monogram={monogram} />
+    <Footer monogram={monogram} nomPrenom={nomPrenom} />
     <BackToTop />
     <script is:inline set:html={mainJs}></script>
   </body>

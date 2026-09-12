@@ -4,15 +4,15 @@ import { profil } from '../data/site.js';
 ---
 
 <Layout
-  title={`Page introuvable — ${profil.prenom} ${profil.nom}`}
-  description="Page introuvable."
+  title={{ fr: `Page introuvable — ${profil.prenom} ${profil.nom}`, en: `Page not found — ${profil.prenom} ${profil.nom}` }}
+  description={{ fr: 'Page introuvable.', en: 'Page not found.' }}
 >
   <section class="section container" id="accueil">
     <div class="section-head">
-      <p class="section-eyebrow">// erreur 404</p>
-      <h1 class="section-title">Page introuvable</h1>
-      <p class="section-subtitle">Cette page n’existe pas ou a été déplacée.</p>
+      <p class="section-eyebrow" data-i18n data-fr="// erreur 404" data-en="// error 404">// erreur 404</p>
+      <h1 class="section-title" data-i18n data-fr="Page introuvable" data-en="Page not found">Page introuvable</h1>
+      <p class="section-subtitle" data-i18n data-fr="Cette page n’existe pas ou a été déplacée." data-en="This page does not exist or has been moved.">Cette page n’existe pas ou a été déplacée.</p>
     </div>
-    <a href="./" class="btn btn-primary">Retour à l’accueil</a>
+    <a href="./" class="btn btn-primary" data-i18n data-fr="Retour à l’accueil" data-en="Back to home">Retour à l’accueil</a>
   </section>
 </Layout>

@@ -9,6 +9,8 @@ const prefersReduced =
   typeof window.matchMedia === 'function' &&
   (window.matchMedia('(prefers-reduced-motion: reduce)').matches || false);
 
+let curLang = 'fr';
+
 // ---------- Thème clair / sombre ----------
 function initTheme() {
   const btn = $('[data-theme-toggle]');
@@ -112,6 +114,8 @@ function initTypewriter() {
   const speeds = { type: 62, pause: 1500, delete: 26 };
   let r = 0, i = 0, deleting = false;
   const step = () => {
+    try { roles = JSON.parse(host.dataset.typeRoles || '[]'); } catch (e) { roles = []; }
+    if (!roles.length) return;
     const word = roles[r % roles.length];
     host.textContent = word.slice(0, i);
     if (!deleting) {
@@ -131,20 +135,18 @@ function initFilters() {
   const grid = $('[data-projects-grid]');
   if (!wrap || !grid) return;
   const cards = $$('[data-project]', grid);
-  const btns = $$('.filter-btn', wrap);
   const apply = cat => {
-    let shown = 0;
     cards.forEach(card => {
-      const ok = cat === 'Tous' || card.dataset.category === cat;
+      const ok = cat === 'tous' || card.dataset.category === cat;
       card.style.display = ok ? '' : 'none';
-      if (ok) { shown++; card.style.animation = 'cardIn .35s ease'; }
+      if (ok) card.style.animation = 'cardIn .35s ease';
     });
   };
-  btns.forEach(b => {
+  $$('.filter-btn', wrap).forEach(b => {
     b.addEventListener('click', () => {
-      btns.forEach(x => x.classList.remove('is-active'));
+      $$('.filter-btn', wrap).forEach(x => x.classList.remove('is-active'));
       b.classList.add('is-active');
-      apply(b.textContent.trim());
+      apply(b.dataset.filter);
     });
   });
 }
@@ -172,7 +174,7 @@ function initContact() {
     const fields = [...form.querySelectorAll('input, textarea')].filter(f => f.required);
     const allOk = fields.map(validate).every(Boolean);
     if (!allOk) {
-      note.textContent = 'Merci de corriger les champs signalés.';
+      note.textContent = curLang === 'fr' ? 'Merci de corriger les champs signalés.' : 'Please fix the highlighted fields.';
       note.classList.add('is-error');
       return;
     }
@@ -182,7 +184,7 @@ function initContact() {
     const email = form.dataset.email || 'contact@mamourou-sidibe.fr';
     if (btn) btn.disabled = true;
     note.classList.remove('is-error');
-    note.textContent = 'Message prêt — votre client mail va s’ouvrir…';
+    note.textContent = curLang === 'fr' ? 'Message prêt — votre client mail va s’ouvrir…' : 'Message ready — your mail app will open…';
     window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
     setTimeout(() => { if (btn) btn.disabled = false; }, 2500);
   });
@@ -198,12 +200,54 @@ function initBackToTop() {
   onScroll();
 }
 
+// ---------- Langue FR / EN ----------
+function applyLang(lang) {
+  curLang = lang;
+  document.documentElement.setAttribute('lang', lang);
+  $$('[data-i18n]').forEach(el => {
+    const v = el.dataset[lang];
+    if (v) el.textContent = v;
+  });
+  $$('[data-ph-fr]').forEach(el => {
+    const v = lang === 'fr' ? el.dataset.phFr : el.dataset.phEn;
+    if (v) el.placeholder = v;
+  });
+  const tw = $('[data-type-roles]');
+  if (tw) {
+    const v = lang === 'fr' ? tw.dataset.typeRolesFr : tw.dataset.typeRolesEn;
+    if (v) tw.dataset.typeRoles = v;
+  }
+  const title = $('title');
+  if (title) {
+    const v = title.dataset[lang];
+    if (v) title.textContent = v;
+  }
+  const desc = $('meta[name="description"]');
+  if (desc) {
+    const v = desc.dataset[lang + 'Description'];
+    if (v) desc.setAttribute('content', v);
+  }
+  $$('[data-set-lang]').forEach(b => b.classList.toggle('is-active', b.dataset.setLang === lang));
+}
+
+function initLang() {
+  let lang = 'fr';
+  try { lang = localStorage.getItem('lang') || 'fr'; } catch (e) {}
+  applyLang(lang);
+  $$('[data-set-lang]').forEach(b => b.addEventListener('click', () => {
+    const l = b.dataset.setLang;
+    applyLang(l);
+    try { localStorage.setItem('lang', l); } catch (e) {}
+  }));
+}
+
 // ---------- Initialisation ----------
 function safeInit(fn) {
   try { fn(); } catch (err) { console.warn?.('[portfolio] init :', err?.message || err); }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  safeInit(initLang);
   safeInit(initTheme);
   safeInit(initHeader);
   safeInit(initNav);

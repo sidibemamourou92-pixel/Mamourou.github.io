@@ -1,18 +1,21 @@
 ---
 import { projets, projetCategories } from '../data/site.js';
 import Icon from './Icon.astro';
+const catLabel = Object.fromEntries(projetCategories.map(c => [c.cle, c.label]));
 ---
 
 <section class="section container" id="projets">
   <div class="section-head reveal">
-    <p class="section-eyebrow">Projets</p>
-    <h2 class="section-title">Réalisations</h2>
-    <p class="section-subtitle">Sélection de projets menés de l’idée au prototype fonctionnel.</p>
+    <p class="section-eyebrow" data-i18n data-fr="Projets" data-en="Projects">Projets</p>
+    <h2 class="section-title" data-i18n data-fr="Réalisations" data-en="Selected work">Réalisations</h2>
+    <p class="section-subtitle" data-i18n data-fr="Sélection de projets menés de l’idée au prototype fonctionnel." data-en="Selected projects, from idea to working prototype.">Sélection de projets menés de l’idée au prototype fonctionnel.</p>
   </div>
 
   <div class="filter-row reveal" data-filters role="group" aria-label="Filtrer les projets">
     {projetCategories.map((c, i) => (
-      <button class="filter-btn" class:list={{ 'is-active': i === 0 }}>{c}</button>
+      <button class="filter-btn" data-filter={c.cle} class:list={{ 'is-active': i === 0 }}>
+        <span data-i18n data-fr={c.label.fr} data-en={c.label.en}>{c.label.fr}</span>
+      </button>
     ))}
   </div>
 
@@ -23,16 +26,16 @@ import Icon from './Icon.astro';
           <Icon name={p.illustration} size={54} />
         </div>
         <div class="project-body">
-          <h3>{p.titre}</h3>
-          <p>{p.resume}</p>
+          <h3 data-i18n data-fr={p.titre.fr} data-en={p.titre.en}>{p.titre.fr}</h3>
+          <p data-i18n data-fr={p.resume.fr} data-en={p.resume.en}>{p.resume.fr}</p>
           <ul class="project-tags">
             {p.tags.map(t => (
               <li>{t}</li>
             ))}
           </ul>
           <div class="project-foot">
-            <span>{p.annee} · {p.categorie}</span>
-            <a class="project-link" href={p.github} target="_blank" rel="noopener noreferrer">Voir sur GitHub ↗</a>
+            <span>{p.annee} · <span data-i18n data-fr={catLabel[p.categorie].fr} data-en={catLabel[p.categorie].en}>{catLabel[p.categorie].fr}</span></span>
+            <a class="project-link" href={p.github} target="_blank" rel="noopener noreferrer" data-i18n data-fr="Voir sur GitHub" data-en="View on GitHub">Voir sur GitHub</a>
           </div>
         </div>
       </article>

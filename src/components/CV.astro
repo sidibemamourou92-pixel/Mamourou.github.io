@@ -1,0 +1,85 @@
+---
+import { profil, cv, stats } from '../data/site.js';
+import Icon from './Icon.astro';
+---
+
+<section class="section container" id="cv">
+  <div class="section-head reveal">
+    <p class="section-eyebrow" data-i18n data-fr="CV / Curriculum" data-en="CV / Resume">CV / Curriculum</p>
+    <h2 class="section-title" data-i18n data-fr="Mon CV" data-en="My resume">Mon CV</h2>
+    <p class="section-subtitle" data-i18n data-fr="Photo, parcours et informations personnelles." data-en="Photo, background and personal information.">Photo, parcours et informations personnelles.</p>
+  </div>
+
+  <div class="cv-grid">
+    <article class="cv-card reveal">
+      <div class="cv-photo-wrap">
+        <img class="cv-photo" src={cv.photo} alt={`Photo de ${profil.prenom} ${profil.nom}`} width="520" height="347" loading="lazy" />
+        <span class="cv-badge">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span data-i18n data-fr="Disponible" data-en="Available">Disponible</span>
+        </span>
+      </div>
+
+      <h3 class="cv-name">{profil.prenom} {profil.nom}</h3>
+      <p class="cv-role" data-i18n data-fr={profil.role.fr} data-en={profil.role.en}>{profil.role.fr}</p>
+
+      <ul class="cv-facts">
+        {cv.infos.map(i => (
+          <li class="cv-fact">
+            <span class="c-ico"><Icon name={i.icone} size={18} /></span>
+            <div>
+              <strong data-i18n data-fr={i.label.fr} data-en={i.label.en}>{i.label.fr}</strong>
+              {i.icone === 'mail'
+                ? <a href={`mailto:${i.valeur}`} data-i18n data-fr={typeof i.valeur === 'string' ? i.valeur : i.valeur.fr} data-en={typeof i.valeur === 'string' ? i.valeur : i.valeur.en}>{typeof i.valeur === 'string' ? i.valeur : i.valeur.fr}</a>
+                : <span data-i18n data-fr={typeof i.valeur === 'string' ? i.valeur : i.valeur.fr} data-en={typeof i.valeur === 'string' ? i.valeur : i.valeur.en}>{typeof i.valeur === 'string' ? i.valeur : i.valeur.fr}</span>}
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="cv-langues">
+        <h4 data-i18n data-fr="Langues" data-en="Languages">Langues</h4>
+        <ul>
+          {cv.langues.map(l => (
+            <li>
+              <span data-i18n data-fr={l.nom.fr} data-en={l.nom.en}>{l.nom.fr}</span>
+              <em data-i18n data-fr={l.niveau.fr} data-en={l.niveau.en}>{l.niveau.fr}</em>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+
+    <div class="cv-side reveal">
+      <h3 data-i18n data-fr="Profil" data-en="Profile">Profil</h3>
+      <p class="cv-resume" data-i18n data-fr={cv.resume.fr} data-en={cv.resume.en}>{cv.resume.fr}</p>
+
+      <div class="cv-numbers">
+        {stats.map(s => (
+          <div class="stat">
+            <strong>{s.valeur}{s.suffixe}</strong>
+            <span data-i18n data-fr={s.label.fr} data-en={s.label.en}>{s.label.fr}</span>
+          </div>
+        ))}
+      </div>
+
+      <ul class="cv-personnel">
+        <li>
+          <Icon name="pin" size={15} />
+          <span data-i18n data-fr="Nationalité :" data-en="Nationality:">Nationalité :</span>
+          <span data-i18n data-fr={cv.nationalite.fr} data-en={cv.nationalite.en}>{cv.nationalite.fr}</span>
+        </li>
+        <li>
+          <Icon name="cpu" size={15} />
+          <span data-i18n data-fr="Domaine :" data-en="Field:">Domaine :</span>
+          <span data-i18n data-fr="Informatique · Robotique · IA" data-en="Computer Science · Robotics · AI">Informatique · Robotique · IA</span>
+        </li>
+      </ul>
+
+      <p class="cv-cta">
+        <a href="#parcours" class="btn btn-ghost" data-i18n data-fr="Voir mon parcours" data-en="See my background">Voir mon parcours</a>
+        <a href="#contact" class="btn btn-primary" data-i18n data-fr="Me recruter" data-en="Hire me">Me recruter</a>
+      </p>
+    </div>
+  </div>
+</section>

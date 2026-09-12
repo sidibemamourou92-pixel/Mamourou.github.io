@@ -1,37 +1,59 @@
 ---
 import { profil, roles, stats } from '../data/site.js';
 import Icon from './Icon.astro';
-const rolesJson = JSON.stringify(roles);
+const rolesFr = JSON.stringify(roles.map(r => r.fr));
+const rolesEn = JSON.stringify(roles.map(r => r.en));
+const codeSnippet =
+  '<span class="tok-k">const</span> <span class="tok-fn">engineer</span> <span class="tok-p">=</span> <span class="tok-p">{</span>' +
+  '\n  name: <span class="tok-s">\'' + profil.prenom + ' ' + profil.nom + '\'</span>,' +
+  '\n  stack: [<span class="tok-s">\'C/C++\'</span>, <span class="tok-s">\'ESP32\'</span>, <span class="tok-s">\'Python\'</span>, <span class="tok-s">\'Web\'</span>],' +
+  '\n  passion: <span class="tok-s">\'robotics &amp; IoT\'</span>,' +
+  '\n  dispo: <span class="tok-b">true</span>,' +
+  '\n<span class="tok-p">}</span>;' +
+  '\n<span class="tok-c">// embedded everywhere</span>' +
+  '\n<span class="tok-fn">run</span>(engineer);<span class="tok-cursor"></span>';
 ---
 
 <section class="hero container" id="accueil">
-  <div class="hero-inner">
-    <p class="eyebrow">
-      <Icon name="terminal" size={14} />
-      {profil.localisation} {profil.dispo ? '· ouvert aux nouvelles missions' : ''}
-    </p>
+  <div class="hero-grid">
+    <div class="hero-inner">
+      <p class="eyebrow">
+        <Icon name="terminal" size={14} />
+        <span data-i18n data-fr={`${profil.localisation.fr} · ${profil.dispoTexte.fr}`} data-en={`${profil.localisation.en} · ${profil.dispoTexte.en}`}>{profil.localisation.fr} · {profil.dispoTexte.fr}</span>
+      </p>
 
-    <h1 class="hero-name">{profil.prenom} {profil.nom}</h1>
+      <h1 class="hero-name">{profil.prenom} {profil.nom}</h1>
 
-    <p class="hero-role">
-      <span data-type-roles={rolesJson}></span>
-      <span class="type-cursor" aria-hidden="true"></span>
-    </p>
+      <p class="hero-role">
+        <span data-type-roles={rolesFr} data-type-roles-fr={rolesFr} data-type-roles-en={rolesEn}></span>
+        <span class="type-cursor" aria-hidden="true"></span>
+      </p>
 
-    <p class="hero-tagline">{profil.accroche}</p>
+      <p class="hero-tagline" data-i18n data-fr={profil.accroche.fr} data-en={profil.accroche.en}>{profil.accroche.fr}</p>
 
-    <div class="hero-actions">
-      <a href="#projets" class="btn btn-primary btn-lg">Voir mes projets</a>
-      <a href="#contact" class="btn btn-ghost btn-lg">Me contacter</a>
+      <div class="hero-actions">
+        <a href="#projets" class="btn btn-primary btn-lg" data-i18n data-fr="Voir mes projets" data-en="See my projects">Voir mes projets</a>
+        <a href="#contact" class="btn btn-ghost btn-lg" data-i18n data-fr="Me contacter" data-en="Contact me">Me contacter</a>
+      </div>
+
+      <div class="hero-stats">
+        {stats.map(({ icone, valeur, suffixe, label }) => (
+          <div class="stat">
+            <strong>{valeur}{suffixe}</strong>
+            <span data-i18n data-fr={label.fr} data-en={label.en}>{label.fr}</span>
+          </div>
+        ))}
+      </div>
     </div>
 
-    <div class="hero-stats">
-      {stats.map(({ icone, valeur, suffixe, label }) => (
-        <div class="stat">
-          <strong>{valeur}{suffixe}</strong>
-          <span>{label}</span>
+    <div class="hero-code" aria-hidden="true">
+      <div class="code-window">
+        <div class="code-bar">
+          <i></i><i></i><i></i>
+          <span class="code-title">engineer.ts</span>
         </div>
-      ))}
+        <pre class="code-body"><code set:html={codeSnippet}></code></pre>
+      </div>
     </div>
   </div>
 </section>
