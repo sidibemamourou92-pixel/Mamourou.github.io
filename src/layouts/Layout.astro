@@ -3,6 +3,14 @@ import { site } from '../data/site.js';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BackToTop from '../components/BackToTop.astro';
+import { readFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+// Feuille de style globale INCORPORÉE au build (source unique : public/css/global.css).
+// Plus aucune requête CSS externe → le style s'applique partout, toujours.
+const globalCssPath = join(process.cwd(), 'public', 'css', 'global.css');
+if (!existsSync(globalCssPath)) throw new Error(`global.css introuvable : ${globalCssPath}`);
+const globalCss = readFileSync(globalCssPath, 'utf8');
 
 const { title = `${site.auteur} — ${site.role}`, description = site.description } =
   Astro.props;
@@ -51,8 +59,8 @@ const ogImage = new URL('./image/WIN_20260511_10_10_30_Pro.jpg', pageUrl).href;
       ],
     })}></script>
 
-    <!-- Styles globaux (copié tel quel depuis public/) -->
-    <link rel="stylesheet" href="./css/global.css" />
+    <!-- CSS global incorporé au build (source : public/css/global.css) — aucun chargement externe -->
+    <style is:inline set:html={globalCss}></style>
 
     <!-- Sécurité / thème avant peinture + détection JS -->
     <script is:inline>
