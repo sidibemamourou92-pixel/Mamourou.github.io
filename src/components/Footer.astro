@@ -1,0 +1,34 @@
+---
+import { site, socials } from '../data/site.js';
+import Icon from './Icon.astro';
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#accueil" class="logo"><span class="logo-mark">MS</span><span class="logo-text">M<span>.Sidibé</span></span></a>
+      <p class="footer-tagline">
+        {site.role} — {site.specialites.join(' · ')}. Construisons des solutions qui créent l’avenir.
+      </p>
+    </div>
+
+    <ul class="footer-socials">
+      {socials.map(({ nom, url, icone }) => (
+        <li>
+          <a href={url} target="_blank" rel="noopener noreferrer" aria-label={nom}>
+            <Icon name={icone} size={18} />
+            <span>{nom}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="footer-meta">
+      <p>© {site.annee} {site.auteur} — Tous droits réservés.</p>
+      <p class="footer-stack">
+        <span>Fait avec</span> <span class="dot" aria-hidden="true"></span>{' '}
+        <strong>Astro</strong>, CSS moderne & zéro bibliothèque JS
+      </p>
+    </div>
+  </div>
+</footer>

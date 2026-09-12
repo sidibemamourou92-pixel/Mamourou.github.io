@@ -1,0 +1,17 @@
+{
+  "name": "mamourou-sidibe-portfolio",
+  "type": "module",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Portfolio réinventé de Mamourou Sidibé — Ingénieur Informatique, Robotique & IoT",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/sync-root.mjs",
+    "sync": "node scripts/sync-root.mjs",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.3.2"
+  }
+}

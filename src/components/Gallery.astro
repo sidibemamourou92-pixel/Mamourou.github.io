@@ -1,0 +1,28 @@
+---
+import { gallery } from '../data/site.js';
+import Icon from './Icon.astro';
+---
+
+<section class="gallery section" id="galerie">
+  <div class="section-head reveal">
+    <p class="section-eyebrow"><Icon name="camera" size={14} /> $ ls ./atelier/photos</p>
+    <h2 class="section-title">Galerie du laboratoire</h2>
+    <p class="section-subtitle">Quelques instants capturés au fil des projets et expérimentations.</p>
+  </div>
+
+  <div class="gallery-grid reveal">
+    {gallery.map((g, i) => (
+      <figure class="gallery-item" style={`--i:${i}`}>
+        <img
+          src={g.src}
+          alt={g.alt}
+          loading="lazy"
+          width="600"
+          height="450"
+          data-gallery-img
+        />
+        <figcaption><Icon name="doc" size={13} /> {g.alt}</figcaption>
+      </figure>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,54 @@
+---
+import { categories, projects } from '../data/site.js';
+import Icon from './Icon.astro';
+import ProjectModal from './ProjectModal.astro';
+---
+
+<section class="projects section" id="projets">
+  <div class="section-head reveal">
+    <p class="section-eyebrow"><Icon name="wrench" size={14} /> $ find /projets -type f</p>
+    <h2 class="section-title">Projets réalisés</h2>
+    <p class="section-subtitle">
+      De l’idée au prototype : chaque projet est illustré en dessin technique, avec le détail
+      des technologies et des fonctionnalités.
+    </p>
+  </div>
+
+  <div class="project-filters reveal" role="group" aria-label="Filtrer les projets">
+    {categories.map(({ id, label }) => (
+      <button class="filter-btn" data-filter={id} class:list={{ 'is-active': id === 'all' }}>
+        {label}
+      </button>
+    ))}
+  </div>
+
+  <div class="projects-grid" id="projectsGrid">
+    {projects.map((p, i) => (
+      <article
+        class="project-card tilt reveal"
+        data-project-card
+        data-cat={p.category}
+        data-id={p.id}
+        style={`--i:${i}`}
+      >
+        <div class="project-media">
+          <img src={p.image} alt={`Illustration — ${p.title}`} loading="lazy" width="600" height="400" />
+          <span class="project-badge">{categories.find(c => c.id === p.category).label}</span>
+        </div>
+        <div class="project-body">
+          <h3>{p.title}</h3>
+          <p>{p.short}</p>
+          <ul class="project-tech">
+            {p.technologies.slice(0, 3).map(t => <li>{t}</li>)}
+          </ul>
+          <button class="project-more" data-open-project={p.id}>
+            <Icon name="arrowRight" size={16} /> En savoir plus
+          </button>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <p class="projects-empty" data-projects-empty hidden>🔍 Aucun projet ne correspond à ce filtre.</p>
+  <ProjectModal />
+</section>

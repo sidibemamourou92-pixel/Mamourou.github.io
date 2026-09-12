@@ -1,0 +1,82 @@
+---
+import { site } from '../data/site.js';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop.astro';
+
+const { title = `${site.auteur} — ${site.role}`, description = site.description } =
+  Astro.props;
+const pageUrl = site.url;
+const ogImage = new URL('./image/WIN_20260511_10_10_30_Pro.jpg', pageUrl).href;
+---
+
+<!doctype html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.auteur} />
+    <meta name="robots" content="index,follow" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="canonical" href={pageUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={site.auteur} />
+    <meta property="og:locale" content="fr_FR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: site.auteur,
+      jobTitle: site.role,
+      description: site.description,
+      url: site.url,
+      sameAs: [
+        'https://github.com/sidibemamourou92-pixel',
+        'https://www.linkedin.com/in/sidib%C3%A9-mamourou-36848233a',
+      ],
+    })}></script>
+
+    <!-- Styles globaux (copié tel quel depuis public/) -->
+    <link rel="stylesheet" href="./css/global.css" />
+
+    <!-- Sécurité / thème avant peinture + détection JS -->
+    <script is:inline>
+      (function () {
+        document.documentElement.classList.add('js');
+        try {
+          var t = localStorage.getItem('theme');
+          if (!t) t = 'light';
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#accueil">Aller au contenu</a>
+    <Header />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+    <BackToTop />
+    <!-- Scripts (copiés tels quels depuis public/ — chemins relatifs) -->
+    <script src="./js/main.js" defer></script>
+  </body>
+</html>

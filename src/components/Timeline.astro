@@ -1,0 +1,27 @@
+---
+import { timeline } from '../data/site.js';
+import Icon from './Icon.astro';
+---
+
+<section class="timeline section" id="parcours">
+  <div class="section-head reveal">
+    <p class="section-eyebrow"><Icon name="road" size={14} /> $ git log --oneline --formation</p>
+    <h2 class="section-title">Formation & parcours</h2>
+    <p class="section-subtitle">Mon parcours académique, orienté sciences de l’ingénieur.</p>
+  </div>
+
+  <div class="timeline-list">
+    {timeline.map((item, i) => (
+      <article class="timeline-item reveal" style={`--i:${i}`}>
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <header class="timeline-head">
+          <span class="timeline-period">{item.periode}</span>
+          <span class="timeline-type">{item.type === 'experience' ? 'Expérience' : 'Formation'}</span>
+        </header>
+        <h3>{item.titre}</h3>
+        <p class="timeline-lieu"><Icon name="pin" size={14} /> {item.lieu}</p>
+        <p class="timeline-desc">{item.description}</p>
+      </article>
+    ))}
+  </div>
+</section>

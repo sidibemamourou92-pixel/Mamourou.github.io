@@ -1,0 +1,28 @@
+---
+import { websites } from '../data/site.js';
+import Icon from './Icon.astro';
+---
+
+<section class="websites section" id="sites">
+  <div class="section-head reveal">
+    <p class="section-eyebrow"><Icon name="globe" size={14} /> $ curl --list sites</p>
+    <h2 class="section-title">Sites web réalisés</h2>
+    <p class="section-subtitle">Mes créations en ligne, avec code source ouvert sur GitHub.</p>
+  </div>
+
+  <div class="websites-grid">
+    {websites.map((w, i) => (
+      <article class="website-card reveal tilt" style={`--i:${i}`}>
+        <div class="website-top">
+          <div class="website-ico"><Icon name={w.icone} size={24} /></div>
+          <span class="website-status"><span class="pulse-dot"></span>{w.statut}</span>
+        </div>
+        <h3>{w.titre}</h3>
+        <p>{w.description}</p>
+        <a class="website-link" href={w.url} target="_blank" rel="noopener noreferrer">
+          <Icon name="external" size={15} /> Visiter le site
+        </a>
+      </article>
+    ))}
+  </div>
+</section>

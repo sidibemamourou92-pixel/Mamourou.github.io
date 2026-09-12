@@ -1,0 +1,48 @@
+---
+import { navLinks, site } from '../data/site.js';
+import Icon from './Icon.astro';
+---
+
+<header class="site-header" data-header>
+  <!-- Barre de progression du scroll -->
+  <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+  <div class="header-inner">
+    <a href="#accueil" class="logo" aria-label={`Retour à l’accueil — ${site.auteur}`}>
+      <span class="logo-mark">MS</span>
+      <span class="logo-text">M<span>.Sidibé</span></span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale" data-nav>
+      <ul>
+        {navLinks.map(({ href, label, icone }) => (
+          <li>
+            <a href={href} data-spy={href.slice(1)}>
+              <Icon name={icone} size={16} />
+              <span>{label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="#contact" class="btn btn-primary btn-sm header-cta">
+        <Icon name="mail" size={16} /> <span>Contact</span>
+      </a>
+      <button
+        class="theme-toggle"
+        data-theme-toggle
+        aria-label="Changer de thème"
+        title="Changer de thème"
+      >
+        <span class="ico-sun"><Icon name="sun" size={20} /></span>
+        <span class="ico-moon"><Icon name="moon" size={20} /></span>
+      </button>
+      <button class="nav-burger" data-nav-toggle aria-label="Ouvrir le menu" aria-expanded="false">
+        <Icon name="menu" class="ico-open" size={22} />
+        <Icon name="x" class="ico-close" size={22} />
+      </button>
+    </div>
+  </div>
+</header>

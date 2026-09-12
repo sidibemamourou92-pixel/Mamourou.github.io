@@ -1,0 +1,98 @@
+---
+import { site, roles, stats, socials } from '../data/site.js';
+import Icon from './Icon.astro';
+const rolesJson = JSON.stringify(roles);
+---
+
+<section class="hero" id="accueil">
+  <!-- Décor d'arrière-plan -->
+  <div class="hero-bg" aria-hidden="true">
+    <div class="grid-overlay"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="hero-status">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <Icon name="terminal" size={14} />
+        <span>dispo pour de nouveaux défis</span>
+      </p>
+
+      <h1 class="hero-title">
+        <span class="hero-hello">Bonjour, je suis</span>
+        <span class="hero-name">{site.auteur}</span>
+        <span class="hero-role">
+          <span class="type-cursor" aria-hidden="true"></span>
+          <span data-type-roles={rolesJson}></span>
+        </span>
+      </h1>
+
+      <p class="hero-desc">{site.description}</p>
+
+      <div class="hero-actions">
+        <a href="#projets" class="btn btn-primary">
+          <Icon name="wrench" size={18} /> Voir mes projets
+        </a>
+        <a href="#contact" class="btn btn-ghost">
+          <Icon name="mail" size={18} /> Me contacter
+        </a>
+      </div>
+
+      <ul class="hero-socials">
+        {socials.map(({ nom, url, icone }) => (
+          <li>
+            <a href={url} target="_blank" rel="noopener noreferrer" aria-label={nom} title={nom}>
+              <Icon name={icone} size={20} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="hero-visual">
+      <div class="avatar-frame" aria-hidden="true">
+        <svg class="avatar-ring" viewBox="0 0 300 300">
+          <defs>
+            <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#22d3ee" />
+              <stop offset="1" stop-color="#7c3aed" />
+            </linearGradient>
+          </defs>
+          <circle cx="150" cy="150" r="142" fill="none" stroke="url(#ringGrad)" stroke-width="4" stroke-dasharray="60 12" stroke-linecap="round" />
+        </svg>
+        <div class="avatar-core">
+          <div class="avatar-monogram">MS</div>
+          <svg class="avatar-circuit" viewBox="0 0 200 200" fill="none">
+            <path d="M100 20v34M100 146v34M20 100h34M146 100h34" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            <circle cx="100" cy="20" r="4" fill="currentColor" />
+            <circle cx="100" cy="180" r="4" fill="currentColor" />
+            <circle cx="20" cy="100" r="4" fill="currentColor" />
+            <circle cx="180" cy="100" r="4" fill="currentColor" />
+            <path d="M72 100h56M100 72v56" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            <circle cx="100" cy="100" r="24" fill="none" stroke="currentColor" stroke-width="2.4" />
+            <circle cx="100" cy="100" r="6" fill="currentColor" />
+          </svg>
+          <span class="avatar-tag">systèmes_embarqués()</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bandeau de stats -->
+  <div class="hero-stats" data-stats>
+    {stats.map(({ valeur, suffixe, label, icone }) => (
+      <div class="stat">
+        <div class="stat-icon"><Icon name={icone} size={20} /></div>
+        <div class="stat-info">
+          <span class="stat-number">
+            <span data-count={valeur}>0</span>{suffixe}
+          </span>
+          <span class="stat-label">{label}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

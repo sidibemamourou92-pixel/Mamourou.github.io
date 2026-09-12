@@ -1,0 +1,79 @@
+---
+import { site, socials } from '../data/site.js';
+import Icon from './Icon.astro';
+---
+
+<section class="contact section" id="contact">
+  <div class="section-head reveal">
+    <p class="section-eyebrow"><Icon name="mail" size={14} /> $ ssh contact@{site.auteur}</p>
+    <h2 class="section-title">Contactons-nous</h2>
+    <p class="section-subtitle">Un projet, une collaboration, une question ? Écrivez-moi !</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-infos reveal">
+      <h3>Parlons de votre projet</h3>
+      <p>
+        Je réponds généralement sous 24 h. Choisissez le canal qui vous convient le mieux.
+      </p>
+
+      <ul class="contact-list">
+        <li>
+          <span class="c-ico"><Icon name="mail" size={18} /></span>
+          <div>
+            <strong>Email</strong>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </div>
+        </li>
+        <li>
+          <span class="c-ico"><Icon name="whatsapp" size={18} /></span>
+          <div>
+            <strong>WhatsApp</strong>
+            <a href="https://wa.me/22375506750" target="_blank" rel="noopener noreferrer">+223 75 50 67 50</a>
+          </div>
+        </li>
+        <li>
+          <span class="c-ico"><Icon name="pin" size={18} /></span>
+          <div>
+            <strong>Localisation</strong>
+            <span>{site.localisation} — disponible à distance 🌍</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="contact-socials">
+        {socials.map(({ nom, url, icone }) => (
+          <a href={url} target="_blank" rel="noopener noreferrer" aria-label={nom} title={nom}>
+            <Icon name={icone} size={20} />
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <form class="contact-form reveal" data-contact-form novalidate>
+      <div class="field">
+        <label for="cf-nom">Nom complet</label>
+        <input id="cf-nom" name="nom" type="text" placeholder="Votre nom" required minlength="2" />
+        <span class="field-error">Veuillez saisir votre nom (2 caractères min.)</span>
+      </div>
+      <div class="field">
+        <label for="cf-email">Adresse email</label>
+        <input id="cf-email" name="email" type="email" placeholder="vous@exemple.com" required />
+        <span class="field-error">Veuillez saisir une adresse email valide.</span>
+      </div>
+      <div class="field">
+        <label for="cf-sujet">Sujet</label>
+        <input id="cf-sujet" name="sujet" type="text" placeholder="Ex : Projet de robotique" />
+      </div>
+      <div class="field">
+        <label for="cf-msg">Message</label>
+        <textarea id="cf-msg" name="message" rows="5" placeholder="Décrivez votre projet…" required minlength="10"></textarea>
+        <span class="field-error">Votre message doit contenir au moins 10 caractères.</span>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg" data-submit-btn>
+        <Icon name="mail" size={18} /> Envoyer le message
+      </button>
+      <p class="form-note" data-form-note role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>

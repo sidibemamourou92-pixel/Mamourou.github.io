@@ -1,4 +1,4 @@
-/* Reset et styles de base */
+﻿/* Reset et styles de base */
 * {
     margin: 0;
     padding: 0;
@@ -115,7 +115,7 @@ body {
     opacity: 0.9;
 }
 
-/* En-tête */
+/* En-t├¬te */
 header {
     background-color: #ffffff;
     padding: 1.5rem 2rem;
@@ -185,7 +185,7 @@ header {
     gap: 2rem;
 }
 
-/* Cartes de projet avec couleurs par catégorie */
+/* Cartes de projet avec couleurs par cat├®gorie */
 .project-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -201,7 +201,7 @@ header {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* Couleurs par catégorie */
+/* Couleurs par cat├®gorie */
 .category-electronique {
     border-top-color: #ff6b6b;
 }
@@ -316,14 +316,14 @@ header {
 }
 
 .project-details li:before {
-    content: "▸";
+    content: "Ôû©";
     position: absolute;
     left: 0;
     color: #007bff;
     font-weight: bold;
 }
 
-/* Modal pour détails du projet */
+/* Modal pour d├®tails du projet */
 .modal {
     display: none;
     position: fixed;
@@ -638,7 +638,7 @@ header {
     transform: translateY(-2px);
 }
 
-/* Section Compétences */
+/* Section Comp├®tences */
 .skills-section {
     max-width: 1400px;
     margin: 4rem auto;
@@ -765,7 +765,7 @@ header {
     transform: translateY(-2px);
 }
 
-/* Contrôles de compétences */
+/* Contr├┤les de comp├®tences */
 .skills-controls {
     display: flex;
     gap: 1rem;
@@ -875,7 +875,7 @@ header {
 }
 
 .skill-projects li:before {
-    content: "▸";
+    content: "Ôû©";
     position: absolute;
     left: 0;
     color: #007bff;
@@ -888,7 +888,7 @@ header {
     transform: translateX(4px);
 }
 
-/* Section Éducation */
+/* Section ├ëducation */
 .education-section {
     max-width: 1400px;
     margin: 4rem auto;
