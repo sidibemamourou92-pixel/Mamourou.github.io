@@ -5,7 +5,9 @@
 // ---------- Helpers ----------
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
-const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersReduced =
+  typeof window.matchMedia === 'function' &&
+  (window.matchMedia('(prefers-reduced-motion: reduce)').matches || false);
 
 // ---------- Thème clair / sombre ----------
 function initTheme() {

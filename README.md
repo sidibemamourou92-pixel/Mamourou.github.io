@@ -43,7 +43,7 @@ Portfolio **entièrement réinventé** avec **Astro 7**, en **zéro dépendance 
 ```
 ├── public/                 → sources statiques (CSS, JS, images, favicon)
 │   ├── css/global.css      → toute la feuille de style (incorporée dans le HTML au build)
-│   ├── js/main.js          → toutes les interactions
+│   ├── js/main.js          → toutes les interactions (incorporé dans le HTML au build)
 │   ├── image/              → images + illustrations SVG
 │   └── favicon.svg
 ├── src/                    → code source Astro

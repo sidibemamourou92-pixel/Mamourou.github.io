@@ -12,6 +12,12 @@ const globalCssPath = join(process.cwd(), 'public', 'css', 'global.css');
 if (!existsSync(globalCssPath)) throw new Error(`global.css introuvable : ${globalCssPath}`);
 const globalCss = readFileSync(globalCssPath, 'utf8');
 
+// Interactions GLOBALES incorporées au build (source unique : public/js/main.js).
+// Le BOM initial est retiré. Aucun chargement JS externe → tout fonctionne partout.
+const mainJsPath = join(process.cwd(), 'public', 'js', 'main.js');
+if (!existsSync(mainJsPath)) throw new Error(`main.js introuvable : ${mainJsPath}`);
+const mainJs = readFileSync(mainJsPath, 'utf8').replace(/^\uFEFF/, '');
+
 const { title = `${site.auteur} — ${site.role}`, description = site.description } =
   Astro.props;
 const pageUrl = site.url;
@@ -73,6 +79,16 @@ const ogImage = new URL('./image/WIN_20260511_10_10_30_Pro.jpg', pageUrl).href;
         } catch (e) {
           document.documentElement.setAttribute('data-theme', 'light');
         }
+        // Filet de sécurité : si le contenu reste masqué par la révélation au scroll
+        // (JS externes bloqués, IntersectionObserver défaillant…), on force l'affichage.
+        setTimeout(function () {
+          try {
+            var hidden = document.querySelectorAll('.reveal:not(.is-in)');
+            if (hidden.length && !document.querySelector('.reveal.is-in')) {
+              hidden.forEach(function (el) { el.classList.add('is-in'); });
+            }
+          } catch (e) {}
+        }, 1500);
       })();
     </script>
   </head>
@@ -84,7 +100,7 @@ const ogImage = new URL('./image/WIN_20260511_10_10_30_Pro.jpg', pageUrl).href;
     </main>
     <Footer />
     <BackToTop />
-    <!-- Scripts (copiés tels quels depuis public/ — chemins relatifs) -->
-    <script src="./js/main.js" defer></script>
+    <!-- JS incorporé au build (source : public/js/main.js) — aucun chargement externe -->
+    <script is:inline set:html={mainJs}></script>
   </body>
 </html>
