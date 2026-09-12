@@ -52,6 +52,15 @@ Tout le contenu est centralisé dans **`src/data/site.js`** :
 profil, spécialités, compétences, projets, parcours, réseaux et navigation.
 Modifiez, puis `npm run build`.
 
+## ⚡ Optimisation
+
+- **Build allégé** : `npm run build` minifie d'abord le CSS et le JS avec **esbuild**
+  (`scripts/optimize.mjs` → `.build/`), puis Astro génère le site. Résultat : **un seul HTML ≈ 72 Ko**.
+- **Images WebP** : logo TengaDé Tech (44 Ko → 26 Ko) et photo CV (46 Ko → 18 Ko),
+  avec repli PNG/JPG automatique via `<picture>`.
+- Le mode `dev` utilise les sources ; le build utilise les versions minifiées.
+- Zéro requête externe : le site fonctionne hors-ligne, même en double-clic.
+
 ## 📱 Mobile
 
 Adapté à **toutes les tailles d'écran** (320 px → 4K, iOS & Android) :

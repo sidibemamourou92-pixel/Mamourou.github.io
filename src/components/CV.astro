@@ -13,7 +13,10 @@ import Icon from './Icon.astro';
   <div class="cv-grid">
     <article class="cv-card reveal">
       <div class="cv-photo-wrap">
-        <img class="cv-photo" src={cv.photo} alt={`Photo de ${profil.prenom} ${profil.nom}`} width="520" height="347" loading="lazy" />
+        <picture>
+          <source type="image/webp" srcset={cv.photoWebp} />
+          <img class="cv-photo" src={cv.photo} alt={`Photo de ${profil.prenom} ${profil.nom}`} width="520" height="347" loading="lazy" />
+        </picture>
         <span class="cv-badge">
           <span class="pulse-dot" aria-hidden="true"></span>
           <span data-i18n data-fr="Disponible" data-en="Available">Disponible</span>

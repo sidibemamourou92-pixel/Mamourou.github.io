@@ -43,6 +43,7 @@ export const entreprise = {
   slogan: { fr: "L'esprit du guide, la force du code", en: "The spirit of the guide, the strength of code" },
   url: 'https://tangade-tech.vercel.app/',
   logo: './logo-tangade.png',
+  logoWebp: './logo-tangade.webp',
 };
 
 export const deploiement = {
@@ -259,6 +260,7 @@ export const parcours = [
 
 export const cv = {
   photo: './cv-photo.jpg',
+  photoWebp: './cv-photo.webp',
   resume: {
     fr: 'Ingénieur logiciel & embarqué, je conçois des systèmes connectés fiables et des interfaces simples, en m’appuyant sur une veille technique constante et une culture du prototype.',
     en: 'Software & embedded engineer, I design reliable connected systems and simple interfaces, backed by constant tech watch and a strong prototyping culture.',

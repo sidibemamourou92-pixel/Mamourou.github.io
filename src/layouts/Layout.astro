@@ -7,12 +7,17 @@ import Footer from '../components/Footer.astro';
 import BackToTop from '../components/BackToTop.astro';
 
 // CSS et JS globaux incorporés au build : le site est 100 % autonome.
-const cssPath = join(process.cwd(), 'public', 'css', 'global.css');
-const jsPath = join(process.cwd(), 'public', 'js', 'main.js');
-if (!existsSync(cssPath)) throw new Error(`CSS introuvable : ${cssPath}`);
-if (!existsSync(jsPath)) throw new Error(`JS introuvable : ${jsPath}`);
-const globalCss = readFileSync(cssPath, 'utf8');
-const mainJs = readFileSync(jsPath, 'utf8').replace(/^\uFEFF/, '');
+// On utilise les versions MINIFIÉES (scripts/optimize.mjs → .build/) si présentes,
+// sinon les sources (mode dev). Résultat : un seul HTML allégé.
+function readAsset(rel) {
+  const min = join(process.cwd(), '.build', rel);
+  const src = join(process.cwd(), 'public', rel);
+  const p = existsSync(min) ? min : src;
+  if (!existsSync(p)) throw new Error(`Asset introuvable : ${p}`);
+  return readFileSync(p, 'utf8');
+}
+const globalCss = readAsset('css/global.css');
+const mainJs = readAsset('js/main.js').replace(/^\uFEFF/, '');
 
 const { title: pageTitle, description: pageDescription } = Astro.props;
 const nomPrenom = `${profil.prenom} ${profil.nom}`;
@@ -30,7 +35,7 @@ const canonical = deploiement.url.replace(/\/$/, '') + '/';
 <html lang="fr" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title data-i18n data-fr={page.title} data-en={page.titleEn}>{page.title}</title>
     <meta name="description" content={page.description} data-fr-description={page.description} data-en-description={page.descriptionEn} />
     <meta name="author" content={nomPrenom} />

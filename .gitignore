@@ -12,6 +12,9 @@ dist/
 /css/
 /js/
 
+# Versions minifiées générées par scripts/optimize.mjs
+.build/
+
 # Fichiers de l'environnement local
 .env
 .env.local

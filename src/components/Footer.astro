@@ -14,7 +14,10 @@ const build = new Date(horizon.build).toLocaleDateString('fr-FR', { day: 'numeri
     <div class="footer-company">
       <span class="footer-label" data-i18n data-fr="Développeur chez" data-en="Engineer at">Développeur chez</span>
       <a href={entreprise.url} target="_blank" rel="noopener noreferrer" class="footer-company-link" aria-label={entreprise.nom}>
-        <img src={entreprise.logo} alt={`Logo de ${entreprise.nom}`} width="38" height="38" loading="lazy" />
+        <picture>
+          <source type="image/webp" srcset={entreprise.logoWebp} />
+          <img src={entreprise.logo} alt={`Logo de ${entreprise.nom}`} width="38" height="38" loading="lazy" />
+        </picture>
         <span>
           <strong>{entreprise.nom}</strong>
           <small data-i18n data-fr={entreprise.slogan.fr} data-en={entreprise.slogan.en}>{entreprise.slogan.fr}</small>

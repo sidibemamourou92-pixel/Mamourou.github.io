@@ -29,7 +29,10 @@ const monogram = `${profil.prenom[0]}${profil.nom[0]}`;
       <div class="monogram" aria-hidden="true">{monogram}</div>
 
       <a class="about-work" href={entreprise.url} target="_blank" rel="noopener noreferrer">
-        <img src={entreprise.logo} alt={`Logo de ${entreprise.nom}`} width="34" height="34" loading="lazy" />
+        <picture>
+          <source type="image/webp" srcset={entreprise.logoWebp} />
+          <img src={entreprise.logo} alt={`Logo de ${entreprise.nom}`} width="34" height="34" loading="lazy" />
+        </picture>
         <span>
           <small data-i18n data-fr="Développeur chez" data-en="Engineer at">Développeur chez</small>
           <strong>{entreprise.nom}</strong>
