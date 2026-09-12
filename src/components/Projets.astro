@@ -1,0 +1,41 @@
+---
+import { projets, projetCategories } from '../data/site.js';
+import Icon from './Icon.astro';
+---
+
+<section class="section container" id="projets">
+  <div class="section-head reveal">
+    <p class="section-eyebrow">Projets</p>
+    <h2 class="section-title">Réalisations</h2>
+    <p class="section-subtitle">Sélection de projets menés de l’idée au prototype fonctionnel.</p>
+  </div>
+
+  <div class="filter-row reveal" data-filters role="group" aria-label="Filtrer les projets">
+    {projetCategories.map((c, i) => (
+      <button class="filter-btn" class:list={{ 'is-active': i === 0 }}>{c}</button>
+    ))}
+  </div>
+
+  <div class="projects-grid" data-projects-grid>
+    {projets.map(p => (
+      <article class="project-card reveal" data-project data-category={p.categorie}>
+        <div class="project-illu" aria-hidden="true">
+          <Icon name={p.illustration} size={54} />
+        </div>
+        <div class="project-body">
+          <h3>{p.titre}</h3>
+          <p>{p.resume}</p>
+          <ul class="project-tags">
+            {p.tags.map(t => (
+              <li>{t}</li>
+            ))}
+          </ul>
+          <div class="project-foot">
+            <span>{p.annee} · {p.categorie}</span>
+            <a class="project-link" href={p.github} target="_blank" rel="noopener noreferrer">Voir sur GitHub ↗</a>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

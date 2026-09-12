@@ -1,36 +1,19 @@
 ---
-import { site, socials, horizon } from '../data/site.js';
-import Icon from './Icon.astro';
-const buildDate = new Date(horizon.build).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+import { profil, horizon } from '../data/site.js';
+const { monogram } = Astro.props;
+const build = new Date(horizon.build).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <a href="#accueil" class="logo"><span class="logo-mark">MS</span><span class="logo-text">M<span>.Sidibé</span></span></a>
-      <p class="footer-tagline">
-        {site.role} — {site.specialites.join(' · ')}. Construisons des solutions qui créent l’avenir.
-      </p>
-    </div>
-
-    <ul class="footer-socials">
-      {socials.map(({ nom, url, icone }) => (
-        <li>
-          <a href={url} target="_blank" rel="noopener noreferrer" aria-label={nom}>
-            <Icon name={icone} size={18} />
-            <span>{nom}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
+  <div class="container footer-inner">
+    <a href="#accueil" class="brand" aria-label={`Retour à l’accueil — ${profil.prenom} ${profil.nom}`}>
+      <span class="brand-mark">{monogram}</span>
+      <span>{profil.prenom} {profil.nom}</span>
+    </a>
 
     <div class="footer-meta">
-      <p>© <span data-year>{site.annee}</span> {site.auteur} — Tous droits réservés.</p>
-      <p class="footer-build">Dernière mise à jour : {buildDate}</p>
-      <p class="footer-stack">
-        <span>Fait avec</span> <span class="dot" aria-hidden="true"></span>{' '}
-        <strong>Astro</strong>, CSS moderne & zéro bibliothèque JS
-      </p>
+      <p>© <span data-year>{new Date().getFullYear()}</span> {profil.prenom} {profil.nom} — Tous droits réservés.</p>
+      <p>Mis à jour le {build}</p>
     </div>
   </div>
 </footer>

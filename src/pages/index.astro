@@ -1,48 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { horizon } from '../data/site.js';
 import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
-import Skills from '../components/Skills.astro';
-import Projects from '../components/Projects.astro';
-import Websites from '../components/Websites.astro';
-import Timeline from '../components/Timeline.astro';
-import Gallery from '../components/Gallery.astro';
+import APropos from '../components/APropos.astro';
+import Competences from '../components/Competences.astro';
+import Projets from '../components/Projets.astro';
+import Parcours from '../components/Parcours.astro';
 import Contact from '../components/Contact.astro';
-import Journal from '../components/Journal.astro';
 ---
 
 <Layout>
   <Hero />
-  <About />
-  <!-- Statistiques en direct : GitHub (repos, étoiles, activité) + expérience auto -->
-  <div class="gh-stats reveal" data-gh-stats data-gh-user={horizon.github} data-gh-from={horizon.experienceDepuis}>
-    <div class="gh-stat">
-      <strong data-gh-repos>—</strong>
-      <span>repos publics</span>
-    </div>
-    <div class="gh-stat">
-      <strong data-gh-stars>—</strong>
-      <span>étoiles GitHub</span>
-    </div>
-    <div class="gh-stat">
-      <strong data-gh-last>—</strong>
-      <span>dernière activité</span>
-    </div>
-    <div class="gh-stat">
-      <strong data-years data-from={horizon.experienceDepuis}>—</strong>
-      <span>ans d’ingénierie</span>
-    </div>
-    <a class="gh-link" href={`https://github.com/${horizon.github}`} target="_blank" rel="noopener noreferrer">
-      github/{horizon.github}
-    </a>
-  </div>
-
-  <Skills />
-  <Projects />
-  <Websites />
-  <Journal />
-  <Timeline />
-  <Gallery />
+  <APropos />
+  <Competences />
+  <Projets />
+  <Parcours />
   <Contact />
 </Layout>

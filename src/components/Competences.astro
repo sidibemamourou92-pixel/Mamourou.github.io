@@ -1,0 +1,29 @@
+---
+import { competences } from '../data/site.js';
+import Icon from './Icon.astro';
+---
+
+<section class="section container" id="competences">
+  <div class="section-head reveal">
+    <p class="section-eyebrow">Compétences</p>
+    <h2 class="section-title">Domaines maîtrisés</h2>
+    <p class="section-subtitle">Outils et technologies utilisés au quotidien.</p>
+  </div>
+
+  <div class="skills-grid">
+    {competences.map(g => (
+      <article class="skill-card reveal">
+        <div class="skill-head">
+          <Icon name={g.icone} size={20} />
+          <h3>{g.domaine}</h3>
+          <span class="skill-level">{g.niveau}</span>
+        </div>
+        <ul class="skill-tags">
+          {g.tags.map(t => (
+            <li>{t}</li>
+          ))}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>
