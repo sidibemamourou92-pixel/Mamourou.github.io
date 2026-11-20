@@ -9,17 +9,16 @@ const esbuild = require("esbuild");
 const root = process.cwd();
 const outDir = join(root, ".build");
 
-const cssIn = join(root, "public", "css", "global.css");
-const jsIn = join(root, "public", "js", "main.js");
+const cssIn = join(root, "src", "styles", "global.css");
+const jsIn = join(root, "src", "scripts", "main.js");
 if (!existsSync(cssIn) || !existsSync(jsIn)) {
   console.error(
-    "❌ Sources CSS/JS introuvables (public/css/global.css, public/js/main.js).",
+    "❌ Sources CSS/JS introuvables (src/styles/global.css, src/scripts/main.js).",
   );
   process.exit(1);
 }
 
-mkdirSync(join(outDir, "css"), { recursive: true });
-mkdirSync(join(outDir, "js"), { recursive: true });
+mkdirSync(outDir, { recursive: true });
 
 const cssSrc = readFileSync(cssIn, "utf8");
 const jsSrc = readFileSync(jsIn, "utf8");
@@ -27,8 +26,8 @@ const jsSrc = readFileSync(jsIn, "utf8");
 const css = esbuild.transformSync(cssSrc, { loader: "css", minify: true });
 const js = esbuild.transformSync(jsSrc, { loader: "js", minify: true });
 
-writeFileSync(join(outDir, "css", "global.css"), css.code);
-writeFileSync(join(outDir, "js", "main.js"), js.code);
+writeFileSync(join(outDir, "global.css"), css.code);
+writeFileSync(join(outDir, "main.js"), js.code);
 
 console.log("✅ Optimisation CSS/JS (esbuild) :");
 console.log(`   global.css : ${cssSrc.length} → ${css.code.length} octets`);

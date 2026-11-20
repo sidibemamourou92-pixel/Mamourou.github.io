@@ -12,7 +12,7 @@ Propulsé par **Astro** — site 100 % statique, CSS et JS incorporés au HTML a
 npm install
 npm run admin    # interface d'administration → http://localhost:4322
 npm run dev      # site en développement     → http://localhost:4321
-npm run build    # site prêt à publier dans dist/ (+ copie à la racine)
+npm run build    # site prêt à publier dans dist/
 ```
 
 ## ⚙️ Administration (`npm run admin`)
@@ -61,15 +61,16 @@ GitHub Actions (`.github/workflows/deploy.yml`) ou Vercel (`vercel.json`) recons
 ├── public/
 │   ├── images/            → photo, favicon, logo, images de projets
 │   ├── files/             → CV PDF (si ajouté)
-│   ├── css/global.css     → design system (incorporé au HTML au build)
-│   └── js/main.js         → interactions (thème, langue, filtres…)
+│   └── fonts/             → polices auto-hébergées
 ├── src/
 │   ├── data/content.json  → TOUT le contenu (modifié par l'admin)
 │   ├── data/site.js       → lecture du JSON + valeurs calculées
+│   ├── styles/global.css  → feuille de style (incorporée au HTML au build)
+│   ├── scripts/main.js    → interactions (thème, langue, filtres, formulaire)
 │   ├── components/        → Header, Hero, APropos, CV, Competences, Projets…
 │   ├── layouts/Layout.astro
 │   └── pages/             → index, 404, robots.txt, sitemap.xml (générés depuis la config)
-└── scripts/               → minification (esbuild) et copie du build à la racine
+└── scripts/optimize.mjs   → minification CSS/JS (esbuild) avant le build
 ```
 
 ## 🔒 Sécurité du site publié

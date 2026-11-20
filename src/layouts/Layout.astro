@@ -10,15 +10,16 @@ import BackToTop from '../components/BackToTop.astro';
 // CSS et JS incorporés au build (versions minifiées de .build/ si présentes) :
 // le site tient dans un seul fichier HTML + images + polices.
 // En développement on lit toujours les sources (relues à chaque requête).
-function readAsset(rel) {
+// Sources dans src/styles et src/scripts ; versions minifiées dans .build/.
+function readAsset(rel, source) {
   const min = join(process.cwd(), '.build', rel);
-  const src = join(process.cwd(), 'public', rel);
+  const src = join(process.cwd(), 'src', source);
   const p = !import.meta.env.DEV && existsSync(min) ? min : src;
   if (!existsSync(p)) throw new Error(`Asset introuvable : ${p}`);
   return readFileSync(p, 'utf8');
 }
-const globalCss = readAsset('css/global.css') + cssApparence;
-const mainJs = readAsset('js/main.js').replace(/^﻿/, '');
+const globalCss = readAsset('global.css', 'styles/global.css') + cssApparence;
+const mainJs = readAsset('main.js', 'scripts/main.js').replace(/^﻿/, '');
 
 // Script de tête : thème/langue mémorisés avant l'affichage (évite le flash)
 const headJs = "(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')d.setAttribute('data-theme',t);var l=localStorage.getItem('lang');if(l==='fr'||l==='en')d.setAttribute('lang',l)}catch(e){}setTimeout(function(){if(!document.querySelector('.reveal.is-in'))document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('is-in')})},1500)})();";

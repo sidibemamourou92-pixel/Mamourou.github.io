@@ -8,8 +8,7 @@
     "dev": "astro dev",
     "admin": "node admin/server.mjs",
     "optimize": "node scripts/optimize.mjs",
-    "build": "npm run optimize && astro build && node scripts/sync-root.mjs",
-    "sync": "node scripts/sync-root.mjs",
+    "build": "npm run optimize && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
