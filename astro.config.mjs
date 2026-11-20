@@ -7,4 +7,8 @@ export default defineConfig({
   build: {
     format: 'file'
   },
+  // Pas de barre d'outils Astro, même en développement
+  devToolbar: {
+    enabled: false,
+  },
 });

@@ -38,6 +38,8 @@ const paths = {
 };
 
 const { name = 'robot', size = 24, className = '' } = Astro.props;
+// Logos de marque : formes pleines plutôt que des contours
+const plein = ['github', 'linkedin', 'whatsapp'].includes(name);
 ---
 
 <svg
@@ -45,9 +47,9 @@ const { name = 'robot', size = 24, className = '' } = Astro.props;
   width={size}
   height={size}
   viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="1.8"
+  fill={plein ? 'currentColor' : 'none'}
+  stroke={plein ? 'none' : 'currentColor'}
+  stroke-width="1.7"
   stroke-linecap="round"
   stroke-linejoin="round"
   class={className}

@@ -1,93 +1,89 @@
-# Portfolio — Mamourou Sidibé 🚀 v4.1
+# Portfolio — Mamourou Sidibé
 
-Portfolio **« développeur »** : thème sombre, fenêtre de code animée, **bilingue FR/EN**,
-avec une section **CV** complète (photo + parcours + infos personnelles).
-Propulsé par **Astro 7** — zéro dépendance JS, CSS et JS incorporés au build (1 seul fichier HTML).
+Portfolio d'ingénieur informatique (embarqué, IoT, web) : thème sombre/clair,
+bilingue FR/EN, section CV, projets filtrables, et **interface d'administration locale**
+pour modifier tout le contenu, la photo, le favicon et les réglages sans toucher au code.
 
-## 👀 Voir le site
+Propulsé par **Astro** — site 100 % statique, CSS et JS incorporés au HTML au build.
 
-| Méthode | Commande |
-|---|---|
-| **Double-clic** | Ouvrez `index.html` à la racine (copie générée du site) |
-| **Serveur local** | `npm install` puis `npm run dev` → http://localhost:4321 |
-| **Build statique** | `npm run build` → le site prêt à publier est dans `dist/` |
+## Démarrage
+
+```bash
+npm install
+npm run admin    # interface d'administration → http://localhost:4322
+npm run dev      # site en développement     → http://localhost:4321
+npm run build    # site prêt à publier dans dist/ (+ copie à la racine)
+```
+
+## ⚙️ Administration (`npm run admin`)
+
+| Écran              | Ce qu'on y modifie                                                                  |
+| ------------------ | ----------------------------------------------------------------------------------- |
+| **Apparence**      | Couleur principale, typographie, forme des éléments, thème par défaut (aperçu direct) |
+| **Paramètres**     | URL du site (SEO), langue par défaut, sections affichées/masquées                   |
+| **Photo & médias** | Photo de profil, favicon, logo d'entreprise, image de partage, CV en PDF            |
+| **Profil**         | Nom, titre, accroche, présentation, disponibilité, coordonnées                      |
+| **Chiffres clés**  | Chiffres sous votre nom (années / nombre de projets calculés automatiquement)       |
+| **Entreprise**     | Nom, fonction, slogan, lien                                                         |
+| **Réseaux**        | GitHub, LinkedIn… (l'e-mail du profil est ajouté automatiquement)                   |
+| **Compétences**    | Domaines, niveaux, technologies                                                     |
+| **Projets**        | Projets (image, liens Code/Démo), catégories                                        |
+| **Parcours**       | Formations, expériences, logo de l'établissement, mise en avant dans « À propos »   |
+| **CV**             | Résumé, langues                                                                     |
+| **Publier**        | Générer le site, prévisualiser, restaurer une sauvegarde                            |
+
+- Le contenu est stocké dans **`src/data/content.json`** ; les fichiers envoyés vont dans
+  `public/images/` et `public/files/`.
+- Chaque enregistrement sauvegarde l'ancienne version dans `.admin-backups/` (30 dernières).
+- L'admin n'écoute que sur la machine locale (127.0.0.1) et n'est **jamais publiée** avec le site.
+- **Connexion obligatoire** : au premier lancement, vous créez votre mot de passe (10 caractères min.).
+  Il est stocké haché (scrypt) dans `.admin-secret.json`, jamais commité. Session de 8 h,
+  blocage 15 min après 5 essais ratés. Changement du mot de passe : Paramètres → Sécurité.
+  Mot de passe oublié : `npm run admin -- --reset-password`.
+- Raccourci : **Ctrl + S** pour enregistrer.
+
+### Mettre en ligne après une modification
+
+```bash
+git add -A
+git commit -m "Mise à jour du contenu"
+git push
+```
+
+GitHub Actions (`.github/workflows/deploy.yml`) ou Vercel (`vercel.json`) reconstruit et publie le site.
 
 ## 📁 Structure
 
 ```
+├── admin/
+│   ├── server.mjs         → serveur de l'admin (Node, zéro dépendance)
+│   └── index.html         → interface de l'admin
 ├── public/
+│   ├── images/            → photo, favicon, logo, images de projets
+│   ├── files/             → CV PDF (si ajouté)
 │   ├── css/global.css     → design system (incorporé au HTML au build)
-│   ├── js/main.js         → interactions incl. bascule FR/EN (incorporées)
-│   ├── logo-tangade.png   → logo de l'entreprise (TengaDé Tech)
-│   ├── cv-photo.jpg       → votre photo (remplacez-la par la vôtre)
-│   ├── favicon.svg
-│   ├── robots.txt         → référencement Google
-│   ├── sitemap.xml        → plan du site pour Google
-│   └── .nojekyll          → GitHub Pages (pas de Jekyll)
+│   └── js/main.js         → interactions (thème, langue, filtres…)
 ├── src/
-│   ├── data/site.js       → TOUT le contenu se modifie ici
-│   ├── components/        → Header, Hero, APropos, Competences, Projets…
+│   ├── data/content.json  → TOUT le contenu (modifié par l'admin)
+│   ├── data/site.js       → lecture du JSON + valeurs calculées
+│   ├── components/        → Header, Hero, APropos, CV, Competences, Projets…
 │   ├── layouts/Layout.astro
-│   └── pages/             → index.astro, 404.astro
-├── scripts/sync-root.mjs  → copie le build vers la racine (double-clic)
-├── dist/                  → build généré (ignoré par git)
-└── astro.config.mjs       → base: './' (chemins relatifs)
+│   └── pages/             → index, 404, robots.txt, sitemap.xml (générés depuis la config)
+└── scripts/               → minification (esbuild) et copie du build à la racine
 ```
+
+## 🔒 Sécurité du site publié
+
+- **CSP** (Content-Security-Policy) : seuls les scripts et styles du site (empreintes SHA-256
+  calculées au build) peuvent s'exécuter ; le formulaire ne peut joindre que FormSubmit/Web3Forms.
+- Liens filtrés (seuls `http(s)://` et `mailto:` sont acceptés), données structurées échappées.
+- En-têtes de sécurité sur Vercel (`vercel.json`) : HSTS, anti-iframe, nosniff, Permissions-Policy.
+- L'admin n'est jamais publiée : seul `dist/` est mis en ligne.
 
 ## ✨ Fonctionnalités
 
-- Design **« développeur »** : sombre par défaut, palette d'éditeur, grille animée, fenêtre de code, accent vert
-- Thème **« développeur »** sombre par défaut : palette d'éditeur, grille animée, fenêtre de code, accent vert
-- **Bilingue FR / EN** : bascule instantanée (bouton FR/EN), mémorisée
-- Section **CV** : photo, infos personnelles, langues, nationalité, chiffres clés
-- Thème **sombre / clair** mémorisé · effet machine à écrire · filtres de projets · révélation au scroll
-- Année et « Mis à jour le » automatiques · formulaire mailto + réseaux · page 404
-- Lien de l'entreprise **TengaDé Tech** (logo + slogan) dans le footer et la carte « À propos »
-- Accessible : liens d'évitement, focus visibles, `prefers-reduced-motion`, ARIA
-- Impression : styles d'impression optimisés (CV)
-
-## ✏️ Personnaliser
-
-Tout le contenu est centralisé dans **`src/data/site.js`** :
-profil, spécialités, compétences, projets, parcours, réseaux et navigation.
-Modifiez, puis `npm run build`.
-
-## ⚡ Optimisation
-
-- **Build allégé** : `npm run build` minifie d'abord le CSS et le JS avec **esbuild**
-  (`scripts/optimize.mjs` → `.build/`), puis Astro génère le site. Résultat : **un seul HTML ≈ 72 Ko**.
-- **Images WebP** : logo TengaDé Tech (44 Ko → 26 Ko) et photo CV (46 Ko → 18 Ko),
-  avec repli PNG/JPG automatique via `<picture>`.
-- Le mode `dev` utilise les sources ; le build utilise les versions minifiées.
-- Zéro requête externe : le site fonctionne hors-ligne, même en double-clic.
-
-## 📱 Mobile
-
-Adapté à **toutes les tailles d'écran** (320 px → 4K, iOS & Android) :
-menu **déroulant** sous l'en-tête avec voile de fermeture, champs de saisie sans zoom
-iOS, zones tactiles confortables, encoches (notch) gérées, boutons pleine largeur.
-
-## 🚢 Déploiement
-
-Site **statique** (`dist/`), 100 % autonome (1 fichier HTML + images), chemins relatifs.
-
-- **Nom du déploiement** : `mamourou-sidibe-portfolio` (`vercel.json` + bloc `deploiement` dans `src/data/site.js`)
-- **GitHub Pages** : workflow fourni (`.github/workflows/deploy.yml`) — poussez sur `main`.
-  URL finale selon le nom du dépôt : `https://sidibemamourou92-pixel.github.io/` (dépôt `<utilisateur>.github.io`)
-  ou `/Portolio/` (dépôt classique).
-- **Vercel** : `vercel.json` fourni (framework Astro, sortie `dist`, cache des images).
-- **Après mise en ligne** : mettez à jour l'URL dans `src/data/site.js` → `deploiement.url`.
-
-## 🔍 Indexation Google
-
-Déjà en place :
-- `robots.txt` + `sitemap.xml` (URL, fréquence, priorité)
-- `canonical`, `robots index,follow`, `theme-color`, `geo.region`
-- **Open Graph**, **Twitter Card**, **JSON-LD** (Person : nom, rôle, e-mail, réseaux, adresse, langues)
-
-Une fois le site en ligne :
-1. [Google Search Console](https://search.google.com/search-console) → ajoutez votre site
-2. Soumettez `https://votre-site/sitemap.xml`
-3. Contrôlez l'indexation : recherchez `site:votre-site`
-
-© Mamourou Sidibé — fait avec ❤️ et Astro.
+- Thème sombre/clair et langue FR/EN mémorisés (valeurs par défaut réglables)
+- Années d'expérience et nombre de projets calculés automatiquement
+- SEO : canonical, Open Graph, JSON-LD `Person`, sitemap et robots générés depuis l'URL du site
+- Accessible : lien d'évitement, focus visibles, `prefers-reduced-motion`, ARIA
+- Responsive de 320 px à 4K, styles d'impression

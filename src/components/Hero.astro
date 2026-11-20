@@ -1,59 +1,66 @@
 ---
-import { profil, roles, stats } from '../data/site.js';
+import { profil, stats, asset, sectionVisible, photoAccueil } from '../data/site.js';
 import Icon from './Icon.astro';
-const rolesFr = JSON.stringify(roles.map(r => r.fr));
-const rolesEn = JSON.stringify(roles.map(r => r.en));
-const codeSnippet =
-  '<span class="tok-k">const</span> <span class="tok-fn">engineer</span> <span class="tok-p">=</span> <span class="tok-p">{</span>' +
-  '\n  name: <span class="tok-s">\'' + profil.prenom + ' ' + profil.nom + '\'</span>,' +
-  '\n  stack: [<span class="tok-s">\'C/C++\'</span>, <span class="tok-s">\'ESP32\'</span>, <span class="tok-s">\'Python\'</span>, <span class="tok-s">\'Web\'</span>],' +
-  '\n  passion: <span class="tok-s">\'robotics &amp; IoT\'</span>,' +
-  '\n  dispo: <span class="tok-b">true</span>,' +
-  '\n<span class="tok-p">}</span>;' +
-  '\n<span class="tok-c">// embedded everywhere</span>' +
-  '\n<span class="tok-fn">run</span>(engineer);<span class="tok-cursor"></span>';
+const specFr = profil.specialites.map(s => s.fr).join(' · ');
+const specEn = profil.specialites.map(s => s.en).join(' · ');
+const nomPrenom = `${profil.prenom} ${profil.nom}`;
 ---
 
-<section class="hero container" id="accueil">
-  <div class="hero-grid">
-    <div class="hero-inner">
-      <p class="eyebrow">
-        <Icon name="terminal" size={14} />
-        <span data-i18n data-fr={`${profil.localisation.fr} · ${profil.dispoTexte.fr}`} data-en={`${profil.localisation.en} · ${profil.dispoTexte.en}`}>{profil.localisation.fr} · {profil.dispoTexte.fr}</span>
+<section class="hero" id="accueil">
+  <div class="container hero-grid" class:list={{ 'sans-photo': !photoAccueil }}>
+    <div class="hero-text">
+      <p class="hero-meta">
+        <span data-i18n data-fr={profil.localisation.fr} data-en={profil.localisation.en}>{profil.localisation.fr}</span>
+        {profil.disponible && (
+          <span class="dispo">
+            <span class="dispo-dot" aria-hidden="true"></span>
+            <span data-i18n data-fr={profil.dispoTexte.fr} data-en={profil.dispoTexte.en}>{profil.dispoTexte.fr}</span>
+          </span>
+        )}
       </p>
 
-      <h1 class="hero-name">{profil.prenom} {profil.nom}</h1>
+      <h1 class="hero-name">
+        <span>{profil.prenom}</span>
+        <span>{profil.nom}</span>
+      </h1>
 
       <p class="hero-role">
-        <span data-type-roles={rolesFr} data-type-roles-fr={rolesFr} data-type-roles-en={rolesEn}></span>
-        <span class="type-cursor" aria-hidden="true"></span>
+        <strong data-i18n data-fr={profil.role.fr} data-en={profil.role.en}>{profil.role.fr}</strong>
+        <span data-i18n data-fr={specFr} data-en={specEn}>{specFr}</span>
       </p>
 
-      <p class="hero-tagline" data-i18n data-fr={profil.accroche.fr} data-en={profil.accroche.en}>{profil.accroche.fr}</p>
+      <p class="hero-lead" data-i18n data-fr={profil.accroche.fr} data-en={profil.accroche.en}>{profil.accroche.fr}</p>
 
       <div class="hero-actions">
-        <a href="#projets" class="btn btn-primary btn-lg" data-i18n data-fr="Voir mes projets" data-en="See my projects">Voir mes projets</a>
-        <a href="#contact" class="btn btn-ghost btn-lg" data-i18n data-fr="Me contacter" data-en="Contact me">Me contacter</a>
+        {sectionVisible('projets') && (
+          <a href="#projets" class="btn btn-primary">
+            <span data-i18n data-fr="Voir mes projets" data-en="See my work">Voir mes projets</span>
+            <Icon name="arrowRight" size={16} />
+          </a>
+        )}
+        {sectionVisible('contact') && <a href="#contact" class="btn btn-ghost" data-i18n data-fr="Me contacter" data-en="Get in touch">Me contacter</a>}
       </div>
 
-      <div class="hero-stats">
-        {stats.map(({ icone, valeur, suffixe, label }) => (
-          <div class="stat">
-            <strong>{valeur}{suffixe}</strong>
-            <span data-i18n data-fr={label.fr} data-en={label.en}>{label.fr}</span>
-          </div>
-        ))}
-      </div>
+      {stats.length > 0 && (
+        <dl class="hero-stats">
+          {stats.map(({ valeur, suffixe, label }) => (
+            <div>
+              <dt data-i18n data-fr={label.fr} data-en={label.en}>{label.fr}</dt>
+              <dd>{valeur}{suffixe}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
     </div>
 
-    <div class="hero-code" aria-hidden="true">
-      <div class="code-window">
-        <div class="code-bar">
-          <i></i><i></i><i></i>
-          <span class="code-title">engineer.ts</span>
-        </div>
-        <pre class="code-body"><code set:html={codeSnippet}></code></pre>
-      </div>
-    </div>
+    {photoAccueil && profil.photo && (
+      <figure class="hero-photo">
+        <img src={asset(profil.photo)} alt={`Portrait de ${nomPrenom}`} width="440" height="550" fetchpriority="high" />
+        <figcaption>
+          <span>{nomPrenom}</span>
+          <span data-i18n data-fr={profil.role.fr} data-en={profil.role.en}>{profil.role.fr}</span>
+        </figcaption>
+      </figure>
+    )}
   </div>
 </section>

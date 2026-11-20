@@ -1,49 +1,76 @@
 ---
-import { profil, entreprise } from '../data/site.js';
+import { profil, entreprise, parcours, typesParcours, asset, numeroSection } from '../data/site.js';
+import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
-const monogram = `${profil.prenom[0]}${profil.nom[0]}`;
+import Sigle from './Sigle.astro';
+const enAvant = parcours.filter(p => p.misEnAvant);
 ---
 
-<section class="section container" id="apropos">
-  <div class="section-head reveal">
-    <p class="section-eyebrow" data-i18n data-fr="À propos" data-en="About">À propos</p>
-    <h2 class="section-title" data-i18n data-fr="Présentation" data-en="About me">Présentation</h2>
-  </div>
+<section class="section" id="apropos">
+  <div class="container">
+    <SectionHead
+      num={numeroSection('apropos')}
+      label={{ fr: 'À propos', en: 'About' }}
+      titre={{ fr: 'Du matériel au logiciel', en: 'From hardware to software' }}
+    />
 
-  <div class="about-grid">
-    <div class="prose reveal">
-      {profil.bio.map(p => (
-        <p data-i18n data-fr={p.fr} data-en={p.en}>{p.fr}</p>
-      ))}
-      <ul class="about-points">
-        {profil.points.map(pt => (
-          <li>
-            <Icon name="check" size={16} />
-            <span data-i18n data-fr={pt.fr} data-en={pt.en}>{pt.fr}</span>
-          </li>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        {profil.bio.map((p, i) => (
+          <p class:list={{ lead: i === 0 }} data-i18n data-fr={p.fr} data-en={p.en}>{p.fr}</p>
         ))}
-      </ul>
-    </div>
-
-    <aside class="about-card reveal">
-      <div class="monogram" aria-hidden="true">{monogram}</div>
-
-      <a class="about-work" href={entreprise.url} target="_blank" rel="noopener noreferrer">
-        <picture>
-          <source type="image/webp" srcset={entreprise.logoWebp} />
-          <img src={entreprise.logo} alt={`Logo de ${entreprise.nom}`} width="34" height="34" loading="lazy" />
-        </picture>
-        <span>
-          <small data-i18n data-fr="Développeur chez" data-en="Engineer at">Développeur chez</small>
-          <strong>{entreprise.nom}</strong>
-        </span>
-      </a>
-
-      <div class="specialites">
-        {profil.specialites.map(s => (
-          <span class="chip" data-i18n data-fr={s.fr} data-en={s.en}>{s.fr}</span>
-        ))}
+        {profil.points.length > 0 && (
+          <ul class="checklist">
+            {profil.points.map(pt => (
+              <li>
+                <Icon name="check" size={16} />
+                <span data-i18n data-fr={pt.fr} data-en={pt.en}>{pt.fr}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-    </aside>
+
+      <aside class="about-side reveal">
+        <div class="side-block">
+          <h3 class="side-title" data-i18n data-fr="Spécialités" data-en="Focus areas">Spécialités</h3>
+          <ul class="tag-list">
+            {profil.specialites.map(s => (
+              <li data-i18n data-fr={s.fr} data-en={s.en}>{s.fr}</li>
+            ))}
+          </ul>
+        </div>
+
+        {enAvant.map(p => {
+          const type = typesParcours[p.type] ?? typesParcours.formation;
+          const Tag = p.url ? 'a' : 'div';
+          return (
+            <Tag class="company" href={p.url || undefined} target={p.url ? '_blank' : undefined} rel={p.url ? 'noopener noreferrer' : undefined}>
+              {p.logo
+                ? <img src={asset(p.logo)} alt="" width="48" height="48" loading="lazy" class="logo-clair" />
+                : <Sigle texte={p.lieu.fr} />}
+              <span class="company-text">
+                <small data-i18n data-fr={`${type.fr} · ${p.periode}`} data-en={`${type.en} · ${p.periode}`}>{type.fr} · {p.periode}</small>
+                <strong data-i18n data-fr={p.lieu.fr} data-en={p.lieu.en}>{p.lieu.fr}</strong>
+                <em data-i18n data-fr={p.titre.fr} data-en={p.titre.en}>{p.titre.fr}</em>
+              </span>
+              {p.url && <span class="company-arrow" aria-hidden="true"><Icon name="external" size={16} /></span>}
+            </Tag>
+          );
+        })}
+
+        {entreprise.afficher && (
+          <a class="company" href={entreprise.url} target="_blank" rel="noopener noreferrer">
+            {entreprise.logo && <img src={asset(entreprise.logo)} alt="" width="48" height="48" loading="lazy" />}
+            <span class="company-text">
+              <small data-i18n data-fr={entreprise.fonction.fr} data-en={entreprise.fonction.en}>{entreprise.fonction.fr}</small>
+              <strong>{entreprise.nom}</strong>
+              <em data-i18n data-fr={entreprise.slogan.fr} data-en={entreprise.slogan.en}>{entreprise.slogan.fr}</em>
+            </span>
+            <span class="company-arrow" aria-hidden="true"><Icon name="external" size={16} /></span>
+          </a>
+        )}
+      </aside>
+    </div>
   </div>
 </section>

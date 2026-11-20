@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Administration</title>
+<link rel="icon" id="favicon" href="data:," />
+<style>
+  @font-face { font-family: "Space Grotesk"; src: url("/public/fonts/space-grotesk.woff2") format("woff2"); font-weight: 300 700; font-display: swap; }
+  @font-face { font-family: "IBM Plex Sans"; src: url("/public/fonts/ibm-plex-sans-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "IBM Plex Sans"; src: url("/public/fonts/ibm-plex-sans-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "IBM Plex Sans"; src: url("/public/fonts/ibm-plex-sans-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+  @font-face { font-family: "JetBrains Mono"; src: url("/public/fonts/jetbrains-mono.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
+  @font-face { font-family: "Fraunces"; src: url("/public/fonts/fraunces.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+
+  :root {
+    --accent: #0e7490; --on-accent: #fff;
+    --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+    --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    --r: 8px;
+    color-scheme: light;
+    --bg: #f7f6f2; --bg2: #efede6; --surface: #fff; --ink: #17191c; --ink2: #4b5059; --ink3: #7a7f88;
+    --line: #e3e0d7; --line2: #d3cfc4; --danger: #c43c3c; --warn: #b7791f; --ok: #22a35a;
+    --accent-ink: color-mix(in srgb, var(--accent) 82%, #000);
+    --accent-soft: color-mix(in srgb, var(--accent) 11%, transparent);
+    --shadow: 0 1px 2px rgba(20,20,15,.05), 0 12px 32px -16px rgba(20,20,15,.25);
+  }
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0f1012; --bg2: #15171a; --surface: #181a1e; --ink: #ecebe6; --ink2: #a9acb2; --ink3: #757981;
+    --line: #25282d; --line2: #33373d; --danger: #f07070; --warn: #e0a84a;
+    --accent-ink: color-mix(in srgb, var(--accent) 62%, #fff);
+    --accent-soft: color-mix(in srgb, var(--accent) 18%, transparent);
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 14px 36px -16px rgba(0,0,0,.7);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -.015em; margin: 0; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- Structure ---------- */
+  .app { display: grid; grid-template-columns: 248px minmax(0, 1fr); min-height: 100vh; }
+  .side { position: sticky; top: 0; height: 100vh; overflow: auto; border-right: 1px solid var(--line); background: var(--bg2); display: flex; flex-direction: column; padding: 1.1rem .8rem 1rem; border-top: 3px solid var(--accent); }
+  .brand { display: flex; align-items: center; gap: .7rem; padding: .2rem .5rem 1.2rem; text-decoration: none; }
+  .brand img { width: 34px; height: 34px; border-radius: 7px; object-fit: contain; background: var(--surface); border: 1px solid var(--line); flex: none; }
+  .brand b { display: block; font-family: var(--display); font-weight: 600; font-size: .98rem; line-height: 1.2; }
+  .brand small { color: var(--ink3); font-size: .78rem; }
+  .nav-group { margin-top: .8rem; }
+  .nav-group > p { margin: 0 .6rem .3rem; font: 500 .68rem var(--mono); text-transform: uppercase; letter-spacing: .09em; color: var(--ink3); }
+  .nav-btn { display: flex; align-items: center; gap: .65rem; width: 100%; text-align: left; background: none; border: 0; padding: .5rem .6rem; border-radius: var(--r); color: var(--ink2); cursor: pointer; font-size: .93rem; }
+  .nav-btn svg { flex: none; opacity: .8; }
+  .nav-btn:hover { background: var(--surface); color: var(--ink); }
+  .nav-btn.active { background: var(--surface); color: var(--ink); font-weight: 500; box-shadow: inset 2px 0 0 var(--accent); }
+  .nav-btn.active svg { color: var(--accent-ink); opacity: 1; }
+  .side-foot { margin-top: auto; padding: 1rem .5rem 0; display: flex; gap: .4rem; align-items: center; }
+
+  main { min-width: 0; }
+  .topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; padding: .85rem clamp(1rem, 3vw, 2.2rem); background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .topbar h2 { font-size: 1.2rem; margin-right: auto; }
+  .status { display: inline-flex; align-items: center; gap: .45rem; font-size: .84rem; color: var(--ink3); }
+  .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+  .status.dirty { color: var(--warn); }
+  .status.dirty::before { background: var(--warn); }
+  .content { padding: clamp(1.2rem, 3vw, 2.2rem); max-width: 920px; }
+  .desc { color: var(--ink2); margin: 0 0 1.8rem; max-width: 65ch; }
+
+  /* ---------- Boutons ---------- */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 38px; border: 1px solid var(--line2); background: var(--surface); padding: .45rem .95rem; border-radius: var(--r); cursor: pointer; white-space: nowrap; text-decoration: none; font-size: .9rem; transition: border-color .15s, background-color .15s; }
+  .btn:hover { border-color: var(--ink3); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 500; }
+  .btn.primary:hover { background: color-mix(in srgb, var(--accent) 88%, var(--ink)); }
+  .btn.danger { color: var(--danger); }
+  .btn.small { min-height: 30px; padding: .2rem .55rem; font-size: .8rem; }
+  .btn.ghost { background: none; border-color: transparent; }
+  .btn.ghost:hover { background: var(--surface); border-color: var(--line); }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .icon-btn { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r); border: 1px solid var(--line); background: none; cursor: pointer; color: var(--ink2); }
+  .icon-btn:hover { color: var(--ink); border-color: var(--line2); }
+
+  /* ---------- Champs ---------- */
+  .field { margin-bottom: 1.15rem; }
+  .field > label, .lbl { display: block; font-weight: 500; font-size: .87rem; margin-bottom: .4rem; }
+  .hint { color: var(--ink3); font-size: .8rem; margin-top: .3rem; }
+  input[type=text], input[type=url], input[type=email], input[type=date], input[type=number], input[type=password], select, textarea {
+    width: 100%; min-height: 40px; background: var(--surface); border: 1px solid var(--line2); border-radius: var(--r); padding: .5rem .75rem; font-size: max(16px, .94rem); transition: border-color .15s, box-shadow .15s; }
+  textarea { resize: vertical; min-height: 5rem; line-height: 1.5; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .i18n { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .i18n > div { position: relative; }
+  .i18n .flag { position: absolute; right: .55rem; top: .6rem; font: 600 .66rem var(--mono); color: var(--ink3); pointer-events: none; }
+  .i18n input, .i18n textarea { padding-right: 2.3rem; }
+  .group { border: 1px solid var(--line); border-radius: calc(var(--r) * 1.4); padding: 1.1rem 1.2rem .25rem; margin: 0 0 1.5rem; background: var(--surface); }
+  .group > legend { padding: 0 .45rem; font: 600 .95rem var(--display); }
+  .group input[type=text], .group input[type=url], .group input[type=email], .group input[type=date], .group input[type=number], .group select, .group textarea { background: var(--bg); }
+  .field > label.switch, .switch { display: inline-flex; margin: 0; align-items: center; gap: .65rem; cursor: pointer; font-size: .93rem; }
+  .switch input { appearance: none; width: 38px; height: 22px; border-radius: 99px; background: var(--line2); position: relative; cursor: pointer; transition: background .15s; flex: none; margin: 0; }
+  .switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .18s; box-shadow: 0 1px 2px #0003; }
+  .switch input:checked { background: var(--accent); }
+  .switch input:checked::after { transform: translateX(16px); }
+  .switches { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .2rem 1rem; }
+
+  /* ---------- Listes ---------- */
+  .list-title { font-size: 1.05rem; margin: .6rem 0 .8rem; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: calc(var(--r) * 1.4); padding: .2rem 1.1rem; margin-bottom: .6rem; }
+  .card[open] { padding-bottom: .4rem; box-shadow: var(--shadow); }
+  .card-head { display: flex; align-items: center; gap: .35rem; min-height: 50px; }
+  .card-head strong { margin-right: auto; font-weight: 500; font-size: .93rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card-head .num { font: 500 .75rem var(--mono); color: var(--ink3); margin-right: .45rem; }
+  details.card > summary { cursor: pointer; list-style: none; }
+  details.card > summary::-webkit-details-marker { display: none; }
+  details.card > summary .chev { transition: transform .15s; color: var(--ink3); flex: none; }
+  details.card[open] > summary .chev { transform: rotate(90deg); }
+  details.card[open] > summary { border-bottom: 1px solid var(--line); margin-bottom: 1rem; }
+  .card input[type=text], .card input[type=url], .card input[type=date], .card input[type=number], .card select, .card textarea { background: var(--bg); }
+  .list-add { margin: .3rem 0 1.8rem; }
+
+  /* ---------- Médias ---------- */
+  .media { display: grid; grid-template-columns: 112px 1fr; gap: 1.1rem; align-items: center; }
+  .thumb { width: 112px; height: 112px; border-radius: var(--r); border: 1px dashed var(--line2); background: var(--bg); display: grid; place-items: center; color: var(--ink3); font: .72rem var(--mono); overflow: hidden; }
+  .thumb.has { border-style: solid; }
+  .thumb img { width: 100%; height: 100%; object-fit: contain; }
+  .thumb.photo img { object-fit: cover; }
+  .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+  code { font-family: var(--mono); font-size: .78rem; color: var(--ink3); word-break: break-all; }
+
+  /* ---------- Apparence ---------- */
+  .swatches { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  .swatch { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--line2); cursor: pointer; padding: 0; }
+  .swatch.on { box-shadow: 0 0 0 2px var(--ink); }
+  .color-input { display: inline-flex; align-items: center; gap: .4rem; border: 1px solid var(--line2); border-radius: var(--r); padding: 3px 8px 3px 3px; background: var(--surface); }
+  .color-input input[type=color] { width: 30px; height: 30px; border: 0; padding: 0; background: none; cursor: pointer; }
+  .color-input input[type=text] { width: 6.5rem; min-height: 30px; border: 0; padding: 0 .2rem; font-family: var(--mono); font-size: .85rem; box-shadow: none !important; background: none; }
+  .choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: .6rem; }
+  .choice { text-align: left; border: 1px solid var(--line2); background: var(--surface); border-radius: var(--r); padding: .9rem 1rem; cursor: pointer; display: grid; gap: .3rem; }
+  .choice:hover { border-color: var(--ink3); }
+  .choice.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .choice .sample { font-size: 1.7rem; line-height: 1.1; }
+  .choice small { color: var(--ink3); font-size: .78rem; }
+  .shape { width: 46px; height: 30px; border: 2px solid var(--ink2); }
+  .preview { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: calc(var(--r) * 1.4); overflow: hidden; margin-bottom: 1.8rem; }
+  .pv { padding: 1.4rem 1.3rem; display: grid; gap: .55rem; align-content: start; border-top: 3px solid var(--pv-accent); }
+  .pv.light { background: #f7f6f2; color: #17191c; --pv-ink2: #4b5059; --pv-line: #d3cfc4; --pv-accent-ink: color-mix(in srgb, var(--pv-accent) 82%, #000); }
+  .pv.dark { background: #0f1012; color: #ecebe6; --pv-ink2: #a9acb2; --pv-line: #33373d; --pv-accent-ink: color-mix(in srgb, var(--pv-accent) 62%, #fff); }
+  .pv .k { font: .68rem var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--pv-ink2); }
+  .pv .k b { color: var(--pv-accent-ink); font-weight: 500; }
+  .pv h3 { font-family: var(--pv-display); font-size: 1.7rem; line-height: 1; letter-spacing: -.03em; }
+  .pv p { margin: 0; font-family: var(--pv-body); font-size: .85rem; color: var(--pv-ink2); }
+  .pv p strong { color: var(--pv-accent-ink); font-weight: 600; }
+  .pv .b { display: flex; gap: .4rem; margin-top: .4rem; }
+  .pv .b span { font: 500 .78rem var(--pv-body); padding: .45rem .8rem; border-radius: var(--pv-r); }
+  .pv .b span:first-child { background: var(--pv-accent); color: var(--pv-on); }
+  .pv .b span:last-child { border: 1px solid var(--pv-line); }
+
+  /* ---------- Divers ---------- */
+  .toast { position: fixed; right: max(1rem, env(safe-area-inset-right)); bottom: max(1rem, env(safe-area-inset-bottom)); max-width: min(460px, calc(100vw - 2rem)); background: var(--ink); color: var(--bg); padding: .8rem 1rem; border-radius: var(--r); box-shadow: var(--shadow); white-space: pre-wrap; font-size: .88rem; z-index: 30; animation: up .2s ease; }
+  .toast.err { background: var(--danger); color: #fff; }
+  @keyframes up { from { transform: translateY(8px); opacity: 0; } }
+  pre.log { background: var(--bg2); border: 1px solid var(--line); border-radius: var(--r); padding: .8rem 1rem; max-height: 320px; overflow: auto; font: .76rem/1.5 var(--mono); white-space: pre-wrap; margin: .4rem 0 1rem; }
+  .steps { display: grid; gap: 1rem; }
+  .login-wrap { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 1.5rem 1rem;
+    background: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 0) 0 0 / 22px 22px, var(--bg); }
+  .login { width: 100%; max-width: 400px; padding: clamp(1.4rem, 5vw, 2.2rem); background: var(--surface); border: 1px solid var(--line); border-radius: calc(var(--r) * 1.5); border-top: 3px solid var(--accent); box-shadow: var(--shadow); }
+  .login-head { display: flex; align-items: center; gap: .9rem; margin-bottom: 1rem; }
+  .login-head img { width: 44px; height: 44px; border-radius: 10px; object-fit: contain; border: 1px solid var(--line); background: var(--bg); }
+  .login-head h1 { font-size: 1.35rem; line-height: 1.15; }
+  .login-kicker { margin: 0; font: 500 .7rem var(--mono); text-transform: uppercase; letter-spacing: .09em; color: var(--accent-ink); }
+  .login-intro { margin: 0 0 1.3rem; font-size: .88rem; }
+  .login-note { min-height: 1.3em; margin: -.3rem 0 .8rem; color: var(--danger); font-size: .86rem; }
+  .login-btn { width: 100%; min-height: 44px; }
+  .login-foot { margin: 1.1rem 0 0; text-align: center; }
+  .mdp { position: relative; }
+  .mdp input { padding-right: 5.5rem; }
+  .mdp-voir { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 860px) {
+    .app { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; }
+    .app > * { min-width: 0; }
+    .side { position: sticky; top: 0; z-index: 20; height: auto; flex-direction: row; align-items: center; padding: .5rem .7rem; overflow: visible; border-right: 0; border-bottom: 1px solid var(--line); gap: .4rem; }
+    .brand { padding: 0; flex: none; }
+    .brand span { display: none; }
+    .side nav { display: flex; overflow-x: auto; gap: .2rem; scrollbar-width: none; flex: 1; }
+    .side nav::-webkit-scrollbar { display: none; }
+    .nav-group { display: contents; }
+    .nav-group > p { display: none; }
+    .nav-btn { width: auto; flex: none; white-space: nowrap; padding: .45rem .7rem; }
+    .nav-btn svg { display: none; }
+    .nav-btn.active { box-shadow: inset 0 -2px 0 var(--accent); }
+    .side-foot { margin: 0; padding: 0; }
+    .side-foot .btn { display: none; }
+    .topbar { top: 59px; }
+    .topbar h2 { width: 100%; font-size: 1.05rem; }
+    .i18n, .media, .preview { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .topbar .btn { flex: 1; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+// ============================================================
+//  Icônes (contours 24×24)
+// ============================================================
+const ICO = {
+  settings: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm7.4-3a7.4 7.4 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-2-1.2L14.5 3h-4l-.4 2.6a7.4 7.4 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7.4 7.4 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 2 1.2l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.07-.4.1-.8.1-1.2Z",
+  palette: "M12 3a9 9 0 0 0 0 18c1.1 0 1.7-.8 1.7-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5c0-3.9-4-7.2-9-7.2ZM7.5 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm3-4a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm5 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z",
+  image: "M4 5h16v14H4V5Zm0 10 4.5-4.5 4 4 2.5-2.5L20 17M15.5 9.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z",
+  user: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0",
+  home: "M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3v-10.5Z",
+  building: "M4 21V5l8-2v18M12 8h8v13M8 8h.01M8 12h.01M8 16h.01M16 12h.01M16 16h.01M2 21h20",
+  link: "M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1",
+  chip: "M7 7h10v10H7V7Zm3-4v3m4-3v3M7 17v4m4-4v4m4-4v4M3 10h3m-3 4h3m12-4h3m-3 4h3",
+  folder: "M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6Z",
+  route: "M6 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm12-10a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM6 15V9a3 3 0 0 1 3-3h7M18 9v6a3 3 0 0 1-3 3H8",
+  doc: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M9 13h6m-6 4h6",
+  rocket: "M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2m6-11a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm-2.5 9.5L7 14l7.5-9.5C16.5 2.5 21 3 21 3s.5 4.5-1.5 6.5L10 17Z",
+  ext: "M14 3h7v7m-.5-6.5L11 13M20 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6",
+  sun: "M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 3v2m0-20v2m8 8h2M2 12h2m13.66-5.66 1.41-1.41M4.93 19.07l1.41-1.41m11.32 1.41-1.41-1.41M4.93 4.93l1.41 1.41",
+  moon: "M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z",
+  chev: "m9 6 6 6-6 6",
+  logout: "M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3",
+  up: "M12 19V5m-6 6 6-6 6 6", down: "M12 5v14m6-6-6 6-6-6", trash: "M4 7h16M10 11v6m4-6v6M6 7l1 13h10l1-13M9 7V4h6v3",
+};
+const svg = (n, s = 18) => { const e = document.createElementNS("http://www.w3.org/2000/svg", "svg"); e.setAttribute("viewBox", "0 0 24 24"); e.setAttribute("width", s); e.setAttribute("height", s); e.setAttribute("fill", "none"); e.setAttribute("stroke", "currentColor"); e.setAttribute("stroke-width", "1.7"); e.setAttribute("stroke-linecap", "round"); e.setAttribute("stroke-linejoin", "round"); e.setAttribute("aria-hidden", "true"); const p = document.createElementNS("http://www.w3.org/2000/svg", "path"); p.setAttribute("d", ICO[n]); e.append(p); return e; };
+
+// ============================================================
+//  Écrans (schéma → formulaire)
+// ============================================================
+const ICONES = ["chip", "cpu", "code", "net", "robot", "camera", "gear", "terminal", "briefcase", "globe", "wrench", "bolt", "doc", "sparkle", "grad", "heart", "search", "home", "user"];
+const ICONES_RESEAUX = ["github", "linkedin", "mail", "whatsapp", "globe", "external"];
+const COULEURS = [
+  ["#0e7490", "Pétrole"], ["#1d4ed8", "Bleu"], ["#047857", "Émeraude"], ["#4d7c0f", "Olive"],
+  ["#c2410c", "Terre cuite"], ["#b91c1c", "Rouge"], ["#7c3aed", "Violet"], ["#334155", "Ardoise"],
+];
+const POLICES = {
+  technique: { l: "Technique", d: "Space Grotesk + IBM Plex", display: "'Space Grotesk', sans-serif", body: "'IBM Plex Sans', sans-serif" },
+  editorial: { l: "Éditorial", d: "Fraunces + IBM Plex", display: "'Fraunces', Georgia, serif", body: "'IBM Plex Sans', sans-serif" },
+  systeme: { l: "Système", d: "Polices de l'appareil (plus léger)", display: "system-ui, sans-serif", body: "system-ui, sans-serif" },
+};
+const ARRONDIS = { net: ["Net", "2px"], doux: ["Doux", "8px"], arrondi: ["Arrondi", "18px"] };
+
+const MENU = [
+  { groupe: "Contenu", ecrans: ["profil", "accueil", "competences", "projets", "parcours", "cv"] },
+  { groupe: "Présentation", ecrans: ["apparence", "medias", "entreprise", "reseaux"] },
+  { groupe: "Site", ecrans: ["general", "publier"] },
+];
+
+const ECRANS = [
+  {
+    id: "apparence", titre: "Apparence", ico: "palette",
+    desc: "Couleur principale, typographie et forme des éléments. L'aperçu se met à jour en direct ; enregistrez puis rechargez le site pour voir le résultat.",
+    special: "apparence",
+  },
+  {
+    id: "general", titre: "Paramètres", ico: "settings", desc: "Adresse publique, langue par défaut et sections affichées.",
+    champs: [
+      { k: "site.url", t: "url", l: "Adresse publique du site", h: "Utilisée pour le référencement (canonical, sitemap, image de partage). Ex. https://monnom.github.io" },
+      { k: "site.nomDeploiement", t: "text", l: "Nom du projet de déploiement" },
+      { k: "site.langueParDefaut", t: "select", l: "Langue par défaut", o: [["fr", "Français"], ["en", "English"]] },
+      { t: "group", l: "Formulaire de contact", champs: [
+        { k: "site.formulaire.service", t: "select", l: "Envoi des messages", o: [
+          ["formsubmit", "FormSubmit : directement dans ma boîte mail (recommandé)"],
+          ["web3forms", "Web3Forms : avec une clé d'accès"],
+          ["mailto", "Ouvrir la messagerie du visiteur"],
+        ], h: "Les messages sont envoyés à l'e-mail du Profil. FormSubmit : au tout premier message reçu, cliquez sur le lien d'activation envoyé par FormSubmit (pensez à vérifier les spams)." },
+        { k: "site.formulaire.cleWeb3forms", t: "text", l: "Clé d'accès Web3Forms (si Web3Forms)", h: "Gratuite : saisissez votre e-mail sur web3forms.com pour la recevoir. Sans clé, FormSubmit est utilisé." },
+      ]},
+      { t: "group", l: "Sections affichées", cls: "switches", champs: [
+        { k: "site.sections.apropos", t: "bool", l: "À propos" },
+        { k: "site.sections.cv", t: "bool", l: "CV" },
+        { k: "site.sections.competences", t: "bool", l: "Compétences" },
+        { k: "site.sections.projets", t: "bool", l: "Projets" },
+        { k: "site.sections.parcours", t: "bool", l: "Parcours" },
+        { k: "site.sections.contact", t: "bool", l: "Contact" },
+      ]},
+    ],
+  },
+  {
+    id: "medias", titre: "Photo & médias", ico: "image", desc: "Photo, favicon, logo d'entreprise, image de partage et CV en PDF.",
+    champs: [
+      { k: "profil.photo", t: "media", slot: "photo", photo: true, l: "Photo de profil", h: "Portrait (4:5), JPG/PNG/WebP, idéalement moins de 1 Mo." },
+      { k: "site.favicon", t: "media", slot: "favicon", l: "Favicon (icône d'onglet)", h: "SVG ou PNG carré, 512×512 conseillé. Utilisé aussi par cette administration." },
+      { k: "entreprise.logo", t: "media", slot: "logo", l: "Logo de l'entreprise" },
+      { k: "site.imagePartage", t: "media", slot: "partage", photo: true, l: "Image de partage", h: "Affichée quand le lien est partagé (WhatsApp, LinkedIn…). 1200×630 conseillé." },
+      { k: "cv.fichierPdf", t: "media", slot: "cv", pdf: true, l: "CV au format PDF", h: "Si présent, un bouton « Télécharger le CV » apparaît." },
+    ],
+  },
+  {
+    id: "profil", titre: "Profil", ico: "user", desc: "Identité, présentation et coordonnées.",
+    champs: [
+      { t: "group", l: "Identité", champs: [
+        { k: "profil.prenom", t: "text", l: "Prénom" },
+        { k: "profil.nom", t: "text", l: "Nom" },
+        { k: "profil.role", t: "i18n", l: "Titre / poste" },
+        { k: "profil.accroche", t: "i18nArea", l: "Accroche (sous le nom)" },
+        { k: "profil.domaine", t: "i18n", l: "Domaine" },
+      ]},
+      { k: "profil.bio", t: "i18nList", area: true, l: "Présentation (paragraphes)", item: "Paragraphe" },
+      { k: "profil.points", t: "i18nList", l: "Points forts", item: "Point" },
+      { k: "profil.specialites", t: "i18nList", l: "Spécialités", item: "Spécialité" },
+      { t: "group", l: "Disponibilité", champs: [
+        { k: "profil.disponible", t: "bool", l: "Disponible (affiche l'indicateur vert)" },
+        { k: "profil.dispoTexte", t: "i18n", l: "Texte de disponibilité" },
+        { k: "profil.pratiqueDepuis", t: "date", l: "Pratique depuis", h: "Sert à calculer automatiquement les années d'expérience." },
+      ]},
+      { t: "group", l: "Coordonnées", champs: [
+        { k: "profil.email", t: "email", l: "E-mail" },
+        { k: "profil.telephone", t: "text", l: "Téléphone / WhatsApp", h: "Format international, ex. +223 70 00 00 00. Vide = masqué." },
+        { k: "profil.localisation", t: "i18n", l: "Localisation affichée" },
+        { k: "profil.ville", t: "text", l: "Ville (référencement)" },
+        { k: "profil.pays", t: "text", l: "Code pays (référencement)", h: "Code ISO à 2 lettres, ex. ML" },
+        { k: "profil.nationalite", t: "i18n", l: "Nationalité" },
+      ]},
+    ],
+  },
+  {
+    id: "accueil", titre: "Chiffres clés", ico: "home", desc: "Les chiffres affichés sous votre nom sur la page d'accueil.",
+    champs: [
+      { k: "stats", t: "list", l: "Chiffres", item: "Chiffre", titreItem: (x) => x.label?.fr, nouveau: () => ({ auto: "", valeur: 0, suffixe: "+", label: { fr: "", en: "" } }), champs: [
+        { k: "auto", t: "select", l: "Calcul", o: [["", "Valeur manuelle"], ["annees", "Automatique : années de pratique"], ["projets", "Automatique : nombre de projets"]] },
+        { k: "valeur", t: "number", l: "Valeur (si manuelle)" },
+        { k: "suffixe", t: "text", l: "Suffixe", h: "Ex. « + »" },
+        { k: "label", t: "i18n", l: "Libellé" },
+      ]},
+    ],
+  },
+  {
+    id: "entreprise", titre: "Entreprise", ico: "building", desc: "Votre entreprise, affichée dans « À propos » et le pied de page. Le logo se change dans « Photo & médias ».",
+    champs: [
+      { k: "entreprise.afficher", t: "bool", l: "Afficher l'entreprise" },
+      { k: "entreprise.nom", t: "text", l: "Nom" },
+      { k: "entreprise.fonction", t: "i18n", l: "Ma fonction" },
+      { k: "entreprise.slogan", t: "i18n", l: "Slogan" },
+      { k: "entreprise.url", t: "url", l: "Site web" },
+    ],
+  },
+  {
+    id: "reseaux", titre: "Réseaux", ico: "link", desc: "Vos profils en ligne. L'e-mail du profil est ajouté automatiquement.",
+    champs: [
+      { k: "reseaux", t: "list", l: "Réseaux", item: "Réseau", titreItem: (x) => x.nom, nouveau: () => ({ nom: "", url: "", icone: "globe" }), champs: [
+        { k: "nom", t: "text", l: "Nom" },
+        { k: "url", t: "url", l: "Lien" },
+        { k: "icone", t: "select", l: "Icône", o: ICONES_RESEAUX },
+      ]},
+    ],
+  },
+  {
+    id: "competences", titre: "Compétences", ico: "chip", desc: "Domaines de compétences et technologies associées.",
+    champs: [
+      { k: "competences", t: "list", l: "Domaines", item: "Domaine", titreItem: (x) => x.domaine?.fr, nouveau: () => ({ domaine: { fr: "", en: "" }, icone: "code", niveau: { fr: "Intermédiaire", en: "Intermediate" }, tags: [] }), champs: [
+        { k: "domaine", t: "i18n", l: "Domaine" },
+        { k: "niveau", t: "i18n", l: "Niveau" },
+        { k: "icone", t: "select", l: "Icône", o: ICONES },
+        { k: "tags", t: "tags", l: "Technologies", h: "Séparées par des virgules." },
+      ]},
+    ],
+  },
+  {
+    id: "projets", titre: "Projets", ico: "folder", desc: "Vos réalisations. Les liens Code / Démo n'apparaissent que s'ils sont renseignés : mettez le lien du dépôt précis.",
+    champs: [
+      { k: "projets", t: "list", l: "Projets", item: "Projet", titreItem: (p) => p.titre?.fr, nouveau: () => ({ titre: { fr: "", en: "" }, categorie: "web", annee: String(new Date().getFullYear()), icone: "code", image: "", resume: { fr: "", en: "" }, tags: [], code: "", demo: "" }), champs: [
+        { k: "titre", t: "i18n", l: "Titre" },
+        { k: "resume", t: "i18nArea", l: "Résumé" },
+        { k: "categorie", t: "select", l: "Catégorie", o: () => (state.data.projetCategories || []).map((c) => [c.cle, c.label.fr]) },
+        { k: "annee", t: "text", l: "Année" },
+        { k: "tags", t: "tags", l: "Technologies", h: "Séparées par des virgules." },
+        { k: "code", t: "url", l: "Lien du code (GitHub…)" },
+        { k: "demo", t: "url", l: "Lien de démo" },
+        { k: "image", t: "media", slot: "projet", photo: true, l: "Image (optionnelle)" },
+        { k: "icone", t: "select", l: "Icône (si pas d'image)", o: ICONES },
+      ]},
+      { k: "projetCategories", t: "list", l: "Catégories", item: "Catégorie", titreItem: (x) => x.label?.fr, nouveau: () => ({ cle: "", label: { fr: "", en: "" } }), champs: [
+        { k: "cle", t: "text", l: "Identifiant", h: "Sans espace ni accent, ex. « mobile »" },
+        { k: "label", t: "i18n", l: "Libellé" },
+      ]},
+    ],
+  },
+  {
+    id: "parcours", titre: "Parcours", ico: "route", desc: "Formations, expériences et certifications, du plus récent au plus ancien. Ajoutez le logo de l'établissement ; cochez « Mettre en avant » pour l'afficher aussi dans « À propos ».",
+    champs: [
+      { k: "parcours", t: "list", l: "Étapes", item: "Étape", titreItem: (p) => p.titre?.fr, nouveau: () => ({ periode: "", type: "experience", titre: { fr: "", en: "" }, lieu: { fr: "", en: "" }, detail: { fr: "", en: "" }, logo: "", url: "", misEnAvant: false }), champs: [
+        { k: "periode", t: "text", l: "Période", h: "Ex. 2024 — aujourd'hui" },
+        { k: "type", t: "select", l: "Type", o: [["formation", "Formation"], ["experience", "Expérience"], ["certification", "Certification"]] },
+        { k: "titre", t: "i18n", l: "Intitulé" },
+        { k: "lieu", t: "i18n", l: "Établissement / entreprise" },
+        { k: "detail", t: "i18nArea", l: "Détail" },
+        { k: "logo", t: "media", slot: "logoParcours", l: "Logo de l'établissement", h: "PNG à fond transparent ou SVG, carré de préférence." },
+        { k: "url", t: "url", l: "Site de l'établissement (optionnel)" },
+        { k: "misEnAvant", t: "bool", l: "Mettre en avant dans « À propos »" },
+      ]},
+    ],
+  },
+  {
+    id: "cv", titre: "CV", ico: "doc", desc: "Résumé et langues. Le PDF se dépose dans « Photo & médias ».",
+    champs: [
+      { k: "cv.resume", t: "i18nArea", l: "Résumé du profil" },
+      { k: "cv.langues", t: "list", l: "Langues", item: "Langue", titreItem: (x) => x.nom?.fr, nouveau: () => ({ nom: { fr: "", en: "" }, niveau: { fr: "", en: "" } }), champs: [
+        { k: "nom", t: "i18n", l: "Langue" },
+        { k: "niveau", t: "i18n", l: "Niveau" },
+      ]},
+    ],
+  },
+  { id: "publier", titre: "Publier", ico: "rocket", desc: "Générez le site, prévisualisez-le, puis mettez-le en ligne.", special: "publier" },
+];
+
+// ============================================================
+//  État, API, utilitaires
+// ============================================================
+// Stockage navigateur : peut être bloqué (navigation privée, cadre) → jamais bloquant
+const memo = {
+  get: (store, k) => { try { return window[store].getItem(k); } catch { return null; } },
+  set: (store, k, v) => { try { window[store].setItem(k, v); } catch {} },
+};
+const state = { data: null, saved: "", ecran: "profil" };
+const ouverts = new Set();
+themeAdmin();
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, { credentials: "same-origin", ...opts });
+  const txt = await res.text();
+  let body; try { body = JSON.parse(txt); } catch { body = txt; }
+  if (res.status === 401 && !["/api/login", "/api/password"].includes(path) && state.data) {
+    // Session expirée pendant l'édition : on garde le travail en mémoire
+    ecranConnexion("connexion", "Votre session a expiré. Reconnectez-vous : vos modifications non enregistrées sont conservées.", true);
+  }
+  if (!res.ok) throw Object.assign(new Error(body?.error || `Erreur ${res.status}`), { status: res.status, details: body?.details });
+  return body;
+}
+const get = (obj, path) => path.split(".").reduce((o, k) => (o == null ? o : o[k]), obj);
+function set(obj, path, val) { const ks = path.split("."); const last = ks.pop(); ks.reduce((o, k) => (o[k] ??= {}), obj)[last] = val; }
+const isDirty = () => JSON.stringify(state.data) !== state.saved;
+
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (k === "style" && typeof v === "object") Object.assign(e.style, v);
+    else if (v === true) e.setAttribute(k, "");
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat(Infinity)) if (c != null && c !== false) e.append(c instanceof Node ? c : document.createTextNode(c));
+  return e;
+}
+function toast(msg, err = false) {
+  document.querySelector(".toast")?.remove();
+  const t = el("div", { class: "toast" + (err ? " err" : ""), role: "status" }, msg);
+  document.body.append(t); setTimeout(() => t.remove(), err ? 9000 : 3200);
+}
+const touch = () => updateStatus();
+
+// Couleur de texte lisible sur l'accent (même calcul que le site)
+function texteSur(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || ""); if (!m) return "#fff";
+  const n = parseInt(m[1], 16);
+  const lin = (c) => ((c /= 255) <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  const L = 0.2126 * lin(n >> 16) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255);
+  return 1.05 / (L + 0.05) >= (L + 0.05) / 0.05 ? "#ffffff" : "#111111";
+}
+
+// L'admin adopte l'accent, la forme et le favicon du site
+function appliquerIdentite() {
+  const ap = state.data?.site?.apparence || {};
+  const accent = /^#[0-9a-f]{6}$/i.test(ap.couleurAccent || "") ? ap.couleurAccent : "#0e7490";
+  const r = document.documentElement.style;
+  r.setProperty("--accent", accent);
+  r.setProperty("--on-accent", texteSur(accent));
+  r.setProperty("--r", (ARRONDIS[ap.arrondi] || ARRONDIS.doux)[1] === "18px" ? "12px" : (ARRONDIS[ap.arrondi] || ARRONDIS.doux)[1]);
+  const fav = state.data?.site?.favicon;
+  if (fav) document.getElementById("favicon").href = "/public/" + fav + "?v=" + Date.now();
+  const p = state.data?.profil;
+  if (p) document.title = `Administration — ${p.prenom} ${p.nom}`;
+}
+
+// Thème de l'admin : système par défaut, mémorisé si changé
+function themeAdmin(t) {
+  if (!t) { t = memo.get("localStorage", "adminTheme"); }
+  if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  document.documentElement.dataset.theme = t;
+  return t;
+}
+
+// ============================================================
+//  Champs
+// ============================================================
+function champ(f, ctx) {
+  const val = f.k ? get(ctx, f.k) : undefined;
+  const put = (v) => { set(ctx, f.k, v); touch(); };
+  const wrap = (input) => el("div", { class: "field" }, el("label", {}, f.l), input, f.h && el("div", { class: "hint" }, f.h));
+
+  switch (f.t) {
+    case "text": case "url": case "email": case "date":
+      return wrap(el("input", { type: f.t, value: val ?? "", oninput: (e) => put(e.target.value) }));
+    case "number":
+      return wrap(el("input", { type: "number", value: val ?? 0, oninput: (e) => put(Number(e.target.value)) }));
+    case "bool":
+      return el("div", { class: "field" }, el("label", { class: "switch" },
+        el("input", { type: "checkbox", checked: val !== false && val != null || (val == null && f.k.startsWith("site.sections")), onchange: (e) => put(e.target.checked) }), f.l));
+    case "select": {
+      const opts = (typeof f.o === "function" ? f.o() : f.o).map((o) => (Array.isArray(o) ? o : [o, o]));
+      return wrap(el("select", { onchange: (e) => put(e.target.value) }, opts.map(([v, l]) => el("option", { value: v, selected: v === (val ?? "") }, l))));
+    }
+    case "tags":
+      return wrap(el("input", { type: "text", value: (val || []).join(", "), oninput: (e) => put(e.target.value.split(",").map((s) => s.trim()).filter(Boolean)) }));
+    case "i18n": case "i18nArea":
+      return wrap(i18nInput(val, put, f.t === "i18nArea"));
+    case "i18nList":
+      return listeI18n(f, val || [], put);
+    case "group":
+      return el("fieldset", { class: "group" }, el("legend", {}, f.l), f.cls ? el("div", { class: f.cls }, f.champs.map((c) => champ(c, ctx))) : f.champs.map((c) => champ(c, ctx)));
+    case "media":
+      return media(f, val, put);
+    case "list":
+      return liste(f, ctx);
+  }
+}
+
+function i18nInput(val, put, area) {
+  const v = { fr: "", en: "", ...(val || {}) };
+  const mk = (lang) => {
+    const attrs = { oninput: (e) => { v[lang] = e.target.value; put({ ...v }); }, lang, "aria-label": lang === "fr" ? "Français" : "English" };
+    const input = area ? el("textarea", { rows: 3, ...attrs }, v[lang]) : el("input", { type: "text", value: v[lang], ...attrs });
+    return el("div", {}, input, el("span", { class: "flag" }, lang.toUpperCase()));
+  };
+  return el("div", { class: "i18n" }, mk("fr"), mk("en"));
+}
+
+function controles(arr, i, after) {
+  const b = (ico, title, dis, fn, cls = "") => el("button", { type: "button", class: "btn small ghost " + cls, title, "aria-label": title, disabled: dis, onclick: (e) => { e.preventDefault(); e.stopPropagation(); fn(); after(); } }, svg(ico, 15));
+  return [
+    b("up", "Monter", i === 0, () => { [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; }),
+    b("down", "Descendre", i === arr.length - 1, () => { [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]]; }),
+    el("button", { type: "button", class: "btn small ghost danger", title: "Supprimer", "aria-label": "Supprimer", onclick: (e) => { e.preventDefault(); e.stopPropagation(); if (confirm("Supprimer cet élément ?")) { arr.splice(i, 1); ouverts.clear(); after(); } } }, svg("trash", 15)),
+  ];
+}
+
+function listeI18n(f, arr, put) {
+  const box = el("div", { class: "field" }, el("div", { class: "lbl" }, f.l));
+  arr.forEach((item, i) => {
+    box.append(el("div", { class: "card", style: { padding: ".6rem .8rem .1rem" } },
+      el("div", { class: "card-head", style: { minHeight: "34px" } }, el("strong", {}, el("span", { class: "num" }, String(i + 1).padStart(2, "0")), (item.fr || "").slice(0, 60) || f.item), ...controles(arr, i, () => { put(arr); render(); })),
+      el("div", { class: "field" }, i18nInput(item, (v) => { arr[i] = v; put(arr); }, f.area))));
+  });
+  box.append(el("button", { type: "button", class: "btn small list-add", onclick: () => { arr.push({ fr: "", en: "" }); put(arr); render(); } }, `+ Ajouter : ${f.item.toLowerCase()}`));
+  return box;
+}
+
+function liste(f, ctx) {
+  let arr = get(ctx, f.k);
+  if (!Array.isArray(arr)) { arr = []; set(ctx, f.k, arr); }
+  const box = el("div", {}, el("h3", { class: "list-title" }, f.l));
+  arr.forEach((item, i) => {
+    const cle = f.k + ":" + i;
+    const nom = f.titreItem?.(item);
+    box.append(el("details", { class: "card", open: ouverts.has(cle), ontoggle: (e) => (e.target.open ? ouverts.add(cle) : ouverts.delete(cle)) },
+      el("summary", { class: "card-head" }, svg("chev", 16), el("strong", {}, el("span", { class: "num" }, String(i + 1).padStart(2, "0")), nom || `${f.item} sans titre`), ...controles(arr, i, () => { touch(); render(); })),
+      f.champs.map((c) => champ(c, item))));
+  });
+  box.append(el("button", { type: "button", class: "btn small list-add", onclick: () => { arr.push(f.nouveau()); ouverts.add(f.k + ":" + (arr.length - 1)); touch(); render(); } }, `+ Ajouter : ${f.item.toLowerCase()}`));
+  return box;
+}
+
+function media(f, val, put) {
+  const thumb = el("div", { class: "thumb" + (f.photo ? " photo" : "") });
+  const chemin = el("code", {});
+  const apercu = (p) => {
+    thumb.innerHTML = ""; thumb.classList.toggle("has", !!p);
+    chemin.textContent = p ? "public/" + p : "Aucun fichier";
+    if (!p) thumb.append("vide");
+    else if (f.pdf || p.endsWith(".pdf")) thumb.append("PDF");
+    else thumb.append(el("img", { src: "/public/" + p + "?v=" + Date.now(), alt: "" }));
+  };
+  apercu(val);
+  const file = el("input", { type: "file", hidden: true, accept: f.pdf ? ".pdf,application/pdf" : "image/*,.ico,.svg", onchange: async (e) => {
+    const fi = e.target.files[0]; if (!fi) return;
+    try {
+      const r = await api(`/api/upload?slot=${f.slot}&name=${encodeURIComponent(fi.name)}`, { method: "POST", body: fi });
+      put(r.path); apercu(r.path);
+      if (f.slot === "favicon") appliquerIdentite();
+      toast("Fichier envoyé. Pensez à enregistrer.");
+    } catch (err) { toast(err.message, true); }
+    e.target.value = "";
+  }});
+  return el("div", { class: "field" }, el("div", { class: "lbl" }, f.l),
+    el("div", { class: "media" }, thumb, el("div", {},
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", onclick: () => file.click() }, val ? "Remplacer…" : "Choisir un fichier…"),
+        val && el("button", { type: "button", class: "btn ghost danger", onclick: () => { put(""); render(); } }, "Retirer")),
+      el("div", { class: "hint" }, chemin), f.h && el("div", { class: "hint" }, f.h), file)));
+}
+
+// ============================================================
+//  Écran Apparence
+// ============================================================
+function ecranApparence() {
+  const d = state.data;
+  d.site.apparence ??= { couleurAccent: "#0e7490", police: "technique", arrondi: "doux", photoAccueil: true };
+  const ap = d.site.apparence;
+  const maj = () => { touch(); appliquerIdentite(); majApercu(); };
+
+  // Aperçu clair / sombre
+  const pv = (cls) => el("div", { class: "pv " + cls },
+    el("span", { class: "k" }, el("b", {}, "01"), "  ", d.profil.localisation?.fr || ""),
+    el("h3", {}, `${d.profil.prenom} ${d.profil.nom}`),
+    el("p", {}, el("strong", {}, d.profil.role?.fr || ""), " · ", (d.profil.specialites || []).slice(0, 2).map((s) => s.fr).join(" · ")),
+    el("div", { class: "b" }, el("span", {}, "Voir mes projets"), el("span", {}, "Me contacter")));
+  const apercu = el("div", { class: "preview", "aria-label": "Aperçu" }, pv("light"), pv("dark"));
+  function majApercu() {
+    const p = POLICES[ap.police] || POLICES.technique;
+    Object.entries({ "--pv-accent": ap.couleurAccent, "--pv-on": texteSur(ap.couleurAccent), "--pv-display": p.display, "--pv-body": p.body, "--pv-r": (ARRONDIS[ap.arrondi] || ARRONDIS.doux)[1] })
+      .forEach(([k, v]) => apercu.style.setProperty(k, v));
+  }
+  majApercu();
+
+  // Couleur
+  const hex = el("input", { type: "text", value: ap.couleurAccent, maxlength: 7, "aria-label": "Code couleur", oninput: (e) => {
+    const v = e.target.value.trim(); if (/^#[0-9a-f]{6}$/i.test(v)) { ap.couleurAccent = v.toLowerCase(); picker.value = ap.couleurAccent; majSwatches(); maj(); } } });
+  const picker = el("input", { type: "color", value: ap.couleurAccent, "aria-label": "Choisir une couleur", oninput: (e) => { ap.couleurAccent = e.target.value; hex.value = e.target.value; majSwatches(); maj(); } });
+  const swatches = COULEURS.map(([c, nom]) => el("button", { type: "button", class: "swatch", title: nom, "aria-label": nom, style: { background: c }, onclick: () => { ap.couleurAccent = c; hex.value = c; picker.value = c; majSwatches(); maj(); } }));
+  const majSwatches = () => swatches.forEach((s, i) => s.classList.toggle("on", COULEURS[i][0] === ap.couleurAccent.toLowerCase()));
+  majSwatches();
+
+  const choix = (obj, cle, rendu) => el("div", { class: "choices", role: "radiogroup" }, Object.entries(obj).map(([k, v]) =>
+    el("button", { type: "button", role: "radio", "aria-checked": String(ap[cle] === k), class: "choice" + (ap[cle] === k ? " on" : ""), onclick: () => { ap[cle] = k; maj(); render(); } }, rendu(k, v))));
+
+  const themeSel = el("select", { onchange: (e) => { d.site.themeParDefaut = e.target.value; touch(); } },
+    [["dark", "Sombre"], ["light", "Clair"]].map(([v, l]) => el("option", { value: v, selected: (d.site.themeParDefaut || "dark") === v }, l)));
+
+  return el("div", {},
+    apercu,
+    el("fieldset", { class: "group" }, el("legend", {}, "Couleur principale"),
+      el("div", { class: "field" }, el("div", { class: "swatches" }, swatches, el("span", { class: "color-input" }, picker, hex)),
+        el("div", { class: "hint" }, "Utilisée pour les boutons, liens et détails. Le texte des boutons passe automatiquement en blanc ou noir pour rester lisible."))),
+    el("fieldset", { class: "group" }, el("legend", {}, "Typographie"),
+      el("div", { class: "field" }, choix(POLICES, "police", (k, v) => [el("span", { class: "sample", style: { fontFamily: v.display } }, "Aa Ingénieur"), el("b", {}, v.l), el("small", {}, v.d)]))),
+    el("fieldset", { class: "group" }, el("legend", {}, "Forme des éléments"),
+      el("div", { class: "field" }, choix(ARRONDIS, "arrondi", (k, [l, r]) => [el("span", { class: "shape", style: { borderRadius: r } }), el("b", {}, l)]))),
+    el("fieldset", { class: "group" }, el("legend", {}, "Mise en page"),
+      el("div", { class: "field" }, el("label", {}, "Thème par défaut"), themeSel, el("div", { class: "hint" }, "Le visiteur peut toujours changer avec le bouton soleil/lune ; son choix est mémorisé.")),
+      el("div", { class: "field" }, el("label", { class: "switch" }, el("input", { type: "checkbox", checked: ap.photoAccueil !== false, onchange: (e) => { ap.photoAccueil = e.target.checked; touch(); } }), "Afficher ma photo sur la page d'accueil"))),
+  );
+}
+
+// ============================================================
+//  Écran Publier
+// ============================================================
+function ecranPublier() {
+  const log = el("pre", { class: "log", hidden: true });
+  const bkSel = el("select", {}, el("option", { value: "" }, "Chargement…"));
+  api("/api/backups").then((l) => { bkSel.innerHTML = ""; (l.length ? l : [""]).forEach((f) => bkSel.append(el("option", { value: f }, f ? f.replace(/^content-|\.json$/g, "").replace(/T(\d\d)-(\d\d)-(\d\d).*$/, " à $1:$2:$3") : "Aucune sauvegarde"))); }).catch(() => {});
+  return el("div", { class: "steps" },
+    el("fieldset", { class: "group" }, el("legend", {}, "1 · Générer et vérifier"),
+      el("p", { class: "hint", style: { marginTop: 0 } }, "Enregistre, construit le site (dossier dist/) puis permet de l'ouvrir tel qu'il sera en ligne."),
+      el("div", { class: "row", style: { margin: ".8rem 0 1rem" } },
+        el("button", { type: "button", class: "btn primary", onclick: (e) => publier(e.currentTarget, log) }, "Enregistrer et générer"),
+        el("a", { class: "btn", href: "/preview/", target: "_blank", rel: "noopener" }, "Ouvrir l'aperçu", svg("ext", 15))),
+      log),
+    el("fieldset", { class: "group" }, el("legend", {}, "2 · Mettre en ligne"),
+      el("p", { class: "hint", style: { marginTop: 0 } }, "Dans un terminal, à la racine du projet :"),
+      el("pre", { class: "log" }, 'git add -A\ngit commit -m "Mise à jour du contenu"\ngit push'),
+      el("p", { class: "hint" }, "GitHub Actions (ou Vercel) reconstruit et publie le site automatiquement.")),
+    el("fieldset", { class: "group" }, el("legend", {}, "Sauvegardes"),
+      el("p", { class: "hint", style: { marginTop: 0 } }, "Chaque enregistrement conserve la version précédente (30 dernières)."),
+      el("div", { class: "row", style: { margin: ".8rem 0 1rem", flexWrap: "nowrap" } }, bkSel,
+        el("button", { type: "button", class: "btn", onclick: async () => {
+          if (!bkSel.value || !confirm("Restaurer cette version ? Les modifications non enregistrées seront perdues.")) return;
+          try { await api("/api/restore?file=" + encodeURIComponent(bkSel.value), { method: "POST" }); await charger(); toast("Version restaurée."); } catch (e) { toast(e.message, true); }
+        }}, "Restaurer"))));
+}
+
+async function enregistrer() {
+  try {
+    await api("/api/content", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(state.data) });
+    state.saved = JSON.stringify(state.data); updateStatus(); toast("Modifications enregistrées.");
+    return true;
+  } catch (e) { toast(e.message + (e.details ? "\n• " + e.details.join("\n• ") : ""), true); return false; }
+}
+
+async function publier(btn, log) {
+  const txt = btn.textContent;
+  btn.disabled = true; btn.textContent = "Génération en cours…";
+  try {
+    if (isDirty() && !(await enregistrer())) return;
+    const r = await api("/api/build", { method: "POST" });
+    log.hidden = false; log.textContent = r.log;
+    toast(r.ok ? "Site généré. Ouvrez l'aperçu." : "La génération a échoué : voir le journal.", !r.ok);
+  } catch (e) { toast(e.message, true); }
+  finally { btn.disabled = false; btn.textContent = txt; }
+}
+
+// ============================================================
+//  Mise en page
+// ============================================================
+let statusEl;
+function updateStatus() {
+  if (!statusEl) return;
+  const d = isDirty();
+  statusEl.textContent = d ? "Non enregistré" : "Enregistré";
+  statusEl.className = "status" + (d ? " dirty" : "");
+}
+
+function render() {
+  const root = document.getElementById("root");
+  const scroll = window.scrollY;
+  const ecran = ECRANS.find((e) => e.id === state.ecran) || ECRANS[0];
+  const p = state.data.profil;
+  const fav = state.data.site?.favicon;
+  statusEl = el("span", { class: "status", role: "status" });
+  const theme = document.documentElement.dataset.theme;
+
+  root.innerHTML = "";
+  root.append(el("div", { class: "app" },
+    el("aside", { class: "side" },
+      el("a", { class: "brand", href: "/preview/", target: "_blank", rel: "noopener", title: "Voir le site" },
+        fav && el("img", { src: "/public/" + fav, alt: "" }),
+        el("span", {}, el("b", {}, `${p.prenom} ${p.nom}`), el("small", {}, "Administration du portfolio"))),
+      el("nav", { "aria-label": "Sections de l'administration" }, MENU.map((g) => el("div", { class: "nav-group" }, el("p", {}, g.groupe),
+        g.ecrans.map((id) => { const e = ECRANS.find((x) => x.id === id); return el("button", { type: "button", class: "nav-btn" + (e.id === ecran.id ? " active" : ""), "aria-current": e.id === ecran.id ? "page" : false, onclick: () => { state.ecran = e.id; history.replaceState(null, "", "#" + e.id); render(); window.scrollTo(0, 0); } }, svg(e.ico), e.titre); })))),
+      el("div", { class: "side-foot" },
+        el("button", { type: "button", class: "icon-btn", title: "Thème de l'administration", "aria-label": "Changer le thème de l'administration", onclick: () => { const t = theme === "dark" ? "light" : "dark"; memo.set("localStorage", "adminTheme", t); themeAdmin(t); render(); } }, svg(theme === "dark" ? "sun" : "moon")),
+        el("a", { class: "btn ghost small", href: "/preview/", target: "_blank", rel: "noopener" }, "Voir le site", svg("ext", 14)),
+        el("button", { type: "button", class: "icon-btn", title: "Se déconnecter", "aria-label": "Se déconnecter", onclick: deconnexion }, svg("logout")))),
+    el("main", {},
+      el("div", { class: "topbar" }, el("h2", {}, ecran.titre), statusEl,
+        el("button", { type: "button", class: "btn ghost", onclick: () => { if (!isDirty() || confirm("Annuler les modifications non enregistrées ?")) charger(); } }, "Annuler"),
+        el("button", { type: "button", class: "btn primary", onclick: enregistrer, title: "Ctrl + S" }, "Enregistrer")),
+      el("div", { class: "content" },
+        el("p", { class: "desc" }, ecran.desc),
+        ecran.special === "publier" ? ecranPublier() : ecran.special === "apparence" ? ecranApparence() : ecran.champs.map((f) => champ(f, state.data)),
+        ecran.id === "general" && ecranSecurite()))));
+  updateStatus();
+  window.scrollTo(0, scroll);
+}
+
+async function charger() {
+  state.data = await api("/api/content");
+  state.saved = JSON.stringify(state.data);
+  appliquerIdentite();
+  render();
+}
+
+// ============================================================
+//  Connexion
+// ============================================================
+let brand = null;
+async function chargerBrand() {
+  if (brand) return brand;
+  try { brand = await (await fetch("/api/branding")).json(); } catch { brand = {}; }
+  if (/^#[0-9a-f]{6}$/i.test(brand.accent || "")) {
+    document.documentElement.style.setProperty("--accent", brand.accent);
+    document.documentElement.style.setProperty("--on-accent", texteSur(brand.accent));
+  }
+  if (brand.favicon) document.getElementById("favicon").href = "/public/" + brand.favicon;
+  return brand;
+}
+
+function champMdp(label, autocomplete) {
+  const input = el("input", { type: "password", autocomplete, required: true, minlength: autocomplete === "new-password" ? 10 : null, maxlength: 200 });
+  const voir = el("button", { type: "button", class: "btn ghost small mdp-voir", "aria-label": "Afficher le mot de passe", onclick: () => {
+    const v = input.type === "password"; input.type = v ? "text" : "password"; voir.textContent = v ? "Masquer" : "Afficher"; } }, "Afficher");
+  return { input, node: el("div", { class: "field" }, el("label", {}, label), el("div", { class: "mdp" }, input, voir)) };
+}
+
+async function ecranConnexion(mode, msg = "", garderDonnees = false) {
+  const b = await chargerBrand();
+  document.title = "Connexion — Administration";
+  const creation = mode === "creation";
+  const m1 = champMdp(creation ? "Choisissez un mot de passe" : "Mot de passe", creation ? "new-password" : "current-password");
+  const m2 = creation && champMdp("Confirmez le mot de passe", "new-password");
+  const note = el("p", { class: "login-note", role: "alert" }, msg);
+  const bouton = el("button", { class: "btn primary login-btn" }, creation ? "Créer et entrer" : "Se connecter");
+  const root = document.getElementById("root");
+  root.innerHTML = "";
+  root.append(el("div", { class: "login-wrap" },
+    el("form", { class: "login", onsubmit: async (e) => {
+      e.preventDefault();
+      const mdp = m1.input.value;
+      if (creation && mdp.length < 10) { note.textContent = "Au moins 10 caractères."; return; }
+      if (creation && mdp !== m2.input.value) { note.textContent = "Les deux mots de passe ne correspondent pas."; return; }
+      bouton.disabled = true; note.textContent = "";
+      try {
+        await api(creation ? "/api/setup" : "/api/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ motDePasse: mdp }) });
+        if (garderDonnees && state.data) { appliquerIdentite(); render(); toast("Reconnecté."); }
+        else await demarrer();
+      } catch (err) { note.textContent = err.message; m1.input.select(); }
+      finally { bouton.disabled = false; }
+    } },
+      el("div", { class: "login-head" },
+        b.favicon && el("img", { src: "/public/" + b.favicon, alt: "", width: 44, height: 44 }),
+        el("div", {}, el("p", { class: "login-kicker" }, "Administration"), el("h1", {}, b.nom || "Portfolio"))),
+      el("p", { class: "hint login-intro" }, creation
+        ? "Première connexion : créez le mot de passe qui protégera cette administration. Il est enregistré haché sur cet ordinateur uniquement."
+        : "Entrez votre mot de passe pour modifier le portfolio."),
+      m1.node, m2 && m2.node, note, bouton,
+      el("p", { class: "hint login-foot" }, creation ? "10 caractères minimum. Une phrase courte est idéale." : "Mot de passe oublié : arrêtez l'admin puis lancez « npm run admin -- --reset-password »."))));
+  m1.input.focus();
+}
+
+async function deconnexion() {
+  if (isDirty() && !confirm("Des modifications ne sont pas enregistrées. Se déconnecter quand même ?")) return;
+  try { await api("/api/logout", { method: "POST" }); } catch {}
+  state.data = null;
+  ecranConnexion("connexion", "Vous êtes déconnecté.");
+}
+
+function ecranSecurite() {
+  const a = champMdp("Mot de passe actuel", "current-password");
+  const n = champMdp("Nouveau mot de passe (10 caractères min.)", "new-password");
+  const c = champMdp("Confirmer le nouveau mot de passe", "new-password");
+  return el("fieldset", { class: "group" }, el("legend", {}, "Sécurité de l'administration"),
+    el("form", { onsubmit: async (e) => {
+      e.preventDefault();
+      if (n.input.value !== c.input.value) return toast("Les deux nouveaux mots de passe ne correspondent pas.", true);
+      try {
+        await api("/api/password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ancien: a.input.value, nouveau: n.input.value }) });
+        e.target.reset(); toast("Mot de passe modifié.");
+      } catch (err) { toast(err.message, true); }
+    } }, a.node, n.node, c.node, el("div", { class: "field" }, el("button", { class: "btn" }, "Changer le mot de passe"))));
+}
+
+async function demarrer() {
+  const h = location.hash.slice(1);
+  state.ecran = ECRANS.some((e) => e.id === h) ? h : "profil";
+  let sess;
+  try { sess = await api("/api/session"); } catch (e) { return toast("Admin injoignable : " + e.message, true); }
+  if (!sess.configure) return ecranConnexion("creation");
+  if (!sess.connecte) return ecranConnexion("connexion");
+  try { await charger(); }
+  catch (e) { if (e.status !== 401) toast(e.message, true); }
+}
+
+window.addEventListener("beforeunload", (e) => { if (state.data && isDirty()) { e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); enregistrer(); } });
+demarrer();
+</script>
+</body>
+</html>

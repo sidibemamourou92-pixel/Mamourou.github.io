@@ -1,18 +1,29 @@
 // Synchronise le build (dist/) vers la racine du projet afin que
 // l'ouverture directe de index.html affiche le vrai site (pas une redirection).
-import { cp, mkdir, readdir, lstat, rm } from 'node:fs/promises';
-import { join, dirname } from 'node:path';
-import { existsSync } from 'node:fs';
+import { cp, mkdir, readdir, lstat, rm } from "node:fs/promises";
+import { join, dirname } from "node:path";
+import { existsSync } from "node:fs";
 
 const root = process.cwd();
-const dist = join(root, 'dist');
-if (!existsSync(join(dist, 'index.html'))) {
-  console.error('❌ dist/index.html introuvable — lancez `npm run build` d’abord.');
+const dist = join(root, "dist");
+if (!existsSync(join(dist, "index.html"))) {
+  console.error(
+    "❌ dist/index.html introuvable — lancez `npm run build` d’abord.",
+  );
   process.exit(1);
 }
 
 // Éléments à synchroniser depuis dist/ vers la racine
-const items = ['index.html', 'favicon.svg', '404.html', 'css', 'js', 'logo-tangade.png', 'logo-tangade.webp', 'cv-photo.jpg', 'cv-photo.webp'];
+const items = [
+  "index.html",
+  "404.html",
+  "robots.txt",
+  "sitemap.xml",
+  "css",
+  "js",
+  "images",
+  "fonts",
+];
 
 async function copyTree(src, dst) {
   await mkdir(dst, { recursive: true });
@@ -42,5 +53,7 @@ for (const name of items) {
   }
 }
 
-console.log('✅ Site synchronisé vers la racine : index.html, favicon.svg, css/, js/, logo.');
-console.log('   Ouvrez « index.html » pour voir le portfolio directement.');
+console.log(
+  "✅ Site synchronisé vers la racine : index.html, 404.html, images/…",
+);
+console.log("   Ouvrez « index.html » pour voir le portfolio directement.");

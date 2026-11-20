@@ -1,29 +1,32 @@
 ---
-import { competences } from '../data/site.js';
+import { competences, numeroSection } from '../data/site.js';
+import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
 ---
 
-<section class="section container" id="competences">
-  <div class="section-head reveal">
-    <p class="section-eyebrow" data-i18n data-fr="Compétences" data-en="Skills">Compétences</p>
-    <h2 class="section-title" data-i18n data-fr="Domaines maîtrisés" data-en="Core skills">Domaines maîtrisés</h2>
-    <p class="section-subtitle" data-i18n data-fr="Outils et technologies utilisés au quotidien." data-en="Tools and technologies I use every day.">Outils et technologies utilisés au quotidien.</p>
-  </div>
+<section class="section" id="competences">
+  <div class="container">
+    <SectionHead
+      num={numeroSection('competences')}
+      label={{ fr: 'Compétences', en: 'Skills' }}
+      titre={{ fr: 'Ce que je maîtrise', en: 'What I work with' }}
+    />
 
-  <div class="skills-grid">
-    {competences.map(g => (
-      <article class="skill-card reveal">
-        <div class="skill-head">
-          <Icon name={g.icone} size={20} />
-          <h3 data-i18n data-fr={g.domaine.fr} data-en={g.domaine.en}>{g.domaine.fr}</h3>
-          <span class="skill-level" data-i18n data-fr={g.niveau.fr} data-en={g.niveau.en}>{g.niveau.fr}</span>
-        </div>
-        <ul class="skill-tags">
-          {g.tags.map(t => (
-            <li>{t}</li>
-          ))}
-        </ul>
-      </article>
-    ))}
+    <ul class="skills">
+      {competences.map(g => (
+        <li class="skill reveal">
+          <div class="skill-head">
+            <span class="skill-ico"><Icon name={g.icone} size={20} /></span>
+            <div>
+              <h3 data-i18n data-fr={g.domaine.fr} data-en={g.domaine.en}>{g.domaine.fr}</h3>
+              <p class="skill-level" data-i18n data-fr={g.niveau.fr} data-en={g.niveau.en}>{g.niveau.fr}</p>
+            </div>
+          </div>
+          <ul class="tag-list">
+            {g.tags.map(t => <li>{t}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ul>
   </div>
 </section>

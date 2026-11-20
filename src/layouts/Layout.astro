@@ -1,23 +1,31 @@
 ---
-import { profil, deploiement } from '../data/site.js';
+import { profil, site, reseaux, asset, absolu, cssApparence, couleurAccent } from '../data/site.js';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BackToTop from '../components/BackToTop.astro';
 
-// CSS et JS globaux incorporés au build : le site est 100 % autonome.
-// On utilise les versions MINIFIÉES (scripts/optimize.mjs → .build/) si présentes,
-// sinon les sources (mode dev). Résultat : un seul HTML allégé.
+// CSS et JS incorporés au build (versions minifiées de .build/ si présentes) :
+// le site tient dans un seul fichier HTML + images + polices.
+// En développement on lit toujours les sources (relues à chaque requête).
 function readAsset(rel) {
   const min = join(process.cwd(), '.build', rel);
   const src = join(process.cwd(), 'public', rel);
-  const p = existsSync(min) ? min : src;
+  const p = !import.meta.env.DEV && existsSync(min) ? min : src;
   if (!existsSync(p)) throw new Error(`Asset introuvable : ${p}`);
   return readFileSync(p, 'utf8');
 }
-const globalCss = readAsset('css/global.css');
-const mainJs = readAsset('js/main.js').replace(/^\uFEFF/, '');
+const globalCss = readAsset('css/global.css') + cssApparence;
+const mainJs = readAsset('js/main.js').replace(/^﻿/, '');
+
+// Script de tête : thème/langue mémorisés avant l'affichage (évite le flash)
+const headJs = "(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')d.setAttribute('data-theme',t);var l=localStorage.getItem('lang');if(l==='fr'||l==='en')d.setAttribute('lang',l)}catch(e){}setTimeout(function(){if(!document.querySelector('.reveal.is-in'))document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('is-in')})},1500)})();";
+
+// Politique de sécurité du contenu (CSP) : seuls NOS scripts/styles (empreintes
+// SHA-256) peuvent s'exécuter ; le formulaire ne peut joindre que FormSubmit/Web3Forms.
+const sha = (txt) => `'sha256-${createHash('sha256').update(txt, 'utf8').digest('base64')}'`;
 
 const { title: pageTitle, description: pageDescription } = Astro.props;
 const nomPrenom = `${profil.prenom} ${profil.nom}`;
@@ -28,79 +36,74 @@ const page = {
   description: pageDescription?.fr ?? profil.accroche.fr,
   descriptionEn: pageDescription?.en ?? profil.accroche.en,
 };
-const canonical = deploiement.url.replace(/\/$/, '') + '/';
+const canonical = site.url.replace(/\/$/, '') + '/';
+const ogImage = absolu(site.imagePartage || profil.photo);
+const favicon = asset(site.favicon);
+const faviconType = { svg: 'image/svg+xml', png: 'image/png', ico: 'image/x-icon', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' }[(site.favicon.split('.').pop() || '').toLowerCase()] ?? 'image/png';
+const themeDefaut = site.themeParDefaut === 'light' ? 'light' : 'dark';
+const langueDefaut = site.langueParDefaut === 'en' ? 'en' : 'fr';
+const csp = [
+  "default-src 'self'",
+  `script-src ${sha(headJs)} ${sha(mainJs)}`,
+  `style-src ${sha(globalCss)}`,
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src https://formsubmit.co https://api.web3forms.com",
+  "form-action 'self' mailto:",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join('; ');
+// JSON-LD : « < » échappé pour qu'aucun texte ne puisse fermer la balise <script>
+const jsonLd = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
-<html lang="fr" data-theme="dark">
+<html lang={langueDefaut} data-theme={themeDefaut} data-default-lang={langueDefaut}>
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title data-i18n data-fr={page.title} data-en={page.titleEn}>{page.title}</title>
     <meta name="description" content={page.description} data-fr-description={page.description} data-en-description={page.descriptionEn} />
     <meta name="author" content={nomPrenom} />
-    <meta name="generator" content="Astro — Portfolio 4.0" />
-    <meta name="theme-color" content="#0b1220" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="theme-color" content={couleurAccent} />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" type={faviconType} href={favicon} />
+    <link rel="apple-touch-icon" href={favicon} />
     <link rel="canonical" href={canonical} />
     <meta name="robots" content="index, follow" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="profile" />
     <meta property="og:title" content={page.title} />
     <meta property="og:description" content={page.description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={deploiement.ogImage} />
-    <meta property="og:locale" content="fr_FR" />
-    <meta name="geo.region" content="ML" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={langueDefaut === 'en' ? 'en_US' : 'fr_FR'} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={page.title} />
     <meta name="twitter:description" content={page.description} />
-    <meta name="twitter:image" content={deploiement.ogImage} />
+    <meta name="twitter:image" content={ogImage} />
 
-    <!-- JSON-LD : données structurées pour le référencement -->
-    <script type="application/ld+json" set:html={JSON.stringify({
+    <script type="application/ld+json" set:html={jsonLd({
       '@context': 'https://schema.org',
       '@type': 'Person',
       name: nomPrenom,
       jobTitle: profil.role.fr,
       url: canonical,
-      email: 'mailto:' + profil.email,
-      image: deploiement.ogImage,
-      sameAs: [
-        'https://github.com/sidibemamourou92-pixel',
-        'https://www.linkedin.com/in/sidib%C3%A9-mamourou-36848233a',
-      ],
-      address: { '@type': 'PostalAddress', addressLocality: 'Bamako', addressCountry: 'ML' },
+      email: profil.email ? 'mailto:' + profil.email : undefined,
+      image: ogImage,
+      sameAs: reseaux.filter(r => r.url.startsWith('http')).map(r => r.url),
+      address: { '@type': 'PostalAddress', addressLocality: profil.ville, addressCountry: profil.pays },
       knowsLanguage: ['fr', 'en'],
     })}></script>
 
-    <!-- CSS global incorporé au build -->
     <style is:inline set:html={globalCss}></style>
 
-    <!-- Détection JS + thème + langue + filet de sécurité anti-page-vide -->
-    <script is:inline>
-      (function () {
-        document.documentElement.classList.add('js');
-        try {
-          var t = localStorage.getItem('theme');
-          document.documentElement.setAttribute('data-theme', t ? t : 'dark');
-          var lang = localStorage.getItem('lang');
-          if (lang) document.documentElement.setAttribute('lang', lang);
-        } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
-        setTimeout(function () {
-          try {
-            var hidden = document.querySelectorAll('.reveal:not(.is-in)');
-            if (hidden.length && !document.querySelector('.reveal.is-in')) {
-              hidden.forEach(function (el) { el.classList.add('is-in'); });
-            }
-          } catch (e) {}
-        }, 1500);
-      })();
-    </script>
+    <script is:inline set:html={headJs}></script>
   </head>
   <body>
-    <a class="skip-link" href="#accueil">Aller au contenu</a>
+    <a class="skip-link" href="#contenu" data-i18n data-fr="Aller au contenu" data-en="Skip to content">Aller au contenu</a>
     <Header monogram={monogram} nomPrenom={nomPrenom} />
     <main id="contenu">
       <slot />

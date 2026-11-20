@@ -8,12 +8,22 @@ dist/
 # Sortie de build synchronisée à la racine (ouverture directe « double-clic »)
 /index.html
 /404.html
+/robots.txt
+/sitemap.xml
 /favicon.svg
+/images/
+/fonts/
 /css/
 /js/
 
 # Versions minifiées générées par scripts/optimize.mjs
 .build/
+
+# Sauvegardes automatiques de l'admin
+.admin-backups/
+
+# Mot de passe haché de l'admin (local uniquement)
+.admin-secret.json
 
 # Fichiers de l'environnement local
 .env

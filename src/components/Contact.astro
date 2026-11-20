@@ -1,67 +1,85 @@
 ---
-import { profil, reseaux } from '../data/site.js';
+import { profil, reseaux, site, numeroSection } from '../data/site.js';
+import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
+const tel = profil.telephone ? profil.telephone.replace(/\D/g, '') : '';
+const sociaux = reseaux.filter(r => r.icone !== 'mail');
+// Service d'envoi du formulaire (réglable dans l'admin → Paramètres)
+const form = site.formulaire ?? { service: 'formsubmit' };
+const service = form.service === 'web3forms' && form.cleWeb3forms ? 'web3forms' : form.service === 'mailto' ? 'mailto' : 'formsubmit';
+const endpoint = service === 'web3forms'
+  ? 'https://api.web3forms.com/submit'
+  : service === 'formsubmit' ? `https://formsubmit.co/ajax/${profil.email}` : '';
 ---
 
-<section class="section container" id="contact">
-  <div class="section-head reveal">
-    <p class="section-eyebrow" data-i18n data-fr="Contact" data-en="Contact">Contact</p>
-    <h2 class="section-title" data-i18n data-fr="Travaillons ensemble" data-en="Let’s work together">Travaillons ensemble</h2>
-    <p class="section-subtitle" data-i18n data-fr="Un projet, une question, une collaboration ? Écrivez-moi." data-en="A project, a question, a collaboration? Write to me.">Un projet, une question, une collaboration ? Écrivez-moi.</p>
-  </div>
+<section class="section" id="contact">
+  <div class="container">
+    <SectionHead
+      num={numeroSection('contact')}
+      label={{ fr: 'Contact', en: 'Contact' }}
+      titre={{ fr: 'Un projet ? Parlons-en.', en: 'Have a project? Let’s talk.' }}
+    />
 
-  <div class="contact-grid">
-    <div class="contact-infos reveal">
-      <p data-i18n data-fr="Je réponds généralement sous 24 h. Choisissez le canal qui vous convient." data-en="I usually reply within 24 hours. Choose the channel you prefer.">Je réponds généralement sous 24 h. Choisissez le canal qui vous convient.</p>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p data-i18n data-fr="Je réponds généralement sous 24 h. Écrivez-moi directement ou utilisez le formulaire." data-en="I usually reply within 24 hours. Email me directly or use the form.">Je réponds généralement sous 24 h. Écrivez-moi directement ou utilisez le formulaire.</p>
 
-      <ul class="contact-list">
-        <li class="contact-row">
-          <span class="c-ico"><Icon name="mail" size={18} /></span>
-          <div>
-            <strong data-i18n data-fr="Email" data-en="Email">Email</strong>
-            <a href={`mailto:${profil.email}`}>{profil.email}</a>
-          </div>
-        </li>
-        <li class="contact-row">
-          <span class="c-ico"><Icon name="pin" size={18} /></span>
-          <div>
-            <strong data-i18n data-fr="Localisation" data-en="Location">Localisation</strong>
-            <span data-i18n data-fr={`${profil.localisation.fr} — disponible à distance`} data-en={`${profil.localisation.en} — remote friendly`}>{profil.localisation.fr} — disponible à distance</span>
-          </div>
-        </li>
-      </ul>
-
-      <div class="contact-socials">
-        {reseaux.map(r => (
-          <a href={r.url} target="_blank" rel="noopener noreferrer" aria-label={r.nom} title={r.nom}>
-            <Icon name={r.icone} size={20} />
+        {profil.email && (
+          <a class="contact-mail" href={`mailto:${profil.email}`}>
+            {profil.email}
+            <Icon name="arrowRight" size={20} />
           </a>
-        ))}
-      </div>
-    </div>
+        )}
 
-    <form class="contact-form reveal" data-contact-form data-email={profil.email} novalidate>
-      <div class="field">
-        <label for="cf-nom" data-i18n data-fr="Nom" data-en="Name">Nom</label>
-        <input id="cf-nom" name="nom" type="text" placeholder="Votre nom" required minlength="2" data-ph-fr="Votre nom" data-ph-en="Your name" />
+        <ul class="contact-list">
+          {tel && (
+            <li>
+              <Icon name="whatsapp" size={16} />
+              <a href={`https://wa.me/${tel}`} target="_blank" rel="noopener noreferrer">{profil.telephone}</a>
+            </li>
+          )}
+          <li>
+            <Icon name="pin" size={16} />
+            <span data-i18n data-fr={`${profil.localisation.fr} — missions à distance possibles`} data-en={`${profil.localisation.en} — remote work welcome`}>{profil.localisation.fr} — missions à distance possibles</span>
+          </li>
+          {sociaux.map(r => (
+            <li>
+              <Icon name={r.icone} size={16} />
+              <a href={r.url} target="_blank" rel="noopener noreferrer">{r.nom}</a>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div class="field">
-        <label for="cf-email" data-i18n data-fr="Email" data-en="Email">Email</label>
-        <input id="cf-email" name="email" type="email" placeholder="vous@exemple.com" required data-ph-fr="vous@exemple.com" data-ph-en="you@example.com" />
-      </div>
-      <div class="field">
-        <label for="cf-sujet" data-i18n data-fr="Sujet" data-en="Subject">Sujet</label>
-        <input id="cf-sujet" name="sujet" type="text" placeholder="Un projet, une question…" data-ph-fr="Un projet, une question…" data-ph-en="A project, a question…" />
-      </div>
-      <div class="field">
-        <label for="cf-msg" data-i18n data-fr="Message" data-en="Message">Message</label>
-        <textarea id="cf-msg" name="message" rows="5" placeholder="Décrivez votre besoin…" required minlength="10" data-ph-fr="Décrivez votre besoin…" data-ph-en="Describe your need…"></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary btn-lg" data-submit-btn>
-        <Icon name="mail" size={18} />
-        <span data-i18n data-fr="Envoyer le message" data-en="Send message">Envoyer le message</span>
-      </button>
-      <p class="form-note" data-form-note role="status" aria-live="polite"></p>
-    </form>
+
+      {profil.email && (
+        <form class="contact-form reveal" data-contact-form data-email={profil.email} data-service={service} data-endpoint={endpoint} data-key={service === 'web3forms' ? form.cleWeb3forms : undefined} data-site={`${profil.prenom} ${profil.nom}`} novalidate>
+          <!-- Piège à robots : invisible pour les humains -->
+          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="field-row">
+            <div class="field">
+              <label for="cf-nom" data-i18n data-fr="Nom" data-en="Name">Nom</label>
+              <input id="cf-nom" name="nom" type="text" autocomplete="name" required minlength="2" />
+            </div>
+            <div class="field">
+              <label for="cf-email" data-i18n data-fr="Email" data-en="Email">Email</label>
+              <input id="cf-email" name="email" type="email" autocomplete="email" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="cf-sujet" data-i18n data-fr="Sujet" data-en="Subject">Sujet</label>
+            <input id="cf-sujet" name="sujet" type="text" />
+          </div>
+          <div class="field">
+            <label for="cf-msg" data-i18n data-fr="Message" data-en="Message">Message</label>
+            <textarea id="cf-msg" name="message" rows="5" required minlength="10" placeholder="Décrivez votre besoin…" data-ph-fr="Décrivez votre besoin…" data-ph-en="Describe what you need…"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" data-submit-btn>
+            <span data-i18n data-fr="Envoyer" data-en="Send">Envoyer</span>
+            <Icon name="arrowRight" size={16} />
+          </button>
+          <p class="form-note" data-form-note role="status" aria-live="polite"></p>
+        </form>
+      )}
+    </div>
   </div>
 </section>

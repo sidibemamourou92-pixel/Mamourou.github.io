@@ -1,29 +1,36 @@
 ---
-import { parcours } from '../data/site.js';
-import Icon from './Icon.astro';
+import { parcours, typesParcours, numeroSection, asset } from '../data/site.js';
+import SectionHead from './SectionHead.astro';
 ---
 
-<section class="section container" id="parcours">
-  <div class="section-head reveal">
-    <p class="section-eyebrow" data-i18n data-fr="Parcours" data-en="Background">Parcours</p>
-    <h2 class="section-title" data-i18n data-fr="Formation & expérience" data-en="Education & experience">Formation & expérience</h2>
-  </div>
+<section class="section" id="parcours">
+  <div class="container">
+    <SectionHead
+      num={numeroSection('parcours')}
+      label={{ fr: 'Parcours', en: 'Background' }}
+      titre={{ fr: 'Formation & expérience', en: 'Education & experience' }}
+    />
 
-  <div class="timeline">
-    {parcours.map(item => (
-      <article class="timeline-item reveal">
-        <span class="timeline-marker" aria-hidden="true"></span>
-        <div class="timeline-head">
-          <span class="timeline-period">{item.periode}</span>
-          <span class="timeline-type" data-i18n data-fr={item.type.fr} data-en={item.type.en}>{item.type.fr}</span>
-        </div>
-        <h3 data-i18n data-fr={item.titre.fr} data-en={item.titre.en}>{item.titre.fr}</h3>
-        <p class="timeline-lieu">
-          <Icon name="pin" size={13} />
-          <span data-i18n data-fr={item.lieu.fr} data-en={item.lieu.en}>{item.lieu.fr}</span>
-        </p>
-        <p class="timeline-detail" data-i18n data-fr={item.detail.fr} data-en={item.detail.en}>{item.detail.fr}</p>
-      </article>
-    ))}
+    <ol class="timeline">
+      {parcours.map(item => {
+        const type = typesParcours[item.type] ?? typesParcours.formation;
+        return (
+          <li class="tl-item reveal">
+            <p class="tl-period">{item.periode}</p>
+            <div class="tl-body">
+              <p class="tl-type" data-i18n data-fr={type.fr} data-en={type.en}>{type.fr}</p>
+              <h3 data-i18n data-fr={item.titre.fr} data-en={item.titre.en}>{item.titre.fr}</h3>
+              <p class="tl-place">
+                {item.logo && <img src={asset(item.logo)} alt="" width="28" height="28" loading="lazy" class="logo-clair" />}
+                {item.url
+                  ? <a href={item.url} target="_blank" rel="noopener noreferrer" data-i18n data-fr={item.lieu.fr} data-en={item.lieu.en}>{item.lieu.fr}</a>
+                  : <span data-i18n data-fr={item.lieu.fr} data-en={item.lieu.en}>{item.lieu.fr}</span>}
+              </p>
+              <p class="tl-detail" data-i18n data-fr={item.detail.fr} data-en={item.detail.en}>{item.detail.fr}</p>
+            </div>
+          </li>
+        );
+      })}
+    </ol>
   </div>
 </section>

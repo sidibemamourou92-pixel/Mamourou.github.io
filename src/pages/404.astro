@@ -7,12 +7,14 @@ import { profil } from '../data/site.js';
   title={{ fr: `Page introuvable — ${profil.prenom} ${profil.nom}`, en: `Page not found — ${profil.prenom} ${profil.nom}` }}
   description={{ fr: 'Page introuvable.', en: 'Page not found.' }}
 >
-  <section class="section container" id="accueil">
-    <div class="section-head">
-      <p class="section-eyebrow" data-i18n data-fr="// erreur 404" data-en="// error 404">// erreur 404</p>
-      <h1 class="section-title" data-i18n data-fr="Page introuvable" data-en="Page not found">Page introuvable</h1>
-      <p class="section-subtitle" data-i18n data-fr="Cette page n’existe pas ou a été déplacée." data-en="This page does not exist or has been moved.">Cette page n’existe pas ou a été déplacée.</p>
+  <section class="section" id="accueil">
+    <div class="container">
+      <header class="sec-head">
+        <p class="sec-label"><span class="sec-num">404</span></p>
+        <h1 class="sec-title" data-i18n data-fr="Page introuvable" data-en="Page not found">Page introuvable</h1>
+        <p class="sec-sub" data-i18n data-fr="Cette page n’existe pas ou a été déplacée." data-en="This page does not exist or has been moved.">Cette page n’existe pas ou a été déplacée.</p>
+      </header>
+      <a href="./" class="btn btn-primary" data-i18n data-fr="Retour à l’accueil" data-en="Back to home">Retour à l’accueil</a>
     </div>
-    <a href="./" class="btn btn-primary" data-i18n data-fr="Retour à l’accueil" data-en="Back to home">Retour à l’accueil</a>
   </section>
 </Layout>

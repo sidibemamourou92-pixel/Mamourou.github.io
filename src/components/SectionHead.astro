@@ -1,0 +1,13 @@
+---
+// En-tête de section : « 01  À propos ———  Titre »
+const { num, label, titre, sousTitre } = Astro.props;
+---
+
+<header class="sec-head reveal">
+  <p class="sec-label">
+    <span class="sec-num">{num}</span>
+    <span data-i18n data-fr={label.fr} data-en={label.en}>{label.fr}</span>
+  </p>
+  <h2 class="sec-title" data-i18n data-fr={titre.fr} data-en={titre.en}>{titre.fr}</h2>
+  {sousTitre && <p class="sec-sub" data-i18n data-fr={sousTitre.fr} data-en={sousTitre.en}>{sousTitre.fr}</p>}
+</header>

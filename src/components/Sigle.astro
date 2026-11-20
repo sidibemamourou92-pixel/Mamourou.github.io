@@ -1,0 +1,8 @@
+---
+// Pastille avec les initiales d'un établissement, en attendant son logo.
+const { texte = '' } = Astro.props;
+const mots = texte.split(/[,—-]/)[0].replace(/[’']/g, ' ').split(/\s+/).filter(m => /^[A-ZÀ-Ý]/.test(m));
+const sigle = (mots.length ? mots : [texte]).slice(0, 2).map(m => m[0]).join('').toUpperCase();
+---
+
+<span class="sigle" aria-hidden="true">{sigle}</span>

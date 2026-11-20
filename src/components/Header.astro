@@ -7,12 +7,12 @@ const { monogram, nomPrenom } = Astro.props;
 <header class="site-header" data-header>
   <div class="container header-inner">
     <a href="#accueil" class="brand" aria-label={`Accueil — ${nomPrenom}`}>
-      <span class="brand-mark">{monogram}</span>
-      <span>{nomPrenom}</span>
+      <span class="brand-mark" aria-hidden="true">{monogram}</span>
+      <span class="brand-name">{nomPrenom}</span>
     </a>
 
-    <nav class="main-nav" aria-label="Navigation principale" data-nav>
-      {navigation.map(({ href, label }) => (
+    <nav class="main-nav" aria-label="Navigation principale" data-nav id="menu-principal">
+      {navigation.filter(n => n.cle).map(({ href, label }) => (
         <a href={href} data-spy={href.slice(1)}>
           <span data-i18n data-fr={label.fr} data-en={label.en}>{label.fr}</span>
         </a>
@@ -21,16 +21,16 @@ const { monogram, nomPrenom } = Astro.props;
 
     <div class="header-actions">
       <div class="lang-toggle" role="group" aria-label="Langue / Language">
-        <button class="lang-btn" data-set-lang="fr" aria-label="Français">FR</button>
-        <button class="lang-btn" data-set-lang="en" aria-label="English">EN</button>
+        <button type="button" class="lang-btn" data-set-lang="fr" aria-label="Français">FR</button>
+        <button type="button" class="lang-btn" data-set-lang="en" aria-label="English">EN</button>
       </div>
-      <button class="theme-toggle" data-theme-toggle aria-label="Changer de thème" title="Changer de thème">
-        <span class="ico-sun"><Icon name="sun" size={20} /></span>
-        <span class="ico-moon"><Icon name="moon" size={20} /></span>
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Changer de thème" title="Changer de thème">
+        <span class="ico-sun"><Icon name="sun" size={18} /></span>
+        <span class="ico-moon"><Icon name="moon" size={18} /></span>
       </button>
-      <button class="nav-burger" data-nav-toggle aria-label="Ouvrir le menu" aria-expanded="false">
-        <span class="ico-open"><Icon name="menu" size={22} /></span>
-        <span class="ico-close"><Icon name="x" size={22} /></span>
+      <button type="button" class="icon-btn nav-burger" data-nav-toggle aria-label="Menu" aria-controls="menu-principal" aria-expanded="false">
+        <span class="ico-open"><Icon name="menu" size={20} /></span>
+        <span class="ico-close"><Icon name="x" size={20} /></span>
       </button>
     </div>
   </div>

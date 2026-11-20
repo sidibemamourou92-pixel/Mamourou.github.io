@@ -1,88 +1,71 @@
 ---
-import { profil, cv, stats } from '../data/site.js';
+import { profil, cv, asset, numeroSection } from '../data/site.js';
+import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
+const tel = profil.telephone ? profil.telephone.replace(/\D/g, '') : '';
 ---
 
-<section class="section container" id="cv">
-  <div class="section-head reveal">
-    <p class="section-eyebrow" data-i18n data-fr="CV / Curriculum" data-en="CV / Resume">CV / Curriculum</p>
-    <h2 class="section-title" data-i18n data-fr="Mon CV" data-en="My resume">Mon CV</h2>
-    <p class="section-subtitle" data-i18n data-fr="Photo, parcours et informations personnelles." data-en="Photo, background and personal information.">Photo, parcours et informations personnelles.</p>
-  </div>
+<section class="section" id="cv">
+  <div class="container">
+    <SectionHead
+      num={numeroSection('cv')}
+      label={{ fr: 'CV', en: 'Resume' }}
+      titre={{ fr: 'En bref', en: 'At a glance' }}
+    />
 
-  <div class="cv-grid">
-    <article class="cv-card reveal">
-      <div class="cv-photo-wrap">
-        <picture>
-          <source type="image/webp" srcset={cv.photoWebp} />
-          <img class="cv-photo" src={cv.photo} alt={`Photo de ${profil.prenom} ${profil.nom}`} width="520" height="347" loading="lazy" />
-        </picture>
-        <span class="cv-badge">
-          <span class="pulse-dot" aria-hidden="true"></span>
-          <span data-i18n data-fr="Disponible" data-en="Available">Disponible</span>
-        </span>
+    <div class="cv-grid">
+      <div class="cv-summary reveal">
+        <p class="lead" data-i18n data-fr={cv.resume.fr} data-en={cv.resume.en}>{cv.resume.fr}</p>
+        {cv.fichierPdf && (
+          <a href={asset(cv.fichierPdf)} class="btn btn-primary" download>
+            <Icon name="doc" size={16} />
+            <span data-i18n data-fr="Télécharger le CV (PDF)" data-en="Download resume (PDF)">Télécharger le CV (PDF)</span>
+          </a>
+        )}
       </div>
 
-      <h3 class="cv-name">{profil.prenom} {profil.nom}</h3>
-      <p class="cv-role" data-i18n data-fr={profil.role.fr} data-en={profil.role.en}>{profil.role.fr}</p>
+      <dl class="spec reveal">
+        <div>
+          <dt data-i18n data-fr="Poste" data-en="Role">Poste</dt>
+          <dd data-i18n data-fr={profil.role.fr} data-en={profil.role.en}>{profil.role.fr}</dd>
+        </div>
+        <div>
+          <dt data-i18n data-fr="Domaine" data-en="Field">Domaine</dt>
+          <dd data-i18n data-fr={profil.domaine.fr} data-en={profil.domaine.en}>{profil.domaine.fr}</dd>
+        </div>
+        <div>
+          <dt data-i18n data-fr="Localisation" data-en="Location">Localisation</dt>
+          <dd data-i18n data-fr={profil.localisation.fr} data-en={profil.localisation.en}>{profil.localisation.fr}</dd>
+        </div>
+        <div>
+          <dt data-i18n data-fr="Nationalité" data-en="Nationality">Nationalité</dt>
+          <dd data-i18n data-fr={profil.nationalite.fr} data-en={profil.nationalite.en}>{profil.nationalite.fr}</dd>
+        </div>
+        {profil.email && (
+          <div>
+            <dt>Email</dt>
+            <dd><a href={`mailto:${profil.email}`}>{profil.email}</a></dd>
+          </div>
+        )}
+        {tel && (
+          <div>
+            <dt data-i18n data-fr="Téléphone" data-en="Phone">Téléphone</dt>
+            <dd><a href={`https://wa.me/${tel}`} target="_blank" rel="noopener noreferrer">{profil.telephone}</a></dd>
+          </div>
+        )}
+      </dl>
 
-      <ul class="cv-facts">
-        {cv.infos.map(i => (
-          <li class="cv-fact">
-            <span class="c-ico"><Icon name={i.icone} size={18} /></span>
-            <div>
-              <strong data-i18n data-fr={i.label.fr} data-en={i.label.en}>{i.label.fr}</strong>
-              {i.icone === 'mail'
-                ? <a href={`mailto:${i.valeur}`} data-i18n data-fr={typeof i.valeur === 'string' ? i.valeur : i.valeur.fr} data-en={typeof i.valeur === 'string' ? i.valeur : i.valeur.en}>{typeof i.valeur === 'string' ? i.valeur : i.valeur.fr}</a>
-                : <span data-i18n data-fr={typeof i.valeur === 'string' ? i.valeur : i.valeur.fr} data-en={typeof i.valeur === 'string' ? i.valeur : i.valeur.en}>{typeof i.valeur === 'string' ? i.valeur : i.valeur.fr}</span>}
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <div class="cv-langues">
-        <h4 data-i18n data-fr="Langues" data-en="Languages">Langues</h4>
+      <div class="cv-langs reveal">
+        <h3 class="side-title" data-i18n data-fr="Langues" data-en="Languages">Langues</h3>
         <ul>
           {cv.langues.map(l => (
             <li>
               <span data-i18n data-fr={l.nom.fr} data-en={l.nom.en}>{l.nom.fr}</span>
-              <em data-i18n data-fr={l.niveau.fr} data-en={l.niveau.en}>{l.niveau.fr}</em>
+              <span class="muted" data-i18n data-fr={l.niveau.fr} data-en={l.niveau.en}>{l.niveau.fr}</span>
             </li>
           ))}
         </ul>
       </div>
-    </article>
-
-    <div class="cv-side reveal">
-      <h3 data-i18n data-fr="Profil" data-en="Profile">Profil</h3>
-      <p class="cv-resume" data-i18n data-fr={cv.resume.fr} data-en={cv.resume.en}>{cv.resume.fr}</p>
-
-      <div class="cv-numbers">
-        {stats.map(s => (
-          <div class="stat">
-            <strong>{s.valeur}{s.suffixe}</strong>
-            <span data-i18n data-fr={s.label.fr} data-en={s.label.en}>{s.label.fr}</span>
-          </div>
-        ))}
-      </div>
-
-      <ul class="cv-personnel">
-        <li>
-          <Icon name="pin" size={15} />
-          <span data-i18n data-fr="Nationalité :" data-en="Nationality:">Nationalité :</span>
-          <span data-i18n data-fr={cv.nationalite.fr} data-en={cv.nationalite.en}>{cv.nationalite.fr}</span>
-        </li>
-        <li>
-          <Icon name="cpu" size={15} />
-          <span data-i18n data-fr="Domaine :" data-en="Field:">Domaine :</span>
-          <span data-i18n data-fr="Informatique · Robotique · IA" data-en="Computer Science · Robotics · AI">Informatique · Robotique · IA</span>
-        </li>
-      </ul>
-
-      <p class="cv-cta">
-        <a href="#parcours" class="btn btn-ghost" data-i18n data-fr="Voir mon parcours" data-en="See my background">Voir mon parcours</a>
-        <a href="#contact" class="btn btn-primary" data-i18n data-fr="Me recruter" data-en="Hire me">Me recruter</a>
-      </p>
     </div>
   </div>
 </section>

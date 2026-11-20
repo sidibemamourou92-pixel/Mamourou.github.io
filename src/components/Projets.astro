@@ -1,44 +1,63 @@
 ---
-import { projets, projetCategories } from '../data/site.js';
+import { projets, projetCategories, asset, numeroSection } from '../data/site.js';
+import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
 const catLabel = Object.fromEntries(projetCategories.map(c => [c.cle, c.label]));
+const labelDe = (cle) => catLabel[cle] ?? { fr: cle, en: cle };
 ---
 
-<section class="section container" id="projets">
-  <div class="section-head reveal">
-    <p class="section-eyebrow" data-i18n data-fr="Projets" data-en="Projects">Projets</p>
-    <h2 class="section-title" data-i18n data-fr="Réalisations" data-en="Selected work">Réalisations</h2>
-    <p class="section-subtitle" data-i18n data-fr="Sélection de projets menés de l’idée au prototype fonctionnel." data-en="Selected projects, from idea to working prototype.">Sélection de projets menés de l’idée au prototype fonctionnel.</p>
-  </div>
+<section class="section" id="projets">
+  <div class="container">
+    <SectionHead
+      num={numeroSection('projets')}
+      label={{ fr: 'Projets', en: 'Projects' }}
+      titre={{ fr: 'Réalisations choisies', en: 'Selected work' }}
+      sousTitre={{ fr: 'De l’idée au prototype qui fonctionne.', en: 'From idea to working prototype.' }}
+    />
 
-  <div class="filter-row reveal" data-filters role="group" aria-label="Filtrer les projets">
-    {projetCategories.map((c, i) => (
-      <button class="filter-btn" data-filter={c.cle} class:list={{ 'is-active': i === 0 }}>
-        <span data-i18n data-fr={c.label.fr} data-en={c.label.en}>{c.label.fr}</span>
-      </button>
-    ))}
-  </div>
+    {projetCategories.length > 2 && (
+      <div class="filters reveal" data-filters role="group" aria-label="Filtrer les projets">
+        {projetCategories.map((c, i) => (
+          <button type="button" class="filter-btn" data-filter={c.cle} aria-pressed={i === 0 ? 'true' : 'false'} class:list={{ 'is-active': i === 0 }}>
+            <span data-i18n data-fr={c.label.fr} data-en={c.label.en}>{c.label.fr}</span>
+          </button>
+        ))}
+      </div>
+    )}
 
-  <div class="projects-grid" data-projects-grid>
-    {projets.map(p => (
-      <article class="project-card reveal" data-project data-category={p.categorie}>
-        <div class="project-illu" aria-hidden="true">
-          <Icon name={p.illustration} size={54} />
-        </div>
-        <div class="project-body">
-          <h3 data-i18n data-fr={p.titre.fr} data-en={p.titre.en}>{p.titre.fr}</h3>
-          <p data-i18n data-fr={p.resume.fr} data-en={p.resume.en}>{p.resume.fr}</p>
-          <ul class="project-tags">
-            {p.tags.map(t => (
-              <li>{t}</li>
-            ))}
-          </ul>
-          <div class="project-foot">
-            <span>{p.annee} · <span data-i18n data-fr={catLabel[p.categorie].fr} data-en={catLabel[p.categorie].en}>{catLabel[p.categorie].fr}</span></span>
-            <a class="project-link" href={p.github} target="_blank" rel="noopener noreferrer" data-i18n data-fr="Voir sur GitHub" data-en="View on GitHub">Voir sur GitHub</a>
+    <div class="projects" data-projects-grid>
+      {projets.map(p => (
+        <article class="project reveal" data-project data-category={p.categorie}>
+          <div class="project-media" class:list={{ 'has-image': !!p.image }} aria-hidden="true">
+            {p.image ? <img src={asset(p.image)} alt="" loading="lazy" /> : <Icon name={p.icone} size={40} />}
           </div>
-        </div>
-      </article>
-    ))}
+          <div class="project-body">
+            <p class="project-meta">
+              <span>{p.annee}</span>
+              <span data-i18n data-fr={labelDe(p.categorie).fr} data-en={labelDe(p.categorie).en}>{labelDe(p.categorie).fr}</span>
+            </p>
+            <h3 data-i18n data-fr={p.titre.fr} data-en={p.titre.en}>{p.titre.fr}</h3>
+            <p class="project-desc" data-i18n data-fr={p.resume.fr} data-en={p.resume.en}>{p.resume.fr}</p>
+            <ul class="tag-list small">
+              {p.tags.map(t => <li>{t}</li>)}
+            </ul>
+            {(p.code || p.demo) && (
+              <p class="project-links">
+                {p.code && (
+                  <a href={p.code} target="_blank" rel="noopener noreferrer">
+                    <Icon name="github" size={15} /><span data-i18n data-fr="Code source" data-en="Source code">Code source</span>
+                  </a>
+                )}
+                {p.demo && (
+                  <a href={p.demo} target="_blank" rel="noopener noreferrer">
+                    <Icon name="external" size={15} /><span data-i18n data-fr="Démo" data-en="Live demo">Démo</span>
+                  </a>
+                )}
+              </p>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
   </div>
 </section>

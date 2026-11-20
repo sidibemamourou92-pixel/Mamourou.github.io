@@ -1,33 +1,36 @@
 ---
-import { profil, horizon, entreprise } from '../data/site.js';
-const { monogram, nomPrenom } = Astro.props;
-const build = new Date(horizon.build).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+import { entreprise, build, reseaux } from '../data/site.js';
+import Icon from './Icon.astro';
+const { nomPrenom } = Astro.props;
+const date = new Date(build);
+const fmt = (loc) => date.toLocaleDateString(loc, { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <a href="#accueil" class="brand" aria-label={`Accueil — ${nomPrenom}`}>
-      <span class="brand-mark">{monogram}</span>
-      <span>{nomPrenom}</span>
-    </a>
-
-    <div class="footer-company">
-      <span class="footer-label" data-i18n data-fr="Développeur chez" data-en="Engineer at">Développeur chez</span>
-      <a href={entreprise.url} target="_blank" rel="noopener noreferrer" class="footer-company-link" aria-label={entreprise.nom}>
-        <picture>
-          <source type="image/webp" srcset={entreprise.logoWebp} />
-          <img src={entreprise.logo} alt={`Logo de ${entreprise.nom}`} width="38" height="38" loading="lazy" />
-        </picture>
-        <span>
-          <strong>{entreprise.nom}</strong>
-          <small data-i18n data-fr={entreprise.slogan.fr} data-en={entreprise.slogan.en}>{entreprise.slogan.fr}</small>
-        </span>
-      </a>
+    <div class="footer-id">
+      <p class="footer-name">{nomPrenom}</p>
+      <p class="muted">
+        © <span data-year>{date.getFullYear()}</span> ·
+        <span data-i18n data-fr={`Mis à jour le ${fmt('fr-FR')}`} data-en={`Updated ${fmt('en-GB')}`}>Mis à jour le {fmt('fr-FR')}</span>
+      </p>
     </div>
 
-    <div class="footer-meta">
-      <p>© <span data-year>{new Date().getFullYear()}</span> {nomPrenom} — <span data-i18n data-fr="Tous droits réservés." data-en="All rights reserved.">Tous droits réservés.</span></p>
-      <p><span data-i18n data-fr="Mis à jour le" data-en="Last updated">Mis à jour le</span> {build}</p>
-    </div>
+    <ul class="footer-social">
+      {reseaux.map(r => (
+        <li>
+          <a href={r.url} target={r.url.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" aria-label={r.nom} title={r.nom}>
+            <Icon name={r.icone} size={18} />
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    {entreprise.afficher && (
+      <p class="footer-company muted">
+        <span data-i18n data-fr={entreprise.fonction.fr} data-en={entreprise.fonction.en}>{entreprise.fonction.fr}</span>
+        {' '}<a href={entreprise.url} target="_blank" rel="noopener noreferrer">{entreprise.nom}</a>
+      </p>
+    )}
   </div>
 </footer>

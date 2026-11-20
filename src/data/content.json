@@ -1,0 +1,503 @@
+{
+  "site": {
+    "url": "https://sidibemamourou92-pixel.github.io",
+    "nomDeploiement": "sidibemamourou911@gmail.com",
+    "favicon": "images/favicon.svg",
+    "imagePartage": "images/photo.jpeg",
+    "themeParDefaut": "dark",
+    "langueParDefaut": "fr",
+    "apparence": {
+      "couleurAccent": "#0e7490",
+      "police": "technique",
+      "arrondi": "doux",
+      "photoAccueil": true
+    },
+    "sections": {
+      "apropos": true,
+      "cv": true,
+      "competences": true,
+      "projets": true,
+      "parcours": true,
+      "contact": true
+    },
+    "formulaire": {
+      "service": "web3forms",
+      "cleWeb3forms": "1860741b-f043-4929-904d-5e89507344a5"
+    }
+  },
+  "profil": {
+    "prenom": "Mamourou",
+    "nom": "Sidibé",
+    "role": {
+      "fr": "Ingénieur Informatique",
+      "en": "Software Engineer"
+    },
+    "accroche": {
+      "fr": "Je conçois des produits numériques fiables, du microcontrôleur jusqu'à l'interface web qui le pilote.",
+      "en": "I build reliable digital products, from the microcontroller up to the web interface that drives it."
+    },
+    "bio": [
+      {
+        "fr": "Ingénieur informatique basé à Bamako, je travaille à la frontière entre matériel et logiciel : objets connectés, IA embarquée et applications web. J'aime transformer une idée en produit qui fonctionne sur le terrain.",
+        "en": "Software engineer based in Bamako, I work where hardware meets software: connected devices, edge AI and web applications. I enjoy turning an idea into a product that works in the field."
+      },
+      {
+        "fr": "Ma méthode : comprendre le besoin, prototyper vite, mesurer, puis livrer un code propre, testé et documenté.",
+        "en": "My method: understand the need, prototype fast, measure, then ship clean, tested and documented code."
+      }
+    ],
+    "points": [
+      {
+        "fr": "Projets menés de bout en bout, du capteur au cloud",
+        "en": "End-to-end projects, from sensor to cloud"
+      },
+      {
+        "fr": "Prototypage rapide, puis consolidation",
+        "en": "Fast prototyping, then hardening"
+      },
+      {
+        "fr": "Code propre, testé et documenté",
+        "en": "Clean, tested and documented code"
+      }
+    ],
+    "specialites": [
+      {
+        "fr": "Systèmes embarqués",
+        "en": "Embedded systems"
+      },
+      {
+        "fr": "IoT",
+        "en": "IoT"
+      },
+      {
+        "fr": "IA embarquée",
+        "en": "Edge AI"
+      },
+      {
+        "fr": "Développement web",
+        "en": "Web development"
+      }
+    ],
+    "domaine": {
+      "fr": "Informatique · Embarqué · IA",
+      "en": "Computer science · Embedded · AI"
+    },
+    "email": "sidibemamourou911@gmail.com",
+    "telephone": "+223 75 50 67 50",
+    "localisation": {
+      "fr": "Bamako, Mali",
+      "en": "Bamako, Mali"
+    },
+    "ville": "Bamako",
+    "pays": "ML",
+    "nationalite": {
+      "fr": "Malienne",
+      "en": "Malian"
+    },
+    "photo": "images/photo.jpeg",
+    "disponible": true,
+    "dispoTexte": {
+      "fr": "Ouvert aux opportunités",
+      "en": "Open to opportunities"
+    },
+    "pratiqueDepuis": "2021-01-01"
+  },
+  "entreprise": {
+    "afficher": false,
+    "nom": "TENGADÉ TECH",
+    "fonction": {
+      "fr": "Fondateur & développeur",
+      "en": "Founder & developer"
+    },
+    "slogan": {
+      "fr": "L'esprit du guide, la force du code",
+      "en": "The spirit of the guide, the strength of code"
+    },
+    "url": "https://tangade-tech.vercel.app/",
+    "logo": "images/logo-entreprise.png"
+  },
+  "stats": [
+    {
+      "auto": "annees",
+      "valeur": 5,
+      "suffixe": "+",
+      "label": {
+        "fr": "ans de pratique",
+        "en": "years of practice"
+      }
+    },
+    {
+      "auto": "projets",
+      "valeur": 6,
+      "suffixe": "",
+      "label": {
+        "fr": "projets présentés",
+        "en": "featured projects"
+      }
+    },
+    {
+      "auto": "",
+      "valeur": 20,
+      "suffixe": "+",
+      "label": {
+        "fr": "technologies utilisées",
+        "en": "technologies used"
+      }
+    }
+  ],
+  "reseaux": [
+    {
+      "nom": "GitHub",
+      "url": "https://github.com/sidibemamourou92-pixel",
+      "icone": "github"
+    },
+    {
+      "nom": "LinkedIn",
+      "url": "https://www.linkedin.com/in/sidib%C3%A9-mamourou-36848233a",
+      "icone": "linkedin"
+    }
+  ],
+  "competences": [
+    {
+      "domaine": {
+        "fr": "Systèmes embarqués",
+        "en": "Embedded systems"
+      },
+      "icone": "chip",
+      "niveau": {
+        "fr": "Avancé",
+        "en": "Advanced"
+      },
+      "tags": [
+        "C / C++",
+        "ESP32",
+        "Arduino",
+        "Raspberry Pi",
+        "Capteurs & bus I2C/SPI",
+        "Conception PCB"
+      ]
+    },
+    {
+      "domaine": {
+        "fr": "Intelligence artificielle",
+        "en": "Artificial intelligence"
+      },
+      "icone": "cpu",
+      "niveau": {
+        "fr": "Intermédiaire",
+        "en": "Intermediate"
+      },
+      "tags": [
+        "Python",
+        "TensorFlow Lite",
+        "OpenCV",
+        "Vision par ordinateur",
+        "Quantification de modèles"
+      ]
+    },
+    {
+      "domaine": {
+        "fr": "Développement web",
+        "en": "Web development"
+      },
+      "icone": "code",
+      "niveau": {
+        "fr": "Avancé",
+        "en": "Advanced"
+      },
+      "tags": [
+        "JavaScript",
+        "Astro",
+        "HTML / CSS",
+        "API REST",
+        "Git / GitHub"
+      ]
+    },
+    {
+      "domaine": {
+        "fr": "Réseaux & systèmes",
+        "en": "Networks & systems"
+      },
+      "icone": "net",
+      "niveau": {
+        "fr": "Intermédiaire",
+        "en": "Intermediate"
+      },
+      "tags": [
+        "Linux",
+        "Bash",
+        "Docker",
+        "SSH",
+        "MQTT",
+        "Supervision"
+      ]
+    }
+  ],
+  "projetCategories": [
+    {
+      "cle": "iot",
+      "label": {
+        "fr": "IoT",
+        "en": "IoT"
+      }
+    },
+    {
+      "cle": "robotique",
+      "label": {
+        "fr": "Robotique",
+        "en": "Robotics"
+      }
+    },
+    {
+      "cle": "ia",
+      "label": {
+        "fr": "IA",
+        "en": "AI"
+      }
+    },
+    {
+      "cle": "web",
+      "label": {
+        "fr": "Web",
+        "en": "Web"
+      }
+    },
+    {
+      "cle": "systemes",
+      "label": {
+        "fr": "Systèmes",
+        "en": "Systems"
+      }
+    }
+  ],
+  "projets": [
+    {
+      "titre": {
+        "fr": "Station météo connectée",
+        "en": "Connected weather station"
+      },
+      "categorie": "iot",
+      "annee": "2026",
+      "icone": "gear",
+      "image": "",
+      "resume": {
+        "fr": "Station autonome mesurant température, humidité et qualité de l'air, avec tableau de bord temps réel.",
+        "en": "Autonomous station measuring temperature, humidity and air quality, with a real-time dashboard."
+      },
+      "tags": [
+        "ESP32",
+        "DHT22",
+        "MQTT",
+        "WebSocket"
+      ],
+      "code": "",
+      "demo": ""
+    },
+    {
+      "titre": {
+        "fr": "Robot suiveur de ligne",
+        "en": "Line-following robot"
+      },
+      "categorie": "robotique",
+      "annee": "2025",
+      "icone": "robot",
+      "image": "",
+      "resume": {
+        "fr": "Robot mobile autonome suivant un tracé grâce à un régulateur PID réglé sur mesure.",
+        "en": "Autonomous mobile robot following a track with a custom-tuned PID controller."
+      },
+      "tags": [
+        "Arduino",
+        "PID",
+        "Capteurs IR",
+        "Bluetooth"
+      ],
+      "code": "",
+      "demo": ""
+    },
+    {
+      "titre": {
+        "fr": "Caméra intelligente embarquée",
+        "en": "Edge AI smart camera"
+      },
+      "categorie": "ia",
+      "annee": "2026",
+      "icone": "camera",
+      "image": "",
+      "resume": {
+        "fr": "Caméra détectant des objets localement, sur le microcontrôleur, sans dépendre du cloud.",
+        "en": "Camera detecting objects locally, on the microcontroller, without relying on the cloud."
+      },
+      "tags": [
+        "ESP32-CAM",
+        "TensorFlow Lite",
+        "C++"
+      ],
+      "code": "",
+      "demo": ""
+    },
+    {
+      "titre": {
+        "fr": "Application de gestion",
+        "en": "Management web app"
+      },
+      "categorie": "web",
+      "annee": "2025",
+      "icone": "briefcase",
+      "image": "",
+      "resume": {
+        "fr": "Application web avec authentification, API REST documentée et interface responsive.",
+        "en": "Web application with authentication, a documented REST API and a responsive interface."
+      },
+      "tags": [
+        "JavaScript",
+        "API REST",
+        "SQL",
+        "UI responsive"
+      ],
+      "code": "",
+      "demo": ""
+    },
+    {
+      "titre": {
+        "fr": "Serveur domestique Linux",
+        "en": "Home Linux server"
+      },
+      "categorie": "systemes",
+      "annee": "2024",
+      "icone": "net",
+      "image": "",
+      "resume": {
+        "fr": "Infrastructure personnelle : stockage, sauvegardes chiffrées, supervision et automatisations.",
+        "en": "Personal infrastructure: storage, encrypted backups, monitoring and automations."
+      },
+      "tags": [
+        "Linux",
+        "Raspberry Pi",
+        "Docker",
+        "SSH"
+      ],
+      "code": "",
+      "demo": ""
+    },
+    {
+      "titre": {
+        "fr": "Assistant vocal hors-ligne",
+        "en": "Offline voice assistant"
+      },
+      "categorie": "ia",
+      "annee": "2026",
+      "icone": "terminal",
+      "image": "",
+      "resume": {
+        "fr": "Assistant vocal fonctionnant entièrement en local, sans envoyer de données à l'extérieur.",
+        "en": "Voice assistant running fully on-device, without sending data anywhere."
+      },
+      "tags": [
+        "Python",
+        "Reconnaissance vocale",
+        "LLM local"
+      ],
+      "code": "",
+      "demo": ""
+    }
+  ],
+  "parcours": [
+    {
+      "periode": "2024 — aujourd'hui",
+      "type": "formation",
+      "titre": {
+        "fr": "Licence en Ingénierie Informatique",
+        "en": "Bachelor's degree in Computer Engineering"
+      },
+      "lieu": {
+        "fr": "Sup'Management Mali, Bamako",
+        "en": "Sup'Management Mali, Bamako"
+      },
+      "detail": {
+        "fr": "Programmation, bases de données, réseaux et architecture logicielle.",
+        "en": "Programming, databases, networking and software architecture."
+      },
+      "logo": "images/logos/330763062-765739997811085-27794301735995-mwov98sc.jpg",
+      "url": "https://supmanagement.ml/",
+      "misEnAvant": true
+    },
+    {
+      "periode": "2023 — aujourd'hui",
+      "type": "formation",
+      "titre": {
+        "fr": "Électronique & robotique (autoformation)",
+        "en": "Electronics & robotics (self-taught)"
+      },
+      "lieu": {
+        "fr": "Cours en ligne et projets pratiques",
+        "en": "Online courses and hands-on projects"
+      },
+      "detail": {
+        "fr": "Systèmes embarqués, robotique mobile et IA appliquée.",
+        "en": "Embedded systems, mobile robotics and applied AI."
+      },
+      "logo": "",
+      "url": "",
+      "misEnAvant": false
+    },
+    {
+      "periode": "2021 — aujourd'hui",
+      "type": "experience",
+      "titre": {
+        "fr": "Projets indépendants & prototypes",
+        "en": "Independent projects & prototypes"
+      },
+      "lieu": {
+        "fr": "Indépendant · TENGADÉ TECH",
+        "en": "Freelance · TENGADÉ TECH"
+      },
+      "detail": {
+        "fr": "Objets connectés, robots, caméras IA et infrastructures Linux.",
+        "en": "Connected devices, robots, AI cameras and Linux infrastructure."
+      },
+      "logo": "",
+      "url": "",
+      "misEnAvant": false
+    }
+  ],
+  "cv": {
+    "resume": {
+      "fr": "Ingénieur logiciel & embarqué, je conçois des systèmes connectés fiables et des interfaces simples, avec une culture forte du prototype et de la veille technique.",
+      "en": "Software & embedded engineer, I design reliable connected systems and simple interfaces, with a strong prototyping and tech-watch culture."
+    },
+    "fichierPdf": "",
+    "langues": [
+      {
+        "nom": {
+          "fr": "Français",
+          "en": "French"
+        },
+        "niveau": {
+          "fr": "Courant",
+          "en": "Fluent"
+        }
+      },
+      {
+        "nom": {
+          "fr": "Anglais",
+          "en": "English"
+        },
+        "niveau": {
+          "fr": "Professionnel",
+          "en": "Professional"
+        }
+      },
+      {
+        "nom": {
+          "fr": "Bambara",
+          "en": "Bambara"
+        },
+        "niveau": {
+          "fr": "Langue maternelle",
+          "en": "Native"
+        }
+      }
+    ]
+  }
+}

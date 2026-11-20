@@ -7,14 +7,15 @@ import Competences from '../components/Competences.astro';
 import Projets from '../components/Projets.astro';
 import Parcours from '../components/Parcours.astro';
 import Contact from '../components/Contact.astro';
+import { sectionVisible } from '../data/site.js';
 ---
 
 <Layout>
   <Hero />
-  <APropos />
-  <CV />
-  <Competences />
-  <Projets />
-  <Parcours />
-  <Contact />
+  {sectionVisible('apropos') && <APropos />}
+  {sectionVisible('cv') && <CV />}
+  {sectionVisible('competences') && <Competences />}
+  {sectionVisible('projets') && <Projets />}
+  {sectionVisible('parcours') && <Parcours />}
+  {sectionVisible('contact') && <Contact />}
 </Layout>
