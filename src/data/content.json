@@ -1,6 +1,7 @@
 {
   "site": {
     "url": "https://sidibemamourou92-pixel.github.io/Mamourou.github.io",
+    "depot": "sidibemamourou92-pixel/Mamourou.github.io",
     "favicon": "images/favicon.svg",
     "imagePartage": "images/photo.jpeg",
     "themeParDefaut": "dark",

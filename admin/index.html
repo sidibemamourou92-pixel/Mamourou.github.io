@@ -7,12 +7,12 @@
 <title>Administration</title>
 <link rel="icon" id="favicon" href="data:," />
 <style>
-  @font-face { font-family: "Space Grotesk"; src: url("/public/fonts/space-grotesk.woff2") format("woff2"); font-weight: 300 700; font-display: swap; }
-  @font-face { font-family: "IBM Plex Sans"; src: url("/public/fonts/ibm-plex-sans-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-  @font-face { font-family: "IBM Plex Sans"; src: url("/public/fonts/ibm-plex-sans-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
-  @font-face { font-family: "IBM Plex Sans"; src: url("/public/fonts/ibm-plex-sans-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
-  @font-face { font-family: "JetBrains Mono"; src: url("/public/fonts/jetbrains-mono.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
-  @font-face { font-family: "Fraunces"; src: url("/public/fonts/fraunces.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+  @font-face { font-family: "Space Grotesk"; src: url("fonts/space-grotesk.woff2") format("woff2"); font-weight: 300 700; font-display: swap; }
+  @font-face { font-family: "IBM Plex Sans"; src: url("fonts/ibm-plex-sans-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "IBM Plex Sans"; src: url("fonts/ibm-plex-sans-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "IBM Plex Sans"; src: url("fonts/ibm-plex-sans-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+  @font-face { font-family: "JetBrains Mono"; src: url("fonts/jetbrains-mono.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
+  @font-face { font-family: "Fraunces"; src: url("fonts/fraunces.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
   :root {
     --accent: #0e7490; --on-accent: #fff;
@@ -173,6 +173,9 @@
   .login-note { min-height: 1.3em; margin: -.3rem 0 .8rem; color: var(--danger); font-size: .86rem; }
   .login-btn { width: 100%; min-height: 44px; }
   .login-foot { margin: 1.1rem 0 0; text-align: center; }
+  .login-aide { margin-top: 1.1rem; font-size: .84rem; color: var(--ink2); }
+  .login-aide summary { cursor: pointer; color: var(--accent-ink); font-weight: 500; }
+  .login-aide ol { padding-left: 1.2rem; margin: .7rem 0 0; display: grid; gap: .4rem; }
   .mdp { position: relative; }
   .mdp input { padding-right: 5.5rem; }
   .mdp-voir { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); }
@@ -204,7 +207,18 @@
 </head>
 <body>
 <div id="root"></div>
+<script id="config" type="application/json">{}</script>
 <script>
+// ============================================================
+//  Mode : local (npm run admin) ou en ligne (GitHub Pages + API GitHub)
+// ============================================================
+const CONFIG = (() => { try { return JSON.parse(document.getElementById("config").textContent || "{}"); } catch { return {}; } })();
+const EN_LIGNE = !!CONFIG.depot;
+if (EN_LIGNE && window.top !== window.self) { document.documentElement.textContent = ""; throw new Error("Affichage en cadre refusé"); }
+const RAW = EN_LIGNE ? `https://raw.githubusercontent.com/${CONFIG.depot}/${CONFIG.branche || "main"}/` : "";
+const urlMedia = (p) => (EN_LIGNE ? RAW + "public/" + p : "/public/" + p);
+const URL_SITE = EN_LIGNE ? "../" : "/preview/";
+
 // ============================================================
 //  Icônes (contours 24×24)
 // ============================================================
@@ -262,6 +276,7 @@ const ECRANS = [
     id: "general", titre: "Paramètres", ico: "settings", desc: "Adresse publique, langue par défaut et sections affichées.",
     champs: [
       { k: "site.url", t: "url", l: "Adresse publique du site", h: "Utilisée pour le référencement (canonical, sitemap, image de partage). Ex. https://monnom.github.io" },
+      { k: "site.depot", t: "text", l: "Dépôt GitHub (pour l'admin en ligne)", h: "Format compte/dépôt, ex. sidibemamourou92-pixel/Mamourou.github.io. Vide = pas d'admin en ligne." },
       { k: "site.langueParDefaut", t: "select", l: "Langue par défaut", o: [["fr", "Français"], ["en", "English"]] },
       { t: "group", l: "Formulaire de contact", champs: [
         { k: "site.formulaire.service", t: "select", l: "Envoi des messages", o: [
@@ -472,7 +487,7 @@ function appliquerIdentite() {
   r.setProperty("--on-accent", texteSur(accent));
   r.setProperty("--r", (ARRONDIS[ap.arrondi] || ARRONDIS.doux)[1] === "18px" ? "12px" : (ARRONDIS[ap.arrondi] || ARRONDIS.doux)[1]);
   const fav = state.data?.site?.favicon;
-  if (fav) document.getElementById("favicon").href = "/public/" + fav + "?v=" + Date.now();
+  if (fav) document.getElementById("favicon").href = urlMedia(fav);
   const p = state.data?.profil;
   if (p) document.title = `Administration — ${p.prenom} ${p.nom}`;
 }
@@ -573,16 +588,16 @@ function media(f, val, put) {
     chemin.textContent = p ? "public/" + p : "Aucun fichier";
     if (!p) thumb.append("vide");
     else if (f.pdf || p.endsWith(".pdf")) thumb.append("PDF");
-    else thumb.append(el("img", { src: "/public/" + p + "?v=" + Date.now(), alt: "" }));
+    else thumb.append(el("img", { src: blobs.get(p) || urlMedia(p) + (EN_LIGNE ? "" : "?v=" + Date.now()), alt: "" }));
   };
   apercu(val);
   const file = el("input", { type: "file", hidden: true, accept: f.pdf ? ".pdf,application/pdf" : "image/*,.ico,.svg", onchange: async (e) => {
     const fi = e.target.files[0]; if (!fi) return;
     try {
-      const r = await api(`/api/upload?slot=${f.slot}&name=${encodeURIComponent(fi.name)}`, { method: "POST", body: fi });
+      const r = EN_LIGNE ? await gh.televerser(f.slot, fi) : await api(`/api/upload?slot=${f.slot}&name=${encodeURIComponent(fi.name)}`, { method: "POST", body: fi });
       put(r.path); apercu(r.path);
       if (f.slot === "favicon") appliquerIdentite();
-      toast("Fichier envoyé. Pensez à enregistrer.");
+      toast(EN_LIGNE ? "Fichier envoyé sur GitHub. Enregistrez pour l'utiliser sur le site." : "Fichier envoyé. Pensez à enregistrer.");
     } catch (err) { toast(err.message, true); }
     e.target.value = "";
   }});
@@ -650,6 +665,7 @@ function ecranApparence() {
 //  Écran Publier
 // ============================================================
 function ecranPublier() {
+  if (EN_LIGNE) return ecranPublierEnLigne();
   const log = el("pre", { class: "log", hidden: true });
   const bkSel = el("select", {}, el("option", { value: "" }, "Chargement…"));
   api("/api/backups").then((l) => { bkSel.innerHTML = ""; (l.length ? l : [""]).forEach((f) => bkSel.append(el("option", { value: f }, f ? f.replace(/^content-|\.json$/g, "").replace(/T(\d\d)-(\d\d)-(\d\d).*$/, " à $1:$2:$3") : "Aucune sauvegarde"))); }).catch(() => {});
@@ -675,8 +691,10 @@ function ecranPublier() {
 
 async function enregistrer() {
   try {
-    await api("/api/content", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(state.data) });
-    state.saved = JSON.stringify(state.data); updateStatus(); toast("Modifications enregistrées.");
+    if (EN_LIGNE) await gh.sauver(state.data);
+    else await api("/api/content", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(state.data) });
+    state.saved = JSON.stringify(state.data); updateStatus();
+    toast(EN_LIGNE ? "Enregistré sur GitHub. Le site en ligne sera à jour dans 1 à 2 minutes." : "Modifications enregistrées.");
     return true;
   } catch (e) { toast(e.message + (e.details ? "\n• " + e.details.join("\n• ") : ""), true); return false; }
 }
@@ -716,14 +734,14 @@ function render() {
   root.innerHTML = "";
   root.append(el("div", { class: "app" },
     el("aside", { class: "side" },
-      el("a", { class: "brand", href: "/preview/", target: "_blank", rel: "noopener", title: "Voir le site" },
-        fav && el("img", { src: "/public/" + fav, alt: "" }),
-        el("span", {}, el("b", {}, `${p.prenom} ${p.nom}`), el("small", {}, "Administration du portfolio"))),
+      el("a", { class: "brand", href: URL_SITE, target: "_blank", rel: "noopener", title: "Voir le site" },
+        fav && el("img", { src: blobs.get(fav) || urlMedia(fav), alt: "" }),
+        el("span", {}, el("b", {}, `${p.prenom} ${p.nom}`), el("small", {}, EN_LIGNE ? "Administration en ligne" : "Administration du portfolio"))),
       el("nav", { "aria-label": "Sections de l'administration" }, MENU.map((g) => el("div", { class: "nav-group" }, el("p", {}, g.groupe),
         g.ecrans.map((id) => { const e = ECRANS.find((x) => x.id === id); return el("button", { type: "button", class: "nav-btn" + (e.id === ecran.id ? " active" : ""), "aria-current": e.id === ecran.id ? "page" : false, onclick: () => { state.ecran = e.id; history.replaceState(null, "", "#" + e.id); render(); window.scrollTo(0, 0); } }, svg(e.ico), e.titre); })))),
       el("div", { class: "side-foot" },
         el("button", { type: "button", class: "icon-btn", title: "Thème de l'administration", "aria-label": "Changer le thème de l'administration", onclick: () => { const t = theme === "dark" ? "light" : "dark"; memo.set("localStorage", "adminTheme", t); themeAdmin(t); render(); } }, svg(theme === "dark" ? "sun" : "moon")),
-        el("a", { class: "btn ghost small", href: "/preview/", target: "_blank", rel: "noopener" }, "Voir le site", svg("ext", 14)),
+        el("a", { class: "btn ghost small", href: URL_SITE, target: "_blank", rel: "noopener" }, "Voir le site", svg("ext", 14)),
         el("button", { type: "button", class: "icon-btn", title: "Se déconnecter", "aria-label": "Se déconnecter", onclick: deconnexion }, svg("logout")))),
     el("main", {},
       el("div", { class: "topbar" }, el("h2", {}, ecran.titre), statusEl,
@@ -738,7 +756,7 @@ function render() {
 }
 
 async function charger() {
-  state.data = await api("/api/content");
+  state.data = EN_LIGNE ? await gh.lire() : await api("/api/content");
   state.saved = JSON.stringify(state.data);
   appliquerIdentite();
   render();
@@ -750,12 +768,13 @@ async function charger() {
 let brand = null;
 async function chargerBrand() {
   if (brand) return brand;
-  try { brand = await (await fetch("/api/branding")).json(); } catch { brand = {}; }
+  if (EN_LIGNE) brand = { nom: CONFIG.nom, favicon: CONFIG.favicon, accent: CONFIG.accent };
+  else try { brand = await (await fetch("/api/branding")).json(); } catch { brand = {}; }
   if (/^#[0-9a-f]{6}$/i.test(brand.accent || "")) {
     document.documentElement.style.setProperty("--accent", brand.accent);
     document.documentElement.style.setProperty("--on-accent", texteSur(brand.accent));
   }
-  if (brand.favicon) document.getElementById("favicon").href = "/public/" + brand.favicon;
+  if (brand.favicon) document.getElementById("favicon").href = EN_LIGNE ? "../" + brand.favicon : "/public/" + brand.favicon;
   return brand;
 }
 
@@ -767,6 +786,7 @@ function champMdp(label, autocomplete) {
 }
 
 async function ecranConnexion(mode, msg = "", garderDonnees = false) {
+  if (EN_LIGNE) return ecranJeton(msg, garderDonnees);
   const b = await chargerBrand();
   document.title = "Connexion — Administration";
   const creation = mode === "creation";
@@ -803,12 +823,16 @@ async function ecranConnexion(mode, msg = "", garderDonnees = false) {
 
 async function deconnexion() {
   if (isDirty() && !confirm("Des modifications ne sont pas enregistrées. Se déconnecter quand même ?")) return;
-  try { await api("/api/logout", { method: "POST" }); } catch {}
+  if (EN_LIGNE) gh.oublier();
+  else try { await api("/api/logout", { method: "POST" }); } catch {}
   state.data = null;
   ecranConnexion("connexion", "Vous êtes déconnecté.");
 }
 
 function ecranSecurite() {
+  if (EN_LIGNE) return el("fieldset", { class: "group" }, el("legend", {}, "Sécurité de l'administration en ligne"),
+    el("p", { class: "hint", style: { marginTop: 0 } }, "Vous êtes connecté avec un jeton GitHub limité au dépôt " + CONFIG.depot + ". Pour le révoquer : GitHub → Settings → Developer settings → Personal access tokens."),
+    el("div", { class: "field" }, el("button", { type: "button", class: "btn", onclick: deconnexion }, "Se déconnecter et oublier le jeton")));
   const a = champMdp("Mot de passe actuel", "current-password");
   const n = champMdp("Nouveau mot de passe (10 caractères min.)", "new-password");
   const c = champMdp("Confirmer le nouveau mot de passe", "new-password");
@@ -823,9 +847,180 @@ function ecranSecurite() {
     } }, a.node, n.node, c.node, el("div", { class: "field" }, el("button", { class: "btn" }, "Changer le mot de passe"))));
 }
 
+// ============================================================
+//  Mode en ligne : client de l'API GitHub
+// ============================================================
+const blobs = new Map(); // aperçus locaux des fichiers tout juste envoyés
+const b64 = {
+  depuisTexte: (t) => { const o = new TextEncoder().encode(t); let s = ""; for (let i = 0; i < o.length; i += 0x8000) s += String.fromCharCode(...o.subarray(i, i + 0x8000)); return btoa(s); },
+  versTexte: (b) => new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\s/g, "")), (c) => c.charCodeAt(0))),
+  depuisFichier: (f) => new Promise((ok, ko) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = ko; r.readAsDataURL(f); }),
+};
+const EMPLACEMENTS = {
+  photo: { dir: "images", base: "photo", ext: [".jpg", ".jpeg", ".png", ".webp"] },
+  favicon: { dir: "images", base: "favicon", ext: [".svg", ".png", ".ico"] },
+  logo: { dir: "images", base: "logo-entreprise", ext: [".png", ".svg", ".webp", ".jpg", ".jpeg"] },
+  partage: { dir: "images", base: "partage", ext: [".jpg", ".jpeg", ".png"] },
+  cv: { dir: "files", base: "cv", ext: [".pdf"] },
+  projet: { dir: "images/projets", base: null, ext: [".jpg", ".jpeg", ".png", ".webp", ".svg"] },
+  logoParcours: { dir: "images/logos", base: null, ext: [".png", ".svg", ".webp", ".jpg", ".jpeg"] },
+};
+const gh = {
+  cle: "ghJeton",
+  jeton: () => memo.get("sessionStorage", gh.cle) || memo.get("localStorage", gh.cle),
+  oublier: () => { try { sessionStorage.removeItem(gh.cle); localStorage.removeItem(gh.cle); } catch {} },
+  shaContenu: null,
+  async req(chemin, opts = {}) {
+    const res = await fetch("https://api.github.com/repos/" + CONFIG.depot + chemin, {
+      ...opts, cache: "no-store",
+      headers: { Accept: "application/vnd.github+json", Authorization: "Bearer " + gh.jeton(), "X-GitHub-Api-Version": "2022-11-28", ...(opts.headers || {}) },
+    });
+    const body = res.status === 204 ? {} : await res.json().catch(() => ({}));
+    if (res.status === 401) { gh.oublier(); if (state.data) ecranJeton("Jeton expiré ou révoqué : reconnectez-vous.", true); throw Object.assign(new Error("Jeton GitHub invalide ou expiré."), { status: 401 }); }
+    if (!res.ok) throw Object.assign(new Error(body.message ? "GitHub : " + body.message : "Erreur GitHub " + res.status), { status: res.status });
+    return body;
+  },
+  async verifier() {
+    const r = await gh.req("");
+    if (!r.permissions?.push) throw new Error("Ce jeton ne peut pas écrire dans " + CONFIG.depot + " (permission « Contents : Read and write » requise).");
+    return r;
+  },
+  async lire() {
+    const f = await gh.req("/contents/src/data/content.json?ref=" + (CONFIG.branche || "main"));
+    gh.shaContenu = f.sha;
+    return JSON.parse(b64.versTexte(f.content));
+  },
+  async sauver(data, message = "Admin en ligne : mise à jour du contenu") {
+    const erreurs = validerEnLigne(data);
+    if (erreurs.length) throw Object.assign(new Error("Contenu invalide."), { details: erreurs });
+    const r = await gh.req("/contents/src/data/content.json", { method: "PUT", body: JSON.stringify({
+      message, branch: CONFIG.branche || "main", sha: gh.shaContenu, content: b64.depuisTexte(JSON.stringify(data, null, 2) + "\n") }) })
+      .catch((e) => { if (e.status === 409) e.message = "Le contenu a changé sur GitHub entre-temps : cliquez sur « Annuler » pour recharger, puis refaites vos modifications."; throw e; });
+    gh.shaContenu = r.content.sha;
+  },
+  async televerser(slot, fichier) {
+    const e = EMPLACEMENTS[slot];
+    const ext = (fichier.name.match(/\.[a-z0-9]+$/i) || [""])[0].toLowerCase();
+    if (!e || !e.ext.includes(ext)) throw new Error("Format non accepté (" + (e ? e.ext.join(", ") : "?") + ").");
+    if (fichier.size > 8 * 1024 * 1024) throw new Error("Fichier trop volumineux (max 8 Mo).");
+    const propre = fichier.name.slice(0, -ext.length).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "image";
+    const rel = `${e.dir}/${e.base || propre + "-" + Date.now().toString(36)}${ext}`;
+    let sha;
+    try { sha = (await gh.req("/contents/public/" + rel + "?ref=" + (CONFIG.branche || "main"))).sha; } catch (err) { if (err.status !== 404) throw err; }
+    await gh.req("/contents/public/" + rel, { method: "PUT", body: JSON.stringify({
+      message: "Admin en ligne : fichier " + rel, branch: CONFIG.branche || "main", content: await b64.depuisFichier(fichier), ...(sha ? { sha } : {}) }) });
+    blobs.set(rel, URL.createObjectURL(fichier));
+    return { path: rel };
+  },
+  async historique() {
+    return gh.req("/commits?path=src/data/content.json&per_page=30&sha=" + (CONFIG.branche || "main"));
+  },
+  async restaurer(sha) {
+    const f = await gh.req("/contents/src/data/content.json?ref=" + sha);
+    const data = JSON.parse(b64.versTexte(f.content));
+    await gh.lire(); // sha courant
+    await gh.sauver(data, "Admin en ligne : restauration de la version " + sha.slice(0, 7));
+  },
+  async deploiement() {
+    const r = await gh.req("/actions/runs?per_page=1&branch=" + (CONFIG.branche || "main"));
+    return r.workflow_runs?.[0];
+  },
+};
+
+function validerEnLigne(c) {
+  const e = [];
+  if (!/^https?:\/\//.test(c.site?.url || "")) e.push("Paramètres : l'URL du site doit commencer par http(s)://");
+  if (!c.profil?.prenom?.trim() || !c.profil?.nom?.trim()) e.push("Profil : prénom et nom obligatoires.");
+  if (c.profil?.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.profil.email)) e.push("Profil : adresse e-mail invalide.");
+  const ap = c.site?.apparence;
+  if (ap?.couleurAccent && !/^#[0-9a-f]{6}$/i.test(ap.couleurAccent)) e.push("Apparence : couleur invalide.");
+  const cats = new Set((c.projetCategories || []).map((x) => x.cle));
+  (c.projets || []).forEach((p, i) => { if (!cats.has(p.categorie)) e.push(`Projet n°${i + 1} : catégorie inconnue.`); });
+  return e;
+}
+
+function ecranJeton(msg = "", garderDonnees = false) {
+  chargerBrand();
+  document.title = "Connexion — Administration";
+  const input = el("input", { type: "password", autocomplete: "off", spellcheck: "false", required: true, placeholder: "github_pat_…" });
+  const voir = el("button", { type: "button", class: "btn ghost small mdp-voir", onclick: () => { const v = input.type === "password"; input.type = v ? "text" : "password"; voir.textContent = v ? "Masquer" : "Afficher"; } }, "Afficher");
+  const rester = el("input", { type: "checkbox" });
+  const note = el("p", { class: "login-note", role: "alert" }, msg);
+  const bouton = el("button", { class: "btn primary login-btn" }, "Se connecter");
+  const lienJeton = "https://github.com/settings/personal-access-tokens/new";
+  const root = document.getElementById("root");
+  root.innerHTML = "";
+  root.append(el("div", { class: "login-wrap" },
+    el("form", { class: "login", onsubmit: async (e) => {
+      e.preventDefault();
+      const t = input.value.trim();
+      if (!/^(github_pat_|ghp_)[A-Za-z0-9_]{20,}$/.test(t)) { note.textContent = "Ce n'est pas un jeton GitHub valide (il commence par github_pat_)."; return; }
+      bouton.disabled = true; note.textContent = "";
+      gh.oublier();
+      memo.set(rester.checked ? "localStorage" : "sessionStorage", gh.cle, t);
+      try {
+        await gh.verifier();
+        if (garderDonnees && state.data) { render(); toast("Reconnecté."); } else await charger();
+      } catch (err) { gh.oublier(); note.textContent = err.message; }
+      finally { bouton.disabled = false; }
+    } },
+      el("div", { class: "login-head" },
+        CONFIG.favicon && el("img", { src: "../" + CONFIG.favicon, alt: "", width: 44, height: 44 }),
+        el("div", {}, el("p", { class: "login-kicker" }, "Administration en ligne"), el("h1", {}, CONFIG.nom || "Portfolio"))),
+      el("p", { class: "hint login-intro" }, "Connectez-vous avec votre jeton GitHub. Les modifications sont enregistrées dans le dépôt " + CONFIG.depot + " et le site se met à jour tout seul."),
+      el("div", { class: "field" }, el("label", {}, "Jeton d'accès GitHub"), el("div", { class: "mdp" }, input, voir)),
+      el("div", { class: "field" }, el("label", { class: "switch" }, rester, "Rester connecté sur cet appareil")),
+      note, bouton,
+      el("details", { class: "login-aide" }, el("summary", {}, "Créer mon jeton (une seule fois)"),
+        el("ol", {},
+          el("li", {}, "Ouvrez ", el("a", { href: lienJeton, target: "_blank", rel: "noopener" }, "GitHub → nouveau jeton"), " (connecté à votre compte)."),
+          el("li", {}, "Nom : « Admin portfolio ». Expiration : 90 jours (ou plus)."),
+          el("li", {}, "Repository access : « Only select repositories » → ", el("code", {}, CONFIG.depot.split("/")[1]), "."),
+          el("li", {}, "Permissions → Repository : « Contents » = Read and write, « Actions » = Read-only."),
+          el("li", {}, "« Generate token », copiez-le et collez-le ici. Ne le partagez jamais."))))));
+  input.focus();
+}
+
+function ecranPublierEnLigne() {
+  const etat = el("p", { class: "hint", style: { marginTop: 0 } }, "Vérification du dernier déploiement…");
+  const maj = async () => {
+    try {
+      const r = await gh.deploiement();
+      if (!r) { etat.textContent = "Aucun déploiement pour l'instant."; return; }
+      const quand = new Date(r.updated_at).toLocaleString("fr-FR");
+      const libelle = r.status !== "completed" ? "⏳ En cours de publication…" : r.conclusion === "success" ? "✅ En ligne" : "❌ Échec de la publication";
+      etat.textContent = `${libelle} — ${r.display_title || ""} (${quand})`;
+      if (r.status !== "completed") setTimeout(() => document.body.contains(etat) && maj(), 8000);
+    } catch (e) { etat.textContent = "Statut indisponible : " + e.message; }
+  };
+  maj();
+  const bkSel = el("select", {}, el("option", { value: "" }, "Chargement…"));
+  gh.historique().then((l) => { bkSel.innerHTML = ""; (l.length ? l : [null]).forEach((c) => bkSel.append(el("option", { value: c ? c.sha : "" }, c ? `${new Date(c.commit.author.date).toLocaleString("fr-FR")} — ${c.commit.message.split("\n")[0].slice(0, 60)}` : "Aucune version"))); }).catch(() => {});
+  return el("div", { class: "steps" },
+    el("fieldset", { class: "group" }, el("legend", {}, "Publication automatique"),
+      el("p", { class: "hint", style: { marginTop: 0 } }, "Chaque « Enregistrer » crée une version sur GitHub ; le site est reconstruit et publié automatiquement en 1 à 2 minutes."),
+      etat,
+      el("div", { class: "row", style: { margin: ".8rem 0 1rem" } },
+        el("a", { class: "btn", href: URL_SITE, target: "_blank", rel: "noopener" }, "Voir le site", svg("ext", 15)),
+        el("a", { class: "btn ghost", href: `https://github.com/${CONFIG.depot}/actions`, target: "_blank", rel: "noopener" }, "Historique des déploiements", svg("ext", 15)))),
+    el("fieldset", { class: "group" }, el("legend", {}, "Versions précédentes"),
+      el("p", { class: "hint", style: { marginTop: 0 } }, "Toutes les versions du contenu sont conservées dans l'historique GitHub."),
+      el("div", { class: "row", style: { margin: ".8rem 0 1rem", flexWrap: "nowrap" } }, bkSel,
+        el("button", { type: "button", class: "btn", onclick: async () => {
+          if (!bkSel.value || !confirm("Restaurer cette version ? Elle remplacera le contenu actuel (l'actuel reste dans l'historique).")) return;
+          try { await gh.restaurer(bkSel.value); await charger(); toast("Version restaurée : publication en cours."); } catch (e) { toast(e.message, true); }
+        } }, "Restaurer"))));
+}
+
 async function demarrer() {
   const h = location.hash.slice(1);
   state.ecran = ECRANS.some((e) => e.id === h) ? h : "profil";
+  if (EN_LIGNE) {
+    if (!gh.jeton()) return ecranJeton();
+    try { await gh.verifier(); await charger(); }
+    catch (e) { gh.oublier(); ecranJeton(e.message); }
+    return;
+  }
   let sess;
   try { sess = await api("/api/session"); } catch (e) { return toast("Admin injoignable : " + e.message, true); }
   if (!sess.configure) return ecranConnexion("creation");

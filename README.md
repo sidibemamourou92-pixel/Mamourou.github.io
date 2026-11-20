@@ -42,6 +42,16 @@ npm run build    # site prêt à publier dans dist/
   Mot de passe oublié : `npm run admin -- --reset-password`.
 - Raccourci : **Ctrl + S** pour enregistrer.
 
+### 🌐 Administration en ligne
+
+Disponible sur `<adresse du site>/admin/`, depuis n'importe quel appareil. Elle enregistre
+directement dans le dépôt GitHub (un commit par enregistrement), puis le site se republie seul.
+
+- Connexion par **jeton GitHub** (fine-grained) limité au dépôt : « Contents » en lecture/écriture,
+  « Actions » en lecture. Sans ce jeton, la page ne peut rien modifier.
+- Le jeton reste dans le navigateur (session, ou « rester connecté »), jamais dans le site.
+- Versions précédentes : écran « Publier » → restauration depuis l'historique GitHub.
+
 ### Mettre en ligne après une modification
 
 ```bash

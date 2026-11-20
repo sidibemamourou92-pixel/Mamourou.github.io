@@ -16,7 +16,8 @@ function readAsset(rel, source) {
   const src = join(process.cwd(), 'src', source);
   const p = !import.meta.env.DEV && existsSync(min) ? min : src;
   if (!existsSync(p)) throw new Error(`Asset introuvable : ${p}`);
-  return readFileSync(p, 'utf8');
+  // CRLF → LF : le navigateur normalise avant de vérifier les empreintes CSP
+  return readFileSync(p, 'utf8').replace(/\r\n?/g, '\n');
 }
 const globalCss = readAsset('global.css', 'styles/global.css') + cssApparence;
 const mainJs = readAsset('main.js', 'scripts/main.js').replace(/^﻿/, '');

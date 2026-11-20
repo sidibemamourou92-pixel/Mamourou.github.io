@@ -255,6 +255,10 @@ const server = createServer(async (req, res) => {
       const c = await contenuPublic();
       return send(res, 200, { nom: `${c.profil.prenom} ${c.profil.nom}`, favicon: c.site.favicon, accent: c.site.apparence?.couleurAccent });
     }
+    if (req.method === "GET" && path.startsWith("/fonts/")) {
+      const f = inside(join(PUBLIC, "fonts"), path.slice("/fonts/".length));
+      return f ? serveFile(res, f, true) : send(res, 400, "Chemin invalide", "text/plain");
+    }
     if (req.method === "GET" && (path.startsWith("/public/fonts/") || path === "/public/" + (await contenuPublic()).site.favicon)) {
       const f = inside(PUBLIC, path.slice("/public/".length));
       return f ? serveFile(res, f, true) : send(res, 400, "Chemin invalide", "text/plain");
