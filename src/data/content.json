@@ -103,7 +103,7 @@
     "pratiqueDepuis": "2021-01-01"
   },
   "entreprise": {
-    "afficher": true,
+    "afficher": false,
     "nom": "TENGADÉ TECH",
     "fonction": {
       "fr": "Fondateur & développeur",
