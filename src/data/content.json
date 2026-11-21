@@ -388,7 +388,7 @@
       "categorie": "ia",
       "annee": "2026",
       "icone": "terminal",
-      "image": "",
+      "image": "images/projets/capture-d-ecran-2026-11-21-100144-mwq8ohqo.png",
       "resume": {
         "fr": "Assistant vocal fonctionnant entièrement en local, sans envoyer de données à l'extérieur.",
         "en": "Voice assistant running fully on-device, without sending data anywhere."
