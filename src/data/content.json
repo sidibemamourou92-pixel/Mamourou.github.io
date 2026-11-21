@@ -323,7 +323,7 @@
       "categorie": "ia",
       "annee": "2026",
       "icone": "camera",
-      "image": "",
+      "image": "images/projets/capture-d-ecran-2026-11-10-231717-mwq8euqf.png",
       "resume": {
         "fr": "Caméra détectant des objets localement, sur le microcontrôleur, sans dépendre du cloud.",
         "en": "Camera detecting objects locally, on the microcontroller, without relying on the cloud."
