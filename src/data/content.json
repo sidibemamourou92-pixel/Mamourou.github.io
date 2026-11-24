@@ -9,7 +9,7 @@
     "apparence": {
       "couleurAccent": "#b91c1c",
       "police": "technique",
-      "arrondi": "doux",
+      "arrondi": "arrondi",
       "photoAccueil": true
     },
     "sections": {
